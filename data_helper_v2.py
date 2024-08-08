@@ -279,7 +279,7 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
     @param String data_source: The data to extract the ts and text data
     @param ContrastiveLearningModel model: The model used (encoders for the text and ts are needed)
     @param Integer text_window: The span of time that text is combined over
-    @param Integer ts_windo: The span of time that time series are combined over
+    @param Integer ts_window: The span of time that time series are combined over
     @param Integer days_away: For simple negative creation, this is the number of days apart each negative pair is from the true time
     @param Integer negative_label: The label for negative examples (cosine similarity from pytorch requires -1)
     @param String text_concatenation: The method for combining text (simple concatenation etc)
@@ -313,11 +313,15 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
 
     df = create_negatives(df, days_away, negative_label=negative_label)
 
+    def make_2d(lst):
+        return [[x] for x in lst]
+    df["time_series"] = df["time_series"].apply(make_2d)
+
     #handle split, Dataset and DataLoader
     train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer())
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
     return train_dataloader, val_dataloader, test_dataloader
 
