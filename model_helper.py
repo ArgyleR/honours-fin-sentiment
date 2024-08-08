@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 import random
+from sklearn.metrics.pairwise import cosine_similarity
 
 import torch
 import torch.nn as nn
@@ -84,7 +85,7 @@ class ContrastiveLearningModel(nn.Module):
         ts_embeddings, text_embeddings = self.forward(ts_data, input_ids, attention_mask)
         ts_embeddings = ts_embeddings.cpu().detach().numpy()
         text_embeddings = text_embeddings.cpu().detach().numpy()
-        return cosine_similarity_custom(ts_embeddings, text_embeddings)
+        return cosine_similarity(ts_embeddings, text_embeddings)
 
 def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion):
     model.train()
@@ -125,7 +126,6 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
     conf_matrix = confusion_matrix(all_labels, all_preds)
 
     return train_loss, accuracy, f1, conf_matrix
-    #return random.randint(0, 10), random.randint(0, 10), random.randint(0, 10), [[1, 2], [2, 3]]
 
 def validate(model: ContrastiveLearningModel, val_loader: DataLoader, optimizer, device: str, criterion):
     model.eval()
