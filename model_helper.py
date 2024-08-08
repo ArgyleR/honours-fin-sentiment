@@ -124,10 +124,15 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
         all_preds.extend(preds)
         all_labels.extend(labels.cpu().numpy())
         i += 1
-    
-    all_preds = np.array(all_preds) #convert to numpy array
-    all_preds = (all_preds >= 0.5).astype(int).tolist()
-    all_labels = [0 if x == -1 else x for x in all_labels]
+    all_preds = np.array(all_preds)
+    all_labels = np.array(all_labels)
+
+    # Convert -1 labels to 0 if needed
+    all_labels = (all_labels == 1).astype(int)
+                                          
+    #all_preds = np.array(all_preds) #convert to numpy array
+    #all_preds = (all_preds >= 0.5).astype(int).tolist()
+    #all_labels = [0 if x == -1 else x for x in all_labels]
     train_loss /= len(train_loader)
     
 
