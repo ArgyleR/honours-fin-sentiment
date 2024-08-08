@@ -85,17 +85,7 @@ class ContrastiveLearningModel(nn.Module):
         ts_embeddings, text_embeddings = self.forward(ts_data, input_ids, attention_mask)
         ts_embeddings = ts_embeddings.cpu().detach().numpy()
         text_embeddings = text_embeddings.cpu().detach().numpy()
-        similarities = cosine_similarity(ts_embeddings, text_embeddings)
-    
-        preds = (similarities >= 0.5).astype(int)  # or another threshold based on your needs
-        
-        # Flatten the predictions if needed
-        if preds.ndim > 1:
-            preds = preds.flatten()
-        
-        return preds.tolist()
-        
-
+        return cosine_similarity_custom(ts_embeddings, text_embeddings)
 
 def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion):
     model.train()
@@ -124,15 +114,10 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
         all_preds.extend(preds)
         all_labels.extend(labels.cpu().numpy())
         i += 1
-    all_preds = np.array(all_preds)
-    all_labels = np.array(all_labels)
-
-    # Convert -1 labels to 0 if needed
-    all_labels = (all_labels == 1).astype(int)
-                                          
-    #all_preds = np.array(all_preds) #convert to numpy array
-    #all_preds = (all_preds >= 0.5).astype(int).tolist()
-    #all_labels = [0 if x == -1 else x for x in all_labels]
+    
+    all_preds = np.array(all_preds) #convert to numpy array
+    all_preds = (all_preds >= 0.5).astype(int).tolist()
+    all_labels = [0 if x == -1 else x for x in all_labels]
     train_loss /= len(train_loader)
     
 
@@ -141,6 +126,7 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
     conf_matrix = confusion_matrix(all_labels, all_preds)
 
     return train_loss, accuracy, f1, conf_matrix
+    #return random.randint(0, 10), random.randint(0, 10), random.randint(0, 10), [[1, 2], [2, 3]]
 
 def validate(model: ContrastiveLearningModel, val_loader: DataLoader, optimizer, device: str, criterion):
     model.eval()
