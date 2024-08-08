@@ -312,7 +312,6 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
     
 
     df = create_negatives(df, days_away, negative_label=negative_label)
-
     def make_2d(lst):
         return [[x] for x in lst]
     df["time_series"] = df["time_series"].apply(make_2d)
@@ -320,8 +319,8 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
     #handle split, Dataset and DataLoader
     train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer())
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
+    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
+    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
     return train_dataloader, val_dataloader, test_dataloader
 
