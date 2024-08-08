@@ -7,6 +7,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 import torch
 from sklearn.model_selection import train_test_split
 import model_helper as mh
+from torch.nn.utils.rnn import pad_sequence
 
 EXPECTED_COLS = {"id", "ticker", "start_date", "text", "time_series", "label"}
 
@@ -181,23 +182,18 @@ def create_negatives(df, days_away=31, negative_label=0):
     return augmented_df
 
 def collate_fn(batch):
-    text_inputs = {}
-    ts_inputs = []
-    labels = []
-    for text_input, ts_input, label in batch:#TODO something here is wrong, soemthing to do with how batch is being passed. Look at previous work
-        for k, v in text_input.items():
-            if k not in text_inputs:
-                text_inputs[k] = []
-            text_inputs[k].append(v.squeeze(0))
-        ts_inputs.append(ts_input)
-        labels.append(label)
+    ts_data, text_data, attention_mask, labels = zip(*batch)
+    
+    # Pad sequences to the same length
+    ts_data = pad_sequence(ts_data, batch_first=True, padding_value=0)
+    text_data = pad_sequence(text_data, batch_first=True, padding_value=0)
+    attention_mask = pad_sequence(attention_mask, batch_first=True, padding_value=0)
+    
+    labels = torch.stack(labels)
+    
+    return ts_data, text_data, attention_mask, labels
 
-    for k, v in text_inputs.items():
-        text_inputs[k] = torch.stack(v)
 
-    ts_inputs = torch.stack(ts_inputs)
-    labels = torch.tensor(labels)
-    return text_inputs, ts_inputs, labels
 
 def _helper_get_tvt_splits(df: pd.DataFrame, text_tokenizer):
     dataset = CustomDataset(df, text_tokenizer=text_tokenizer)
@@ -320,8 +316,8 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
     #handle split, Dataset and DataLoader
     train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer())
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
+    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
+    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
     return train_dataloader, val_dataloader, test_dataloader
 
