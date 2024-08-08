@@ -85,7 +85,17 @@ class ContrastiveLearningModel(nn.Module):
         ts_embeddings, text_embeddings = self.forward(ts_data, input_ids, attention_mask)
         ts_embeddings = ts_embeddings.cpu().detach().numpy()
         text_embeddings = text_embeddings.cpu().detach().numpy()
-        return cosine_similarity(ts_embeddings, text_embeddings)
+        similarities = cosine_similarity(ts_embeddings, text_embeddings)
+    
+        preds = (similarities >= 0.5).astype(int)  # or another threshold based on your needs
+        
+        # Flatten the predictions if needed
+        if preds.ndim > 1:
+            preds = preds.flatten()
+        
+        return preds.tolist()
+        
+
 
 def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion):
     model.train()
