@@ -151,7 +151,7 @@ def run():
         "projection_dim": [64, 32, 16, 8, 5],
         "ts_window": [5, 7, 10],
         "text_window": [1, 5],
-        "data_source": ['synthetic'],
+        "data_source": ['stock_emotion'],
         "days_away": [31, 60],
         "batch_size": [16],
         "num_workers": [6],
