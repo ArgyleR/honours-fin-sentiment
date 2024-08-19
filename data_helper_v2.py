@@ -14,7 +14,8 @@ EXPECTED_COLS = {"id", "ticker", "start_date", "text", "time_series", "label"}
 ROOT_PATH = "drive/MyDrive/Honors_Fin_Sentiment_2024_Eoin/implementation/"
 
 class CustomDataset(Dataset):
-    def __init__(self, df: pd.DataFrame, text_tokenizer, ts_col: str="time_series", text_col: str="text", label_col: str="label"):
+    def __init__(self, device, df: pd.DataFrame, text_tokenizer, ts_col: str="time_series", text_col: str="text", label_col: str="label"):
+        self.device = device
         self.df = df
         self.text_tokenizer = text_tokenizer
         self.texts = df[text_col].tolist()
@@ -33,6 +34,40 @@ class CustomDataset(Dataset):
         label = torch.tensor(self.labels[idx], dtype=torch.long)
 
         return time_series, text_tokenized['input_ids'].squeeze(0), text_tokenized['attention_mask'].squeeze(0), label
+
+class CustomTransformerDataset(Dataset):
+    def __init__(self, device, df: pd.DataFrame, text_tokenizer, ts_col: str="time_series", text_col: str="text", label_col: str="label"):
+        self.device = device
+        self.df = df
+        self.text_tokenizer = text_tokenizer
+        self.texts = df[text_col].tolist()
+        self.time_series = df[ts_col].tolist()
+        self.labels = df[label_col].tolist()
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        past_time_values = torch.tensor(self.time_series[idx], dtype=torch.float32)
+        past_observed_mask = torch.ones(1, len(past_time_values))
+        past_time_features = torch.tensor([self.df.iloc[idx]["past_time_features"]])
+        
+        ts_data = {
+            "past_time_values": past_time_values.to(self.device),
+            "past_observed_mask": past_observed_mask.to(self.device),
+            "past_time_features": past_time_features.to(self.device)
+        }
+
+        text = self.texts[idx]
+        text_tokenized = self.text_tokenizer(text, return_tensors="pt", padding=True, truncation=True)
+
+        label = torch.tensor(self.labels[idx], dtype=torch.long)
+
+        return ts_data, text_tokenized['input_ids'].squeeze(0), text_tokenized['attention_mask'].squeeze(0), label
+
+
+#def get_mean_embeddings(text_list: list, tokenizer):
+    
 
 def read_stock_emotion_ts(path):
     all_files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.csv')]
@@ -102,11 +137,11 @@ def _helper_create_k_day_ts_window(df, k=5, mode='right'): #TODO check returns r
             if start_idx < 0 or end_idx > len(group):
                 continue
 
-            row = [ticker, dates.iloc[i], prices.iloc[start_idx:end_idx].tolist()]
+            row = [ticker, dates.iloc[i], prices.iloc[start_idx:end_idx].tolist(), dates.iloc[start_idx:end_idx]]
             data.append(row)
 
     # Create the new dataframe
-    columns = ['ticker', 'start_date', 'time_series']
+    columns = ['ticker', 'start_date', 'time_series', "all_dates"]
 
     new_df = pd.DataFrame(data, columns=columns)
 
@@ -147,7 +182,6 @@ def create_negatives(df, days_away=31, negative_label=0):
 
     @return Pandas.DataFrame: The dataframe with negative pairs added
     """
-    assert set(df.columns) == EXPECTED_COLS, "columns for df are incorrect"
 
     df['start_date'] = pd.to_datetime(df['start_date'])
 
@@ -170,7 +204,8 @@ def create_negatives(df, days_away=31, negative_label=0):
                 'start_date': row['start_date'],  # Keeping the same start date for consistency
                 'text': row['text'],
                 'time_series': negative_sample['time_series'],
-                'label': negative_label  # Label for negative pair
+                'label': negative_label,  # Label for negative pair
+                "all_dates": row["all_dates"]
             })
 
     # Create a DataFrame for negative pairs
@@ -185,7 +220,7 @@ def collate_fn(batch):
     ts_data, text_data, attention_mask, labels = zip(*batch)
     
     # Pad sequences to the same length
-    ts_data = pad_sequence(ts_data, batch_first=True, padding_value=0)
+    #ts_data = pad_sequence(ts_data, batch_first=True, padding_value=0)
     text_data = pad_sequence(text_data, batch_first=True, padding_value=0)
     attention_mask = pad_sequence(attention_mask, batch_first=True, padding_value=0)
     
@@ -195,8 +230,11 @@ def collate_fn(batch):
 
 
 
-def _helper_get_tvt_splits(df: pd.DataFrame, text_tokenizer):
-    dataset = CustomDataset(df, text_tokenizer=text_tokenizer)
+def _helper_get_tvt_splits(df: pd.DataFrame, text_tokenizer, device:str, transformer:bool=False):
+    if transformer:
+        dataset = CustomTransformerDataset(device=device, df=df, text_tokenizer=text_tokenizer)
+    else:
+        dataset = CustomDataset(device=device, df=df, text_tokenizer=text_tokenizer)
 
     train_size = int(0.8 * len(dataset))
     val_size = int(0.1 * len(dataset))
@@ -266,15 +304,29 @@ def _helper_generate_synthetic_benchmark(model:mh.ContrastiveLearningModel, tick
     #dataset = CustomDataset(df, text_tokenizer=model.get_text_encoder())
 
     
-    train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer())
+    return df
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    return train_dataloader, val_dataloader, test_dataloader
+def _helper_create_past_time_features_from_date(df, date_col = "all_dates"):
+    """
+    A helper function to turn dates into past_time_features. If the start date is 19/08/2023 the corresponding time feature should be [19, 8], the next is [20, 8]
+    """
+    past_time_features = []
+
+    for idx, row in df.iterrows():
+        past_time_features_this_row = []
+
+        for i in row[date_col]:
+            past_time_features_this_row.append([i.month, i.day])
+        past_time_features.append(past_time_features_this_row)
+
+    df["past_time_features"] = past_time_features
+
+    return df
+
+
 
 def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_window:int=5, days_away: int=31, negative_label: int=0, text_concatenation: str='flat', negative_creation: str='',
-              batch_size=32, num_workers = 6):
+              batch_size=32, num_workers = 6, device:str='cpu'):
     """
     @param String data_source: The data to extract the ts and text data
     @param ContrastiveLearningModel model: The model used (encoders for the text and ts are needed)
@@ -291,7 +343,14 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
 
 
 
-    if data_source == 'synthetic': return _helper_generate_synthetic_benchmark(model=model, negative_label=negative_label, batch_size=batch_size, ts_len=ts_window)
+    if data_source == 'synthetic': 
+        df = _helper_generate_synthetic_benchmark(model=model, negative_label=negative_label, batch_size=batch_size, ts_len=ts_window)
+        train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, device=device, text_tokenizer=model.get_text_tokenizer())
+
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        return train_dataloader, val_dataloader, test_dataloader
 
 
     text_df, ts_df = _helper_wrangle_dataset(text_path="data/stock_emotions/tweet/train_stockemo.csv",
@@ -316,8 +375,10 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
         return [[x] for x in lst]
     df["time_series"] = df["time_series"].apply(make_2d)
 
+    df = _helper_create_past_time_features_from_date(df=df)
+    
     #handle split, Dataset and DataLoader
-    train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer())
+    train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer(), transformer=True, device='cpu')
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
     val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)

@@ -77,6 +77,41 @@ def grid_search(param_grid: dict):
         criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
         train_loader, valid_loader, test_loader = dh.get_data(data_source=data_source, model=model, text_window=text_window, ts_window=ts_window, days_away=days_away, negative_label=negative_label, batch_size=batch_size, num_workers=num_workers)
+        
+        data = {
+                "end_time": [],
+                "search_index": i,
+                "epoch": [],
+                "model_params": params,
+                "train_metrics": {
+                    "loss": [],
+                    "accuracy": [],
+                    "f1": [],
+                    "conf_matrix": []
+                },
+                "val_metrics": {
+                    "loss": [],
+                    "accuracy": [],
+                    "f1": [],
+                    "conf_matrix": []
+                },
+                "test_metrics": {
+                    "loss": [],
+                    "accuracy": [],
+                    "f1": [],
+                    "conf_matrix": []
+                },
+                "timing": {
+                    "start_epoch": [],
+                    "end_train": [],
+                    "end_validate": [],
+                    "end_epoch_and_test": [],
+                    "train_time": [],
+                    "validate_time": [],
+                    "test_time": [],
+                    "epoch_time": []
+                }
+            }
 
         test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
         for epoch in range(num_epochs):
@@ -91,45 +126,29 @@ def grid_search(param_grid: dict):
                 test_loss, test_accuracy, test_f1, test_conf_matrix = mh.validate(model=model, val_loader=test_loader, optimizer=optimizer, device=device, criterion=criterion)
 
 
-            data = {
-                "end_time": end_epoch.isoformat(),
-                "search_index": i,
-                "epoch": epoch,
-                "model_params": params,
-                "train_metrics": {
-                    "loss": train_loss,
-                    "accuracy": train_accuracy,
-                    "f1": train_f1,
-                    "conf_matrix": train_conf_matrix.tolist()
-                },
-                "val_metrics": {
-                    "loss": val_loss,
-                    "accuracy": val_accuracy,
-                    "f1": val_f1,
-                    "conf_matrix": val_conf_matrix.tolist()
-                },
-                "test_metrics": {
-                    "loss": test_loss,
-                    "accuracy": test_accuracy,
-                    "f1": test_f1,
-                    "conf_matrix": test_conf_matrix.tolist() if test_conf_matrix is not None else None
-                },
-                "timing": {
-                    "start_epoch": start_epoch.isoformat(),
-                    "end_train": end_train.isoformat(),
-                    "end_validate": end_validate.isoformat(),
-                    "end_epoch_and_test": end_epoch.isoformat(),
-                    "train_time": (end_train - start_epoch).total_seconds(),
-                    "validate_time": (end_validate - end_train).total_seconds(),
-                    "test_time": (end_epoch - end_validate).total_seconds(),
-                    "epoch_time": (end_epoch - start_epoch).total_seconds()
-                }
-            }
-
-            # Write to JSON file
-            with open(out_file, 'a') as file:
-                json.dump(data, file)
-                file.write('\n')
+    
+            data["end_time"].append(end_epoch.isoformat())
+            data["epoch"].append(epoch)
+            data["train_metric"]["loss"].append(train_loss)
+            data["train_metric"]["accuracy"].append(train_accuracy)
+            data["train_metric"]["f1"].append(train_f1)
+            data["train_metric"]["conf_matrix"].append(train_conf_matrix.tolist())
+            data["val_metrics"]["loss"].append(val_loss)
+            data["val_metrics"]["accuracy"].append(val_accuracy)
+            data["val_metrics"]["f1"].append(val_f1)
+            data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
+            data["test_metrics"]["loss"].append(test_loss)
+            data["test_metrics"]["accuracy"].append(test_accuracy)
+            data["test_metrics"]["f1"].append(test_f1)
+            data["test_metrics"]["conf_matrix"].append(test_conf_matrix.tolist())
+            data["timing"]["start_epoch"].append(start_epoch.isoformat())
+            data["timing"]["end_train"].append(end_train.isoformat())
+            data["timing"]["end_validate"].append(end_validate.isoformat())
+            data["timing"]["end_epoch_and_test"].append(end_epoch.isoformat())
+            data["timing"]["train_time"].append((end_train - start_epoch).total_seconds())
+            data["timing"]["validate_time"].append((end_validate - end_train).total_seconds())
+            data["timing"]["test_time"].append((end_epoch - end_validate).total_seconds())
+            data["timing"]["epoch_time"].append((end_epoch - start_epoch).total_seconds())
 
             if val_loss < best_val_loss:
                 print(data)
@@ -138,24 +157,27 @@ def grid_search(param_grid: dict):
                 checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_index_{i}_time_{end_epoch}_epoch_{epoch}.pth")
                 torch.save(model.state_dict(), checkpoint_path)
 
-
         i += 1
+        # Write to JSON file
+        with open(out_file, 'a') as file:
+            json.dump(data, file)
+            file.write('\n')
 
 
 def run():
     param_grid = param_grid = {
         "out_file": ['output.json'],
         "checkpoint_dir": ["checkpoint/"],
-        "ts_encoder": [{"name": 'LSTM'}],
+        "ts_encoder": [{"name": 'TSTransformerBaseEncoder'}],
         "text_encoder": [{"name": 'bert-base-uncased', "auto-pre-trained": True}],
-        "projection_dim": [64, 32, 16, 8, 5],
-        "ts_window": [5, 7, 10],
-        "text_window": [1, 5],
+        "projection_dim": [400, 500, 600, 700],
+        "ts_window": [5],
+        "text_window": [1],
         "data_source": ['stock_emotion'],
         "days_away": [31, 60],
         "batch_size": [16],
         "num_workers": [6],
-        "learning_rate": [0.001, 0.01, 0.1, 0.0001],
+        "learning_rate": [0.00001, 0.0001],
         "optimizer": ['adam'],
         "criterion": ['CosineEmbeddingLoss'],
         "random_state": [42, 43, 44],
