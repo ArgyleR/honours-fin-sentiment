@@ -378,7 +378,7 @@ def get_data(data_source: str = 'synthetic', model=None, text_window:int =5, ts_
     df = _helper_create_past_time_features_from_date(df=df)
     
     #handle split, Dataset and DataLoader
-    train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer(), transformer=True, device='cpu')
+    train_dataset, val_dataset, test_dataset = _helper_get_tvt_splits(df, text_tokenizer=model.get_text_tokenizer(), transformer=True, device=device)
 
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, collate_fn=collate_fn)
     val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers, collate_fn=collate_fn)
