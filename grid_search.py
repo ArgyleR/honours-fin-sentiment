@@ -132,15 +132,12 @@ def grid_search(param_grid: dict):
             data["train_metrics"]["loss"].append(train_loss)
             data["train_metrics"]["accuracy"].append(train_accuracy)
             data["train_metrics"]["f1"].append(train_f1)
-            data["train_metrics"]["conf_matrix"].append(train_conf_matrix.tolist())
             data["val_metrics"]["loss"].append(val_loss)
             data["val_metrics"]["accuracy"].append(val_accuracy)
             data["val_metrics"]["f1"].append(val_f1)
-            data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
             data["test_metrics"]["loss"].append(test_loss)
             data["test_metrics"]["accuracy"].append(test_accuracy)
             data["test_metrics"]["f1"].append(test_f1)
-            data["test_metrics"]["conf_matrix"].append(test_conf_matrix.tolist())
             data["timing"]["start_epoch"].append(start_epoch.isoformat())
             data["timing"]["end_train"].append(end_train.isoformat())
             data["timing"]["end_validate"].append(end_validate.isoformat())
@@ -149,6 +146,13 @@ def grid_search(param_grid: dict):
             data["timing"]["validate_time"].append((end_validate - end_train).total_seconds())
             data["timing"]["test_time"].append((end_epoch - end_validate).total_seconds())
             data["timing"]["epoch_time"].append((end_epoch - start_epoch).total_seconds())
+
+            if train_conf_matrix != None:
+                data["train_metrics"]["conf_matrix"].append(train_conf_matrix.tolist())
+            if val_conf_matrix != None:
+                data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
+            if test_conf_matrix != None:
+                data["test_metrics"]["conf_matrix"].append(test_conf_matrix.tolist())
 
             if val_loss < best_val_loss:
                 print(data)
