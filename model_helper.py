@@ -123,6 +123,10 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
     i = 0
 
     for ts_data, text_data, attention_mask, labels in tqdm(train_loader, leave=True, position=1):
+        ts_data["past_time_values"] = ts_data["past_time_values"].to(device)
+        ts_data["past_observed_mask"] = ts_data["past_observed_mask"].to(device)
+        ts_data["past_time_features"] = ts_data["past_time_features"].to(device)
+
         text_data = text_data.to(device)
         attention_mask = attention_mask.to(device)
         labels = labels.to(device)
@@ -163,6 +167,10 @@ def validate(model: ContrastiveLearningModel, val_loader: DataLoader, optimizer,
 
     with torch.no_grad():
         for ts_data, text_data, attention_mask, labels in tqdm(val_loader, leave=True, position=1):
+            ts_data["past_time_values"] = ts_data["past_time_values"].to(device)
+            ts_data["past_observed_mask"] = ts_data["past_observed_mask"].to(device)
+            ts_data["past_time_features"] = ts_data["past_time_features"].to(device)
+
             text_data = text_data.to(device)
             attention_mask = attention_mask.to(device)
             labels = labels.to(device)
