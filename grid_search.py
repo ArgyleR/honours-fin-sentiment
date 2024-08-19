@@ -147,10 +147,18 @@ def grid_search(param_grid: dict):
             data["timing"]["test_time"].append((end_epoch - end_validate).total_seconds())
             data["timing"]["epoch_time"].append((end_epoch - start_epoch).total_seconds())
 
-            
-            data["train_metrics"]["conf_matrix"].append(train_conf_matrix.tolist())
-            data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
-            data["test_metrics"]["conf_matrix"].append(test_conf_matrix.tolist())
+            try:
+                data["train_metrics"]["conf_matrix"].append(train_conf_matrix.tolist())
+            except AttributeError:
+                continue
+            try:
+                data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
+            except AttributeError:
+                continue
+            try:
+                data["test_metrics"]["conf_matrix"].append(test_conf_matrix.tolist())
+            except AttributeError:
+                continue
 
             if val_loss < best_val_loss:
                 print(data)
