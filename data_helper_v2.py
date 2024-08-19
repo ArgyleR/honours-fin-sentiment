@@ -53,9 +53,9 @@ class CustomTransformerDataset(Dataset):
         past_time_features = torch.tensor([self.df.iloc[idx]["past_time_features"]])
         
         ts_data = {
-            "past_time_values": past_time_values.to(self.device),
-            "past_observed_mask": past_observed_mask.to(self.device),
-            "past_time_features": past_time_features.to(self.device)
+            "past_time_values": past_time_values,
+            "past_observed_mask": past_observed_mask,
+            "past_time_features": past_time_features
         }
 
         text = self.texts[idx]
