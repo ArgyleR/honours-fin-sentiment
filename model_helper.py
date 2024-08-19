@@ -39,10 +39,10 @@ class TSTransformerBaseEncoder(nn.Module):
         self.config = self.model.config
         self.hidden_dim = self.config.d_model
     
-    def forward(self, ts_data):
-        past_time_values = torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0)
-        past_observed_mask = torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0)
-        past_time_features = torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0)
+    def forward(self, ts_data, device='cpu'):
+        past_time_values = torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0).to(device)
+        past_observed_mask = torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device)
+        past_time_features = torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0).to(device)
         
 
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
@@ -100,8 +100,8 @@ class ContrastiveLearningModel(nn.Module):
     def get_text_encoder(self):
         return self.text_encoder
 
-    def forward(self, ts_data, input_ids, attention_mask):
-        ts_embeddings = self.ts_encoder(ts_data)
+    def forward(self, ts_data, input_ids, attention_mask, device='cpu'):
+        ts_embeddings = self.ts_encoder(ts_data, device=device)
         text_embeddings = self.text_encoder(input_ids, attention_mask)
 
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
@@ -123,16 +123,12 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
     i = 0
 
     for ts_data, text_data, attention_mask, labels in tqdm(train_loader, leave=True, position=1):
-        ts_data["past_time_values"] = ts_data["past_time_values"].to(device)
-        ts_data["past_observed_mask"] = ts_data["past_observed_mask"].to(device)
-        ts_data["past_time_features"] = ts_data["past_time_features"].to(device)
-
         text_data = text_data.to(device)
         attention_mask = attention_mask.to(device)
         labels = labels.to(device)
 
         optimizer.zero_grad()
-        ts_embeddings, text_embeddings = model(ts_data, text_data, attention_mask)
+        ts_embeddings, text_embeddings = model(ts_data, text_data, attention_mask, device=device)
 
         loss = criterion(ts_embeddings, text_embeddings, labels)
         loss.backward()
@@ -167,15 +163,11 @@ def validate(model: ContrastiveLearningModel, val_loader: DataLoader, optimizer,
 
     with torch.no_grad():
         for ts_data, text_data, attention_mask, labels in tqdm(val_loader, leave=True, position=1):
-            ts_data["past_time_values"] = ts_data["past_time_values"].to(device)
-            ts_data["past_observed_mask"] = ts_data["past_observed_mask"].to(device)
-            ts_data["past_time_features"] = ts_data["past_time_features"].to(device)
-
             text_data = text_data.to(device)
             attention_mask = attention_mask.to(device)
             labels = labels.to(device)
 
-            ts_embeddings, text_embeddings = model(ts_data, text_data, attention_mask)
+            ts_embeddings, text_embeddings = model(ts_data, text_data, attention_mask, device=device)
 
 
             loss = criterion(ts_embeddings, text_embeddings, labels)
