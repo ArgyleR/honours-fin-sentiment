@@ -76,7 +76,7 @@ def grid_search(param_grid: dict):
         optimizer                   = get_optimizer(optimizer_name=optimizer_name, model=model, lr=learning_rate)
         criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
-        train_loader, valid_loader, test_loader = dh.get_data(data_source=data_source, model=model, text_window=text_window, ts_window=ts_window, days_away=days_away, negative_label=negative_label, batch_size=batch_size, num_workers=num_workers)
+        train_loader, valid_loader, test_loader = dh.get_data(data_source=data_source, model=model, text_window=text_window, ts_window=ts_window, days_away=days_away, negative_label=negative_label, batch_size=batch_size, num_workers=num_workers, device=device)
         
         data = {
                 "end_time": [],
