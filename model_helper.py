@@ -9,7 +9,7 @@ from tqdm import tqdm
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 import random
 from sklearn.metrics.pairwise import cosine_similarity
-
+from transformers import TimeSeriesTransformerModel, TimeSeriesTransformerConfig
 import torch
 import torch.nn as nn
 
@@ -23,6 +23,34 @@ def cosine_similarity_custom(batch1, batch2):
     similarities = dot_products / (norms1 * norms2)
     return similarities
 
+class TSTransformerBaseEncoder(nn.Module):
+    def __init__(self, config:dict={"k":5, "context_length": 2, "prediction_length": 0, "lags_sequence":[1, 2, 3], "num_features":1}):
+        super(TSTransformerBaseEncoder, self).__init__()
+        
+        assert config["k"] == max(config["lags_sequence"]) + config["context_length"], "k isn't the same size as max(lags_sequence) + context_length"
+
+        config = TimeSeriesTransformerConfig(
+            prediction_length=config["prediction_length"],  
+            context_length=config["context_length"],
+            lags_sequence=config["lags_sequence"],
+            feature_size=len(config["lags_sequence"]) + config["num_features"] + 3
+        )
+        self.model = TimeSeriesTransformerModel(config)
+        self.config = self.model.config
+        self.hidden_dim = self.config.d_model
+    
+    def forward(self, ts_data):
+        past_time_values = torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0)
+        past_observed_mask = torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0)
+        past_time_features = torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0)
+        
+
+        model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
+        encoder_last_hidden_state = model_output.encoder_last_hidden_state
+    
+        #return the mean of the final state? Not sure if this or just the final state
+        return torch.mean(encoder_last_hidden_state, dim=1)
+         
 class LSTMEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim=64, num_layers=2):
         super(LSTMEncoder, self).__init__()
@@ -33,7 +61,7 @@ class LSTMEncoder(nn.Module):
         # x should be of shape (batch_size, seq_len, input_dim)
         output, (hn, cn) = self.lstm(x)
         
-        # Return the last hidden state
+        # Return the last hidden state for mapping to projection_dim
         return hn[-1]
 
 
@@ -95,7 +123,6 @@ def train(model: ContrastiveLearningModel, train_loader: DataLoader, optimizer, 
     i = 0
 
     for ts_data, text_data, attention_mask, labels in tqdm(train_loader, leave=True, position=1):
-        ts_data = ts_data.to(device)
         text_data = text_data.to(device)
         attention_mask = attention_mask.to(device)
         labels = labels.to(device)
@@ -136,7 +163,6 @@ def validate(model: ContrastiveLearningModel, val_loader: DataLoader, optimizer,
 
     with torch.no_grad():
         for ts_data, text_data, attention_mask, labels in tqdm(val_loader, leave=True, position=1):
-            ts_data = ts_data.to(device)
             text_data = text_data.to(device)
             attention_mask = attention_mask.to(device)
             labels = labels.to(device)
@@ -170,6 +196,8 @@ def get_ts_encoder(ts_encoder_config: dict={"name": "LSTM"}, ts_window: int=5, p
         num_layers = 1
         output_dim = projection_dim
         return LSTMEncoder(input_dim=input_dim, num_layers=num_layers)
+    elif ts_encoder_config["name"] == "TSTransformerBaseEncoder":
+        return TSTransformerBaseEncoder()
     else:
         raise ValueError(f"Unknown time series encoder: {ts_encoder_config}")
 
