@@ -231,8 +231,6 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "out_file": ['output.json'],                                                                                    #GRIDSEARCH     #DONE
-            "checkpoint_dir": ["checkpoint/"],                                                                              #GRIDSEARCH     #DONE
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormer'}, {"name": "InformerModel"}],        #MODELhelper
             "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base'}],                                         #MODELhelper
             "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
