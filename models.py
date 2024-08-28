@@ -137,14 +137,14 @@ class ContrastiveLearningModel(nn.Module):
 
     def forward(self, ts_data, text_data):
         ts_embeddings = self.ts_encoder(ts_data)
-
+        print(text_data.shape)
         text_embeddings = []
         for text_row in text_data:
             text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
         
-        
+        print(text_embeddings)
         if self.text_aggregation == 'mean':
-            final_text_embeddings = torch.mean(text_embeddings, dim=1)
+            final_text_embeddings = torch.mean(text_embeddings, dim=(1))
         elif self.text_aggregation == 'max':
             final_text_embeddings = torch.max(text_embeddings, dim=1)
         else:
