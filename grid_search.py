@@ -223,6 +223,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
         
 
             i += 1
+            print(f"Just finihsed search: {i}")
 
     print(f"Best Model Params: \n{best_model_params}")
     print(f"Best Dataset Params: \n{best_dataset_params}")
