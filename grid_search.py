@@ -240,7 +240,7 @@ def run(df=None):
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
             "num_epochs": [10],                                                                                             #GRIDSEARCH     #DONE
-            "batch_size": [16],                                                                                             #DATAhelper     #DONE
+            "batch_size": [12],                                                                                             #DATAhelper     #DONE
             "num_workers": [6],  
         }
 
