@@ -179,7 +179,7 @@ def create_time_series_df(df, k, mode='start'):
     
     return pd.DataFrame(new_df)
 
-def create_text_series_df(df, k=1, mode='ALL', top_n=None, time_col='created_at'):
+def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time_col='created_at'):
     df[time_col] = pd.to_datetime(df[time_col], utc=True).dt.date
     new_df = []
 
@@ -196,7 +196,7 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, time_col='created_at'
             window_df = group[window]
             
             # Collect text series, ids, and text_dates
-            text_series = list(set(window_df['text'].tolist())) #set as we only want unique text (otherwise some will be repeat)
+            text_series = list(set(window_df[text_col].tolist())) #set as we only want unique text (otherwise some will be repeat)
             ids = window_df['id'].tolist()
             text_dates = window_df[time_col].tolist()
 
@@ -237,8 +237,8 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, time_col='created_at'
     
     return pd.DataFrame(new_df)
 
-def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int, text_selection_method:tuple):
-    text_df = create_text_series_df(df=text_df, k=text_window, mode=text_selection_method[0], top_n=text_selection_method[1])
+def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int, text_selection_method:tuple, text_col, text_time_col, ts_time_col:str):
+    text_df = create_text_series_df(df=text_df, k=text_window, mode=text_selection_method[0], top_n=text_selection_method[1], text_col=text_col, time_col=text_time_col)
     ts_df = create_time_series_df(ts_df, k=ts_window, mode=ts_mode)
 
     #we now have the windowed text and ts (including multiple days); not yet implemented for multiple tickers
@@ -351,6 +351,7 @@ def get_data(model,
     text_df, ts_df = wrangle_data(data_source) #returns df with id, ticker, Date, text, close
     text_date_col = data_source['text_date_col']
     ts_date_col = data_source["ts_date_col"]
+    text_col = data_source["text_col"]
     #make sure date columns are datetimes
     text_df[text_date_col] = pd.to_datetime(text_df[text_date_col], utc=True).dt.date
     ts_df[ts_date_col] = pd.to_datetime(ts_df[ts_date_col], utc=True).dt.date
@@ -359,7 +360,7 @@ def get_data(model,
     ts_df = normalize_ts(ts_df)
 
     #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
-    text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method)
+    text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
     #padd text_series to have empty strings for collate_fn
 
     
