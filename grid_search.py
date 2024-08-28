@@ -250,12 +250,13 @@ def run(df=None):
         "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
         "text_window": [3],                                                                 #DATAhelper
         'text_selection_method': [('TFIDF', 5)],
-        "data_source": [{
-            "name": "stock_net",
-            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
-            "ts_path": "./data/stocknet/price/raw/",
+        "data_source": [
+        {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
             "ts_date_col": 'Date',
-            'text_date_col': 'created_at'
+            'text_date_col': 'date'
         }],                                                            #DATAhelper
         "negatives_creation": [("naive", 31), ("naive", 60), ("diff_distribution", )],                          #DATAhelper
         "random_state": [42, 43, 44],
