@@ -173,7 +173,7 @@ class ContrastiveLearningModel(nn.Module):
 
         for i in range(batch_size):
             # Pass the input through the text model to get embeddings for each text
-            text_embeddings = self.text_model(input_ids[i], attention_mask=attention_mask[i]).last_hidden_state
+            text_embeddings = self.text_encoder(input_ids[i], attention_mask=attention_mask[i]).last_hidden_state
             # text_embeddings shape: [number_of_texts, embedding_dim]
 
             # Aggregate the embeddings based on the specified method
