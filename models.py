@@ -137,11 +137,14 @@ class ContrastiveLearningModel(nn.Module):
 
     def forward(self, ts_data, text_data):
         print("ts embeddings before processing: ======================================================")
+        ts_data['past_time_values'] = ts_data['past_time_values'].squeeze()
+        ts_data['past_observed_mask'] = ts_data['past_observed_mask'].squeeze()
+        ts_data['past_time_features'] = ts_data['past_time_features'].squeeze()
+
         print(len(ts_data))
         print(ts_data['past_time_values'].shape)
         ts_embeddings = self.ts_encoder(ts_data)
         print("text embeddings before processing: ======================================================")
-        print(text_data)
         print(len(text_data))
         print(text_data[0]['input_ids'].shape)
         text_embeddings = []
