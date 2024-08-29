@@ -42,9 +42,9 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
         train_loss += loss.item()
 
         #get the model to predict based on the data it has just seen
-        #preds = model.predict(ts_data=ts_data, input_ids=text_data, attention_mask=attention_mask)
-        #all_preds.extend(preds)
-        #all_labels.extend(labels.cpu().numpy())
+        preds = model.predict(ts_data=ts_data, text_data=text_data)
+        all_preds.extend(preds)
+        all_labels.extend(labels.cpu().numpy())
         i += 1
     
     all_preds = np.array(all_preds) #convert to numpy array
@@ -67,24 +67,25 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
     all_labels = []
 
     with torch.no_grad():
-        for ts_data, text_data, attention_mask, labels in tqdm(val_loader, leave=True, position=1):
+        for ts_data, text_data, labels in tqdm(val_loader, leave=True, position=1):
             ts_data = {
                 "past_time_values": torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0).to(device),
                 "past_observed_mask": torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device),
                 "past_time_features": torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0).to(device)
             }
-            text_data = text_data.to(device)
-            attention_mask = attention_mask.to(device)
+            text_data['input_ids'] = text_data['input_ids'].to(device)
+            text_data['attention_mask'] = text_data['attention_mask'].to(device)
+            
             labels = labels.to(device)
 
-            ts_embeddings, text_embeddings = model(ts_data, text_data, attention_mask)
+            ts_embeddings, text_embeddings = model(ts_data, text_data)
 
 
             loss = criterion(ts_embeddings, text_embeddings, labels)
 
             val_loss += loss.item()
 
-            preds = model.predict(ts_data=ts_data, input_ids=text_data, attention_mask=attention_mask)#TODO same as train loop, check it works with the batch of embeddings
+            preds = model.predict(ts_data=ts_data, text_data=text_data)#TODO same as train loop, check it works with the batch of embeddings
             all_preds.extend(preds)
             all_labels.extend(labels.cpu().numpy())
 
