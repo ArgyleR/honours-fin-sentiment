@@ -167,8 +167,8 @@ class ContrastiveLearningModel(nn.Module):
 
         return projected_ts_embeddings, projected_text_embeddings
 
-    def predict(self, ts_data, input_ids, attention_mask):
-        ts_embeddings, text_embeddings = self.forward(ts_data, input_ids, attention_mask)
+    def predict(self, ts_data, text_data):
+        ts_embeddings, text_embeddings = self.forward(ts_data, text_data)
         ts_embeddings = ts_embeddings.cpu().detach().numpy()
         text_embeddings = text_embeddings.cpu().detach().numpy()
         return cosine_similarity_custom(ts_embeddings, text_embeddings)
