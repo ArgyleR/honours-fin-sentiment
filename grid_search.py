@@ -193,7 +193,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
             start_loop = datetime.datetime.now()
             for epoch in range(num_epochs):
-                train_loss, train_accuracy, train_f1, train_conf_matrix = mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion)
+                train_loss, train_accuracy, train_f1, train_conf_matrix = 1, 2, 3, []#mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion)
                 val_loss, val_accuracy, val_f1, val_conf_matrix = mh.validate(model=model, val_loader=valid_loader, optimizer=optimizer, device=device, criterion=criterion)
             
                 data = update_data_train_metrics(data, train_loss, train_accuracy, train_f1, train_conf_matrix,

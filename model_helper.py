@@ -77,7 +77,7 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
             text_data['attention_mask'] = text_data['attention_mask'].to(device)
             
             labels = labels.to(device)
-
+            print(ts_data)
             ts_embeddings, text_embeddings = model(ts_data, text_data)
 
 
