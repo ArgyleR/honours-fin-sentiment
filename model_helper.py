@@ -27,9 +27,9 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
             "past_observed_mask": torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device),
             "past_time_features": torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0).to(device)
         }
-        for text in text_data:
-            text['input_ids'] = text['input_ids'].to(device)
-            text['attention_mask'] = text['attention_mask'].to(device)
+        text_data['input_ids'] = text_data['input_ids'].to(device)
+        text_data['attention_mask'] = text_data['attention_mask'].to(device)
+        
         labels = labels.to(device)
 
         optimizer.zero_grad()
