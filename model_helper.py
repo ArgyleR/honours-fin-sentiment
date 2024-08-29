@@ -22,6 +22,9 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
     i = 0
 
     for ts_data, text_data, labels in tqdm(train_loader, leave=True, position=1):
+        if labels.shape[0] == 1:
+            continue
+
         ts_data = {
             "past_time_values": torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0).to(device),
             "past_observed_mask": torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device),
@@ -68,6 +71,7 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
 
     with torch.no_grad():
         for ts_data, text_data, labels in tqdm(val_loader, leave=True, position=1):
+
             ts_data = {
                 "past_time_values": torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0).to(device),
                 "past_observed_mask": torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device),
@@ -75,9 +79,11 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
             }
             text_data['input_ids'] = text_data['input_ids'].to(device)
             text_data['attention_mask'] = text_data['attention_mask'].to(device)
+
+
             
             labels = labels.to(device)
-            print(ts_data)
+            
             ts_embeddings, text_embeddings = model(ts_data, text_data)
 
 
