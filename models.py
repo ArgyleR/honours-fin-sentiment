@@ -81,7 +81,7 @@ class TSTransformerBaseEncoder(nn.Module):
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
         print(encoder_last_hidden_state.shape)
         #return the mean of the final state? Not sure if this or just the final state
-        return encoder_last_hidden_state[-1]#torch.mean(encoder_last_hidden_state, dim=1)
+        return encoder_last_hidden_state#torch.mean(encoder_last_hidden_state, dim=1)
          
 class LSTMEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim=64, num_layers=2):
