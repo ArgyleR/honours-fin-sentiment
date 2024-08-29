@@ -147,7 +147,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
         
         df_len = len(df)
         
-        pair_count = df['label'].value_counts()
+        pair_count = list(df['label'].value_counts().items())
         
         model_permutations = list(itertools.product(*model_param_grid.values()))
         model_combinations = [dict(zip(model_param_grid.keys(), perm)) for perm in model_permutations]
