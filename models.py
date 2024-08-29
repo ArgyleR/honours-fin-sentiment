@@ -138,34 +138,58 @@ class ContrastiveLearningModel(nn.Module):
 
     def forward(self, ts_data, text_data):
         ts_embeddings = self.ts_encoder(ts_data)
-        print("text embeddings before processing: ======================================================")
-        print(len(text_data))
-        print(text_data['input_ids'].shape)
-        print(text_data)
-        text_embeddings = []
-        for text_row in text_data:
-            text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
+        #print("text embeddings before processing: ======================================================")
+        #print(len(text_data))
+        #print(text_data['input_ids'].shape)
+        #print(text_data)
+        #text_embeddings = []
+        #for text_row in text_data:
+        #    text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
+#
+        #print("text embeddings after tokenizing: =======================================================")
+        #print(len(text_embeddings))#
+        #print(text_embeddings.shape)#
+#
+        #text_embeddings = torch.stack(text_embeddings)  # Convert list to a tensor
+#
+        #print("text embeddings after stacking: ======================================================")
+        #print(text_embeddings.shape) 
+        #
+        #if self.text_aggregation == 'mean':
+        #    final_text_embeddings = torch.mean(text_embeddings, dim=1)
+        #elif self.text_aggregation == 'max':
+        #    final_text_embeddings = torch.max(text_embeddings, dim=1)
+        #else:
+        #    raise NotImplementedError("text embedding aggregation is only max or mean currently")
+    #
+        #print("text embeddings after aggregation: ======================================================") 
+        #print(final_text_embeddings.shape)
+        input_ids = text_data['input_ids']
+        attention_mask = text_data['attention_mask']
+        batch_size, number_of_texts, embedding_dim = input_ids.size()
+        print(input_ids.shape)
+        # Initialize a list to store the aggregated embeddings for each sample in the batch
+        final_text_embeddings = []
 
-        print("text embeddings after tokenizing: =======================================================")
-        print(len(text_embeddings))#
-        print(text_embeddings.shape)#
+        for i in range(batch_size):
+            # Pass the input through the text model to get embeddings for each text
+            text_embeddings = self.text_model(input_ids[i], attention_mask=attention_mask[i]).last_hidden_state
+            # text_embeddings shape: [number_of_texts, embedding_dim]
 
-        text_embeddings = torch.stack(text_embeddings)  # Convert list to a tensor
+            # Aggregate the embeddings based on the specified method
+            if self.text_aggregation == 'mean':
+                aggregated_embeddings = torch.mean(text_embeddings, dim=0)  # Shape: [embedding_dim]
+            elif self.text_aggregation == 'max':
+                aggregated_embeddings, _ = torch.max(text_embeddings, dim=0)  # Shape: [embedding_dim]
+            else:
+                raise NotImplementedError("Text embedding aggregation is only 'max' or 'mean' currently.")
 
-        print("text embeddings after stacking: ======================================================")
-        print(text_embeddings.shape) 
-        
-        if self.text_aggregation == 'mean':
-            final_text_embeddings = torch.mean(text_embeddings, dim=1)
-        elif self.text_aggregation == 'max':
-            final_text_embeddings = torch.max(text_embeddings, dim=1)
-        else:
-            raise NotImplementedError("text embedding aggregation is only max or mean currently")
-    
-        print("text embeddings after aggregation: ======================================================") 
+            # Append the aggregated embeddings to the list
+            final_text_embeddings.append(aggregated_embeddings)
+
+        # Stack the list of aggregated embeddings into a tensor
+        final_text_embeddings = torch.stack(final_text_embeddings)
         print(final_text_embeddings.shape)
-        
-
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
         projected_text_embeddings = self.text_projection_head(final_text_embeddings)
 
