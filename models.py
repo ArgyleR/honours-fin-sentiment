@@ -140,14 +140,15 @@ class ContrastiveLearningModel(nn.Module):
         ts_embeddings = self.ts_encoder(ts_data)
         print("text embeddings before processing: ======================================================")
         print(len(text_data))
-        print(text_data[0]['input_ids'].shape)
+        print(text_data['input_ids'].shape)
+        print(text_data)
         text_embeddings = []
         for text_row in text_data:
             text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
 
         print("text embeddings after tokenizing: =======================================================")
         print(len(text_embeddings))#
-        print(text_embeddings[0].shape)#
+        print(text_embeddings.shape)#
 
         text_embeddings = torch.stack(text_embeddings)  # Convert list to a tensor
 
