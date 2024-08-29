@@ -100,8 +100,8 @@ def update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_tim
     data['timing']['start_loop'] = start_loop.isoformat()
     data['timing']['end_loop'] = end_loop.isoformat()
     data['timing']['end_test'] = end_test.isoformat()
-    data['timing']['loop_time'] = loop_time.isoformat()
-    data['timing']['test_time'] = test_time.isoformat()
+    data['timing']['loop_time'] = loop_time
+    data['timing']['test_time'] = test_time
 
     return data
             
