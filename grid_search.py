@@ -81,6 +81,7 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
                                     val_loss, val_acc, val_f1, val_conf_matrix,
                                     test_loss, test_acc, test_f1, test_conf_matrix):
+    print(data)
     data["train_metrics"]["loss"] = data["train_metrics"]["loss"].append(train_loss)
     data["train_metrics"]["accuracy"] = data["train_metrics"]["accuracy"].append(train_acc)
     data["train_metrics"]["f1"] = data["train_metrics"]["f1"].append(train_f1)
@@ -239,7 +240,7 @@ def run(df=None):
             "learning_rate": [0.00001, 0.0001],                                                                             #GRIDSEARCH     #DONE
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
-            "num_epochs": [10],                                                                                             #GRIDSEARCH     #DONE
+            "num_epochs": [1],                                                                                             #GRIDSEARCH     #DONE
             "batch_size": [6],                                                                                             #DATAhelper     #DONE
             "num_workers": [6],  
         }
