@@ -72,9 +72,20 @@ class TSTransformerBaseEncoder(nn.Module):
         past_observed_mask = ts_data["past_observed_mask"].squeeze()
         past_time_features = ts_data["past_time_features"].squeeze()
 
-        past_time_values = past_time_values.view(1, *past_time_values.shape) if past_time_values.dim() < 3 else past_time_values
-        past_observed_mask = past_observed_mask.view(1, *past_observed_mask.shape) if past_observed_mask.dim() < 3 else past_observed_mask
-        past_time_features = past_time_features.view(1, *past_time_features.shape) if past_time_features.dim() < 3 else past_time_features
+        if past_time_values.dim() == 1:
+            past_time_values = past_time_values.unsqueeze(0).unsqueeze(0)
+        elif past_time_values.dim() == 2:
+            past_time_values = past_time_values.unsqueeze(0)
+        
+        if past_observed_mask.dim() == 1:
+            past_observed_mask = past_observed_mask.unsqueeze(0).unsqueeze(0)
+        elif past_observed_mask.dim() == 2:
+            past_observed_mask = past_observed_mask.unsqueeze(0)
+        
+        if past_time_features.dim() == 2:
+            past_time_features = past_time_features.unsqueeze(0).unsqueeze(0)
+        elif past_time_features.dim() == 3:
+            past_time_features = past_time_features.unsqueeze(0)
 
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
