@@ -144,21 +144,24 @@ class ContrastiveLearningModel(nn.Module):
         print(len(ts_data))
         print(ts_data['past_time_values'].shape)
         ts_embeddings = self.ts_encoder(ts_data)
-        print("text embeddings before processing: ======================================================")
-        print(len(text_data))
-        print(text_data[0]['input_ids'].shape)
+        print("ts embeddings after encoding: ======================================================")
+        print(ts_embeddings)
+        print(ts_embeddings.shape)
+        #print("text embeddings before processing: ======================================================")
+        #print(len(text_data))
+        #print(text_data[0]['input_ids'].shape)
         text_embeddings = []
         for text_row in text_data:
             text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
 
-        print("text embeddings after tokenizing: =======================================================")
-        print(len(text_embeddings))
-        print(text_embeddings[0].shape)
+        #print("text embeddings after to#kenizing: =======================================================")
+        #print(len(text_embeddings))#
+        #print(text_embeddings[0].shape)#
 
         text_embeddings = torch.stack(text_embeddings)  # Convert list to a tensor
 
-        print("text embeddings after stacking: ======================================================")
-        print(text_embeddings.shape) 
+        #print("text embeddings after stacking: ======================================================")
+        #print(text_embeddings.shape) 
         
         if self.text_aggregation == 'mean':
             final_text_embeddings = torch.mean(text_embeddings, dim=1)
@@ -167,8 +170,8 @@ class ContrastiveLearningModel(nn.Module):
         else:
             raise NotImplementedError("text embedding aggregation is only max or mean currently")
     
-        print("text embeddings after aggregation: ======================================================") 
-        print(final_text_embeddings.shape)
+        #print("text embeddings after aggregation: ======================================================") 
+        #print(final_text_embeddings.shape)
         
 
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
@@ -176,9 +179,9 @@ class ContrastiveLearningModel(nn.Module):
 
         print("Projected dims: ========================================================================")
         print(projected_ts_embeddings)
-        print(projected_text_embeddings)
+        #print(projected_text_embeddings)
         print(projected_ts_embeddings.shape)
-        print(projected_text_embeddings.shape)
+        #print(projected_text_embeddings.shape)
 
         return projected_ts_embeddings, projected_text_embeddings
 
