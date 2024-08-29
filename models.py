@@ -136,9 +136,13 @@ class ContrastiveLearningModel(nn.Module):
         return self.text_encoder
 
     def forward(self, ts_data, text_data):
+        print("ts embeddings before processing: ======================================================")
+        print(len(ts_data))
+        print(ts_data[0].shape)
         ts_embeddings = self.ts_encoder(ts_data)
         print("text embeddings before processing: ======================================================")
         print(text_data)
+        print(len(text_data))
         print(text_data[0]['input_ids'].shape)
         text_embeddings = []
         for text_row in text_data:
