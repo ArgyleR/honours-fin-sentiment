@@ -79,8 +79,13 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
     return data
 
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
-                                    val_loss, val_acc, val_f1, val_conf_matrix,
-                                    test_loss, test_acc, test_f1, test_conf_matrix):
+                                    val_loss, val_acc, val_f1, val_conf_matrix):
+    print(train_loss)
+    print(val_acc)
+    print(test_f1)
+    print(train_loss)
+    print(val_acc)
+    print(test_f1)
     print(train_loss)
     print(val_acc)
     print(test_f1)
@@ -92,12 +97,21 @@ def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_
     data["val_metrics"]["accuracy"] = data["val_metrics"]["accuracy"].append(val_acc)
     data["val_metrics"]["f1"] = data["val_metrics"]["f1"].append(val_f1)
     data["val_metrics"]["conf_matrix"] = data["val_metrics"]["conf_matrix"].append(val_conf_matrix)
+    
+    return data
+
+def update_data_test_metrics(data, test_loss, test_acc, test_f1, test_conf_matrix):
+    print(test_loss)
+    print(test_acc)
+    print(test_f1)
+    print(test_conf_matrix)
     data["test_metrics"]["loss"] = test_loss
     data["test_metrics"]["accuracy"] = test_acc
     data["test_metrics"]["f1"] = test_f1
     data["test_metrics"]["conf_matrix"] = test_conf_matrix
 
     return data
+
 
 def update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_time):
     data['timing']['start_loop'] = start_loop.isoformat()
@@ -200,12 +214,13 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 val_loss, val_accuracy, val_f1, val_conf_matrix = mh.validate(model=model, val_loader=valid_loader, optimizer=optimizer, device=device, criterion=criterion)
             
                 data = update_data_train_metrics(data, train_loss, train_accuracy, train_f1, train_conf_matrix,
-                                    val_loss, val_accuracy, val_f1, val_conf_matrix,
-                                    test_loss, test_accuracy, test_f1, test_conf_matrix)
+                                    val_loss, val_accuracy, val_f1, val_conf_matrix)
             
             end_loop = datetime.datetime.now()
             
-            test_loss, test_accuracy, test_f1, test_conf_matrix = mh.validate(model=model, val_loader=test_loader, optimizer=optimizer, device=device, criterion=criterion)      
+            test_loss, test_accuracy, test_f1, test_conf_matrix = mh.validate(model=model, val_loader=test_loader, optimizer=optimizer, device=device, criterion=criterion)  
+            data = update_data_test_metrics(data, test_loss, test_accuracy, test_f1, test_conf_matrix)
+
             end_test = datetime.datetime.now()
             loop_time = (start_loop - end_loop).total_seconds()
             test_time= (end_loop - end_test).total_seconds()

@@ -61,7 +61,6 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
     conf_matrix = confusion_matrix(all_labels, all_preds)
 
     return train_loss, accuracy, f1, conf_matrix
-    #return random.randint(0, 10), random.randint(0, 10), random.randint(0, 10), [[1, 2], [2, 3]]
 
 def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimizer, device: str, criterion):
     model.eval()
@@ -107,7 +106,6 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
     conf_matrix = confusion_matrix(all_labels, all_preds)
     return val_loss, accuracy, f1, conf_matrix
 
-    #return random.randint(0, 10), random.randint(0, 10), random.randint(0, 10), [[1, 2], [2, 3]]
 
 def get_ts_encoder(ts_encoder_config: dict={"name": "LSTM"}, ts_window: int=5, projection_dim: int=128):
     if ts_encoder_config["name"] == "LSTM":
