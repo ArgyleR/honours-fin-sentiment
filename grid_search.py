@@ -80,6 +80,15 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
 
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
                                     val_loss, val_acc, val_f1, val_conf_matrix):
+    try:
+        train_conf_matrix = train_conf_matrix.tolist()
+    except Exception:
+        pass
+    try:
+        val_conf_matrix = val_conf_matrix.tolist()
+    except Exception:
+        pass
+    
     data["train_metrics"]["loss"].append(train_loss)
     data["train_metrics"]["accuracy"].append(train_acc)
     data["train_metrics"]["f1"].append(train_f1)
@@ -92,10 +101,14 @@ def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_
     return data
 
 def update_data_test_metrics(data, test_loss, test_acc, test_f1, test_conf_matrix):
+    try:
+        test_conf_matrix = test_conf_matrix.tolist()
+    except Exception:
+        pass
     data["test_metrics"]["loss"] = test_loss
     data["test_metrics"]["accuracy"] = test_acc
     data["test_metrics"]["f1"] = test_f1
-    data["test_metrics"]["conf_matrix"] = test_conf_matrix.tolist()
+    data["test_metrics"]["conf_matrix"] = test_conf_matrix
 
     return data
 
