@@ -76,7 +76,7 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
             "test_time": None
         }
     }
-    data
+    return data
 
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
                                     val_loss, val_acc, val_f1, val_conf_matrix,
