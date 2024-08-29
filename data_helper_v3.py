@@ -68,12 +68,19 @@ class CustomDataset(Dataset):
         #loop over all text and tokenize
         list_texts = self.texts[idx]
         text_data = [self.text_tokenizer(text, return_tensors="pt", truncation=True, max_length=self.max_length, padding='max_length') for text in list_texts]
-        text_data = [{
-            'input_ids': item['input_ids'].squeeze(0),  # Removes the batch dimension
-            'attention_mask': item['attention_mask'].squeeze(0)  # Removes the batch dimension
-        } 
-        for item in text_data
-        ]
+        #text_data = [{
+        #    'input_ids': item['input_ids'].squeeze(0),  # Removes the batch dimension
+        #    'attention_mask': item['attention_mask'].squeeze(0)  # Removes the batch dimension
+        #} 
+        #for item in text_data
+        #]
+
+        input_ids = torch.stack([item['input_ids'].squeeze(0) for item in text_data])  # Shape: [number_of_texts, length_of_text]
+        attention_mask = torch.stack([item['attention_mask'].squeeze(0) for item in text_data])  # Shape: [number_of_texts, length_of_text]
+        text_data = {
+            'input_ids': input_ids,
+            'attention_mask': attention_mask
+        }
 
         label = torch.tensor(self.labels[idx], dtype=torch.long)
         

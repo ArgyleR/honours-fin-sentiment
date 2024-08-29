@@ -145,7 +145,7 @@ class ContrastiveLearningModel(nn.Module):
         for text_row in text_data:
             text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
 
-        print("text embeddings after to#kenizing: =======================================================")
+        print("text embeddings after tokenizing: =======================================================")
         print(len(text_embeddings))#
         print(text_embeddings[0].shape)#
 
