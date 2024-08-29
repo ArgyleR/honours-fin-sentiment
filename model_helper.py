@@ -22,6 +22,8 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
     i = 0
 
     for ts_data, text_data, labels in tqdm(train_loader, leave=True, position=1):
+        print(labels)
+        print(labels.shape)
         if labels.shape[0] == 1:
             continue
 
