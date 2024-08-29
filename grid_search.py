@@ -80,32 +80,18 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
 
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
                                     val_loss, val_acc, val_f1, val_conf_matrix):
-    print(train_loss)
-    print(train_acc)
-    print(train_f1)
-    print(train_loss)
-    print(train_conf_matrix)
-    print(val_loss)
-    print(train_loss)
-    print(val_acc)
-    print(val_f1)
-    print(val_conf_matrix)
-    data["train_metrics"]["loss"] = data["train_metrics"]["loss"].append(train_loss)
-    data["train_metrics"]["accuracy"] = data["train_metrics"]["accuracy"].append(train_acc)
-    data["train_metrics"]["f1"] = data["train_metrics"]["f1"].append(train_f1)
-    data["train_metrics"]["conf_matrix"] = data["train_metrics"]["conf_matrix"].append(train_conf_matrix)
-    data["val_metrics"]["loss"] = data["val_metrics"]["loss"].append(val_loss)
-    data["val_metrics"]["accuracy"] = data["val_metrics"]["accuracy"].append(val_acc)
-    data["val_metrics"]["f1"] = data["val_metrics"]["f1"].append(val_f1)
-    data["val_metrics"]["conf_matrix"] = data["val_metrics"]["conf_matrix"].append(val_conf_matrix)
+    data["train_metrics"]["loss"].append(train_loss)
+    data["train_metrics"]["accuracy"].append(train_acc)
+    data["train_metrics"]["f1"].append(train_f1)
+    data["train_metrics"]["conf_matrix"].append(train_conf_matrix)
+    data["val_metrics"]["loss"].append(val_loss)
+    data["val_metrics"]["accuracy"].append(val_acc)
+    data["val_metrics"]["f1"].append(val_f1)
+    data["val_metrics"]["conf_matrix"].append(val_conf_matrix)
     
     return data
 
 def update_data_test_metrics(data, test_loss, test_acc, test_f1, test_conf_matrix):
-    print(test_loss)
-    print(test_acc)
-    print(test_f1)
-    print(test_conf_matrix)
     data["test_metrics"]["loss"] = test_loss
     data["test_metrics"]["accuracy"] = test_acc
     data["test_metrics"]["f1"] = test_f1
