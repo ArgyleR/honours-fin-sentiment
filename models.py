@@ -74,7 +74,7 @@ class TSTransformerBaseEncoder(nn.Module):
 
         past_time_values = past_time_values.view(1, *past_time_values.shape) if past_time_values.dim() < 3 else past_time_values
         past_observed_mask = past_observed_mask.view(1, *past_observed_mask.shape) if past_observed_mask.dim() < 3 else past_observed_mask
-        past_time_features = past_time_features.view(1, *past_time_features.shape) if past_time_features.dim() < 4 else past_time_features
+        past_time_features = past_time_features.view(1, *past_time_features.shape) if past_time_features.dim() < 3 else past_time_features
 
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
