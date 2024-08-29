@@ -137,13 +137,20 @@ class ContrastiveLearningModel(nn.Module):
 
     def forward(self, ts_data, text_data):
         ts_embeddings = self.ts_encoder(ts_data)
+        print("text embeddings before processing: ======================================================")
         print(text_data)
+        print(text_data[0]['input_ids'].shape)
         text_embeddings = []
         for text_row in text_data:
             text_embeddings.append(self.text_encoder(text_row['input_ids'], text_row['attention_mask']))
-        print(text_embeddings)
+
+        print("text embeddings after tokenizing: =======================================================")
         print(len(text_embeddings))
+        print(text_embeddings[0].shape)
+
         text_embeddings = torch.stack(text_embeddings)  # Convert list to a tensor
+
+        print("text embeddings after stacking: ======================================================")
         print(text_embeddings.shape) 
         
         if self.text_aggregation == 'mean':
@@ -152,9 +159,19 @@ class ContrastiveLearningModel(nn.Module):
             final_text_embeddings = torch.max(text_embeddings, dim=1)
         else:
             raise NotImplementedError("text embedding aggregation is only max or mean currently")
+    
+        print("text embeddings after aggregation: ======================================================") 
+        print(final_text_embeddings.shape)
+        
 
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
         projected_text_embeddings = self.text_projection_head(final_text_embeddings)
+
+        print("Projected dims: ========================================================================")
+        print(projected_ts_embeddings)
+        print(projected_text_embeddings)
+        print(projected_ts_embeddings.shape)
+        print(projected_text_embeddings.shape)
 
         return projected_ts_embeddings, projected_text_embeddings
 
