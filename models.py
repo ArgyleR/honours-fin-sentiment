@@ -71,7 +71,7 @@ class TSTransformerBaseEncoder(nn.Module):
         past_time_values = ts_data["past_time_values"].squeeze()
         past_observed_mask = ts_data["past_observed_mask"].squeeze()
         past_time_features = ts_data["past_time_features"].squeeze()
-
+        print("in forward for TSTransformerModel")
         print(past_time_values.shape)
 
         print(past_time_values.unsqueeze(-1).shape)
@@ -79,7 +79,7 @@ class TSTransformerBaseEncoder(nn.Module):
 
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
-        
+        print(encoder_last_hidden_state.shape)
         #return the mean of the final state? Not sure if this or just the final state
         return encoder_last_hidden_state[-1]#torch.mean(encoder_last_hidden_state, dim=1)
          
