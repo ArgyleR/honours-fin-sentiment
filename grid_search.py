@@ -93,11 +93,11 @@ def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_
     data["train_metrics"]["loss"] = data["train_metrics"]["loss"].append(train_loss)
     data["train_metrics"]["accuracy"] = data["train_metrics"]["accuracy"].append(train_acc)
     data["train_metrics"]["f1"] = data["train_metrics"]["f1"].append(train_f1)
-    data["train_metrics"]["conf_matrix"] = data["train_metrics"]["conf_matrix"].append(train_conf_matrix.tolist())
+    data["train_metrics"]["conf_matrix"] = data["train_metrics"]["conf_matrix"].append(train_conf_matrix)
     data["val_metrics"]["loss"] = data["val_metrics"]["loss"].append(val_loss)
     data["val_metrics"]["accuracy"] = data["val_metrics"]["accuracy"].append(val_acc)
     data["val_metrics"]["f1"] = data["val_metrics"]["f1"].append(val_f1)
-    data["val_metrics"]["conf_matrix"] = data["val_metrics"]["conf_matrix"].append(val_conf_matrix.tolist())
+    data["val_metrics"]["conf_matrix"] = data["val_metrics"]["conf_matrix"].append(val_conf_matrix)
     
     return data
 
