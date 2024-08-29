@@ -80,8 +80,10 @@ class TSTransformerBaseEncoder(nn.Module):
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
         print(encoder_last_hidden_state.shape)
+        #We want to pool to get the mean of the hidden states
+        pooled_output = torch.mean(encoder_last_hidden_state, dim=1)
         #return the mean of the final state? Not sure if this or just the final state
-        return encoder_last_hidden_state#torch.mean(encoder_last_hidden_state, dim=1)
+        return pooled_output#torch.mean(encoder_last_hidden_state, dim=1)
          
 class LSTMEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim=64, num_layers=2):
