@@ -81,7 +81,6 @@ def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pa
 def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_matrix,
                                     val_loss, val_acc, val_f1, val_conf_matrix,
                                     test_loss, test_acc, test_f1, test_conf_matrix):
-    print(data)
     data["train_metrics"]["loss"] = data["train_metrics"]["loss"].append(train_loss)
     data["train_metrics"]["accuracy"] = data["train_metrics"]["accuracy"].append(train_acc)
     data["train_metrics"]["f1"] = data["train_metrics"]["f1"].append(train_f1)
@@ -98,11 +97,11 @@ def update_data_train_metrics(data, train_loss, train_acc, train_f1, train_conf_
     return data
 
 def update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_time):
-    data['timing']['start_loop'] = start_loop
-    data['timing']['end_loop'] = end_loop
-    data['timing']['end_test'] = end_test
-    data['timing']['loop_time'] = loop_time
-    data['timing']['test_time'] = test_time
+    data['timing']['start_loop'] = start_loop.isoformat()
+    data['timing']['end_loop'] = end_loop.isoformat()
+    data['timing']['end_test'] = end_test.isoformat()
+    data['timing']['loop_time'] = loop_time.isoformat()
+    data['timing']['test_time'] = test_time.isoformat()
 
     return data
             
