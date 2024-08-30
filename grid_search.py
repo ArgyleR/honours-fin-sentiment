@@ -269,8 +269,8 @@ def run(df=None):
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
             "name": "stock_net",
-            "text_path": "./data/stocknet-dataset/tweet/organised_tweet.csv",
-            "ts_path": "./data/stocknet-dataset/price/raw/",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
             "ts_date_col": 'Date',
             'text_date_col': 'created_at',
             'text_col': 'text'
