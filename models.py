@@ -44,7 +44,7 @@ class TSTransformerBaseEncoder(nn.Module):
                 feature_size=len(config["lags_sequence"]) + config["num_features"] + 2
             )
             self.model = TimeSeriesTransformerModel(config)
-        elif config["name"] == "AutoformerModel":
+        elif config["name"] == "AutoFormerModel":
             config = AutoformerConfig(
                 prediction_length=config["prediction_length"],  
                 context_length=config["context_length"],
