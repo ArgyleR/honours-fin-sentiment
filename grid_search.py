@@ -252,12 +252,12 @@ def run(df=None):
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormer'}, {"name": "InformerModel"}],        #MODELhelper
             "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base'}],                                         #MODELhelper
             "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
-            "text_aggregation_method": ["mean", "max", "string_append"],                                                    #MODELhelper
+            "text_aggregation_method": ["mean", "max"],                                                    #MODELhelper
             "projection_dim": [400, 500, 600, 700],                                                                         #MODELhelper
             "learning_rate": [0.00001, 0.0001],                                                                             #GRIDSEARCH     #DONE
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
-            "num_epochs": [1],                                                                                             #GRIDSEARCH     #DONE
+            "num_epochs": [5],                                                                                             #GRIDSEARCH     #DONE
             "batch_size": [6],                                                                                             #DATAhelper     #DONE
             "num_workers": [6],  
         }
