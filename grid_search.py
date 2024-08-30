@@ -275,6 +275,13 @@ def run(df=None):
             "ts_date_col": 'Date',
             'text_date_col': 'date',
             'text_col': 'text'
+        },  {
+            "name": "stock_net",
+            "text_path": "./data/stocknet-dataset/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet-dataset/price/raw/",
+            "ts_date_col": 'Date',
+            'text_date_col': 'created_at',
+            'text_col': 'text'
         }],                                                            #DATAhelper
         "negatives_creation": [("naive", 31)],#, ("naive", 60)],                          #DATAhelper
         "random_state": [42],#, 43, 44],
