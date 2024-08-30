@@ -249,15 +249,15 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": 'AutoFormer'}, {"name": "InformerModel"}],        #MODELhelper
+            "ts_encoder": [{"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
             "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base'}],                                         #MODELhelper
             "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
             "text_aggregation_method": ["mean", "max"],                                                    #MODELhelper
-            "projection_dim": [400, 500, 600, 700],                                                                         #MODELhelper
-            "learning_rate": [0.00001, 0.0001],                                                                             #GRIDSEARCH     #DONE
+            "projection_dim": [400],#, 500, 600, 700],                                                                         #MODELhelper
+            "learning_rate": [0.00001],#, 0.0001],                                                                             #GRIDSEARCH     #DONE
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
-            "num_epochs": [5],                                                                                             #GRIDSEARCH     #DONE
+            "num_epochs": [1],                                                                                             #GRIDSEARCH     #DONE
             "batch_size": [6],                                                                                             #DATAhelper     #DONE
             "num_workers": [6],  
         }
@@ -265,7 +265,7 @@ def run(df=None):
     dataset_param_grid = {
         "text_selection_method": ["TFIDF"],                                                                             #DATAhelper
         "ts_window": [5],                                                                         #DATAhelper
-        "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
+        "ts_overlap": ['start'],#, 'middle', 'end'],                                                                    #DATAhelper
         "text_window": [3],                                                                 #DATAhelper
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
@@ -276,8 +276,8 @@ def run(df=None):
             'text_date_col': 'date',
             'text_col': 'text'
         }],                                                            #DATAhelper
-        "negatives_creation": [("naive", 31), ("naive", 60)],                          #DATAhelper
-        "random_state": [42, 43, 44],
+        "negatives_creation": [("naive", 31)],#, ("naive", 60)],                          #DATAhelper
+        "random_state": [42],#, 43, 44],
     }
 
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_temp.json', checkpoint_dir='checkpoint_temp/', df=df)
