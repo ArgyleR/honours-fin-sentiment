@@ -249,7 +249,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": "InformerModel"}],        #MODELhelper
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
             "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],                                         #MODELhelper
             "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
             "text_aggregation_method": ["mean", "max"],                                                    #MODELhelper
@@ -262,20 +262,12 @@ def run(df=None):
             "num_workers": [6],  
         }
 
-    dataset_param_grid = {
-        "text_selection_method": ["TFIDF"],                                                                             #DATAhelper
+    dataset_param_grid = {                                                                            #DATAhelper
         "ts_window": [5],                                                                         #DATAhelper
-        "ts_overlap": ['start'],#, 'middle', 'end'],                                                                    #DATAhelper
-        "text_window": [3],                                                                 #DATAhelper
+        "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
+        "text_window": [1, 2, 3],                                                                 #DATAhelper
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
-            "name": "stock_emotion",
-            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
-            "ts_path": "./data/stock_emotions/price/",
-            "ts_date_col": 'Date',
-            'text_date_col': 'date',
-            'text_col': 'text'
-        },  {
             "name": "stock_net",
             "text_path": "./data/stocknet-dataset/tweet/organised_tweet.csv",
             "ts_path": "./data/stocknet-dataset/price/raw/",
@@ -292,3 +284,12 @@ def run(df=None):
 run()
 #{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, 
 #, ("diff_distribution", )
+
+#{
+#            "name": "stock_emotion",
+#            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+#            "ts_path": "./data/stock_emotions/price/",
+#            "ts_date_col": 'Date',
+#            'text_date_col': 'date',
+#            'text_col': 'text'
+#        },  
