@@ -249,7 +249,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormer'}, {"name": "InformerModel"}],        #MODELhelper
+            "ts_encoder": [{"name": 'AutoFormer'}, {"name": "InformerModel"}],        #MODELhelper
             "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base'}],                                         #MODELhelper
             "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
             "text_aggregation_method": ["mean", "max"],                                                    #MODELhelper
@@ -283,4 +283,5 @@ def run(df=None):
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_temp.json', checkpoint_dir='checkpoint_temp/', df=df)
 
 run()
+#{"name": 'TimeSeriesTransformerModel'}, 
 #, ("diff_distribution", )
