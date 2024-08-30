@@ -276,10 +276,11 @@ def run(df=None):
             'text_date_col': 'date',
             'text_col': 'text'
         }],                                                            #DATAhelper
-        "negatives_creation": [("naive", 31), ("naive", 60), ("diff_distribution", )],                          #DATAhelper
+        "negatives_creation": [("naive", 31), ("naive", 60)],                          #DATAhelper
         "random_state": [42, 43, 44],
     }
 
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_temp.json', checkpoint_dir='checkpoint_temp/', df=df)
 
 run()
+#, ("diff_distribution", )
