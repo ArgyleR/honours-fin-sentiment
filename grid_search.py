@@ -267,10 +267,10 @@ def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],# {"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
-            "text_encoder": [{"name": 'bert-base-uncased'} {"name": 'bert-base-cased'}],                                         #MODELhelper
+            "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],                                         #MODELhelper
             "text_encoder_pretrained": [True],                                                                       #MODELhelper
             "text_aggregation_method": ["mean", 'max'],                                                    #MODELhelper
-            "projection_dim": [500],                                                                         #MODELhelper
+            "projection_dim": [500, 600],                                                                         #MODELhelper
             "learning_rate": [0.0001, 0.00001],                                                                             #GRIDSEARCH     #DONE
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
@@ -280,8 +280,8 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            #DATAhelper
-        "ts_window": [5, 6, 7, 10],                                                                         #DATAhelper
-        "ts_overlap": ['start'],                                                                    #DATAhelper
+        "ts_window": [10, 7, 6, 5],                                                                         #DATAhelper
+        "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
         "text_window": [1, 2, 3, 4],                                                                 #DATAhelper
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
