@@ -162,7 +162,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 negatives_creation=negatives_creation, 
                 batch_size=None, 
                 num_workers=None, 
-                loaders=False)
+                loaders=False,
+                subset_data=True)
         
         df_len = len(df)
         
@@ -177,9 +178,9 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             #====================================================
             ts_encoder                  = model_params["ts_encoder"]
             ts_encoder['ts_window']     = ts_window
-            ts_encoder['context_length']= 1
+            ts_encoder['context_length'] = 1
             ts_encoder['prediction_length']=0#always 0 as we aren't predicting anything
-            ts_encoder['lags_sequence'] = [1, 2, 3, 4]
+            ts_encoder['lags_sequence'] = [i + 1 for i in range(ts_window - 1)]
             ts_encoder['num_features']  = 3#always 3 as we pass the whole time feature set year, month, day
 
             text_encoder                = model_params["text_encoder"]

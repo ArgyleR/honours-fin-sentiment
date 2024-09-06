@@ -42,22 +42,9 @@ class CustomDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx):
-        #loop over all ts and tensorse them
-
-        #list_past_time_values = [torch.tensor(time_series, dtype=torch.float32) for time_series in self.time_series[idx]]
-        #list_past_observed_mask = [torch.ones(1, len(past_time_values)) for past_time_values in list_past_time_values]
-        #list_past_time_features = [torch.tensor([past_time_features]) for past_time_features in self.df.iloc[idx]["past_time_features"]]
-
-
-        #ts_data = {
-        #    "list_past_time_values": list_past_time_values,
-        #    "list_past_observed_mask": list_past_observed_mask,
-        #    "list_past_time_features": list_past_time_features
-        #}  
-
-        past_time_values = torch.tensor(self.time_series[idx], dtype=torch.float16)
-        past_observed_mask = torch.ones(1, len(past_time_values), dtype=torch.uint16)
-        past_time_features = torch.tensor([self.df.iloc[idx]["ts_past_features"]], dtype=torch.float16)
+        past_time_values = torch.tensor(self.time_series[idx], dtype=torch.float32)
+        past_observed_mask = torch.ones(1, len(past_time_values), dtype=torch.long)
+        past_time_features = torch.tensor([self.df.iloc[idx]["ts_past_features"]], dtype=torch.float32)
 
         ts_data = [{
             "past_time_values": past_time_values,
@@ -68,13 +55,7 @@ class CustomDataset(Dataset):
         #loop over all text and tokenize
         list_texts = self.texts[idx]
         text_data = [self.text_tokenizer(text, return_tensors="pt", truncation=True, max_length=self.max_length, padding='max_length') for text in list_texts]
-        #text_data = [{
-        #    'input_ids': item['input_ids'].squeeze(0),  # Removes the batch dimension
-        #    'attention_mask': item['attention_mask'].squeeze(0)  # Removes the batch dimension
-        #} 
-        #for item in text_data
-        #]
-
+        
         input_ids = torch.stack([item['input_ids'].squeeze(0) for item in text_data])  # Shape: [number_of_texts, length_of_text]
         attention_mask = torch.stack([item['attention_mask'].squeeze(0) for item in text_data])  # Shape: [number_of_texts, length_of_text]
         text_data = {
@@ -82,9 +63,7 @@ class CustomDataset(Dataset):
             'attention_mask': attention_mask
         }
 
-
-        label = torch.tensor(self.labels[idx], dtype=torch.uint8)
-        
+        label = torch.tensor(self.labels[idx], dtype=torch.long)
         return ts_data, text_data, label
 
 def collate_fn(batch):
