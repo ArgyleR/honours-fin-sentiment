@@ -206,22 +206,23 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
             df = dh3.correct_negative_labels(df, negative_label=negative_label)
-            print(len(df))
-            df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
-            print(len(df))
-            df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
+            #print(len(df))
+            #df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
+            #print(len(df))
+            #df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
 
             # Date to compare
-            comparison_date = pd.to_datetime('2020-02-01')
+            #comparison_date = pd.to_datetime('2020-02-01')
 
             # Filter DataFrame where 'date' column is less than comparison_date
-            df = df[df['target_date_ts_df'] < comparison_date]
-            print(len(df))
+            #df = df[df['target_date_ts_df'] < comparison_date]
+            #print(len(df))
             
             
             train_loader, valid_loader, test_loader = dh3.get_data_loaders(df=df, model=model, batch_size=batch_size, num_workers=num_workers)
 
             data = get_data_base(search_index=i, epochs=num_epochs, dataset_params=dataset_params, model_params=model_params, df_len=df_len, pair_count=pair_count)
+
 
             test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
             start_loop = datetime.datetime.now()
