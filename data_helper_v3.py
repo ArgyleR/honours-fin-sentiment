@@ -55,9 +55,9 @@ class CustomDataset(Dataset):
         #    "list_past_time_features": list_past_time_features
         #}  
 
-        past_time_values = torch.tensor(self.time_series[idx], dtype=torch.float32)
-        past_observed_mask = torch.ones(1, len(past_time_values))
-        past_time_features = torch.tensor([self.df.iloc[idx]["ts_past_features"]])
+        past_time_values = torch.tensor(self.time_series[idx], dtype=torch.float16)
+        past_observed_mask = torch.ones(1, len(past_time_values), dtype=torch.uint16)
+        past_time_features = torch.tensor([self.df.iloc[idx]["ts_past_features"]], dtype=torch.float16)
 
         ts_data = [{
             "past_time_values": past_time_values,
@@ -83,7 +83,7 @@ class CustomDataset(Dataset):
         }
 
 
-        label = torch.tensor(self.labels[idx], dtype=torch.long)
+        label = torch.tensor(self.labels[idx], dtype=torch.uint8)
         
         return ts_data, text_data, label
 
@@ -255,7 +255,7 @@ def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int,
 def naive_negative_creation():
     pass
 
-def create_pairs(text_df, ts_df, negatives_creation:str, negative_label:int=-1):
+def create_pairs_ts_old(text_df, ts_df, negatives_creation:str, negative_label:int=-1):
     #Create positive pairs where ticker matches and target_date of ts_df == end_date of text_df 
     merged_df = pd.merge(
         text_df,
@@ -317,6 +317,67 @@ def create_pairs(text_df, ts_df, negatives_creation:str, negative_label:int=-1):
     # Append the negative pairs to the original DataFrame
     return pd.concat([merged_df, negative_df], ignore_index=True)
 
+import pandas as pd
+
+def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = -1):
+    # Create positive pairs where ticker matches and target_date of ts_df == end_date of text_df 
+    # Add a unique identifier column
+    text_df['text_id'] = 'text' + (text_df.index + 1).astype(str)
+    ts_df['ts_id'] = 'ts' + (ts_df.index + 1).astype(str)
+
+    merged_df = pd.merge(
+        text_df,
+        ts_df,
+        left_on=['ticker', 'end_date'],
+        right_on=['ticker', 'target_date'],
+        suffixes=('_text_df', '_ts_df')
+    )
+    merged_df["label"] = 1  # All so far are positive pairs
+
+    # Create negative pairs
+    # Naive method where ticker isn't the same and date isn't the same
+    if negatives_creation[0] == 'naive':
+        days_away = negatives_creation[1]
+        text_df['end_date'] = pd.to_datetime(text_df['end_date'], utc=True).dt.date
+
+        # Create pairs where tickers aren't the same and end_date is x days away
+        negative_pairs = []
+        for idx, row in merged_df.iterrows():
+            ticker = row['ticker']
+            end_date = row['end_date']
+
+            # Get potential negative samples that have different tickers and are at least x days away
+            potential_negatives = text_df[
+                (text_df['ticker'] != ticker) &
+                ((text_df["end_date"] < end_date - pd.Timedelta(days=days_away)) |
+                 (text_df["end_date"] > end_date + pd.Timedelta(days=days_away)))
+            ]
+
+            if not potential_negatives.empty:
+                # Randomly select a negative sample
+                negative_sample = potential_negatives.sample(n=1).iloc[0]
+                negative_pairs.append({
+                    'text_id': negative_sample['text_id'],
+                    'ids': negative_sample['ids'],
+                    'ticker': negative_sample['ticker'],  # Using the different ticker
+                    'target_date_text_df': negative_sample['target_date'],  # Keeping the same target_date for consistency
+                    'target_date_ts_df': row['target_date_ts_df'],  # Keeping the same target_date for consistency
+                    'end_date': negative_sample["end_date"],  # Use the end_date from the negative sample
+                    'text_dates': negative_sample["text_dates"],  # Use the text_dates from the negative sample
+                    'text_series': negative_sample['text_series'],  # Use the text_series from the negative sample
+                    'ts_id': row['ts_id'],
+                    'time_series': row['time_series'],  # Keeping the same time_series for consistency
+                    'label': negative_label,  # Label for negative pair
+                    "ts_past_features": row["ts_past_features"]  # Keeping the same ts_past_features for consistency
+                })
+
+    # Convert negative pairs to DataFrame
+    negative_df = pd.DataFrame(negative_pairs)
+
+    # Append the negative pairs to the original DataFrame
+    return pd.concat([merged_df, negative_df], ignore_index=True)
+
+
 def normalize_ts(df):
     c_col='Close'
     t_col='ticker'
@@ -334,9 +395,9 @@ def get_data_loaders(df, model, batch_size, num_workers):
     train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
     val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)#, num_workers=num_workers)
+    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
+    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
     return train_dataloader, val_dataloader, test_dataloader
 
 def correct_negative_labels(df:pd.DataFrame, negative_label:int, label_column:str='label'):
@@ -344,6 +405,45 @@ def correct_negative_labels(df:pd.DataFrame, negative_label:int, label_column:st
 
     df[label_column] = df[label_column].replace(-1, negative_label)
     return df
+
+def normalize_ts_features(df, column_name):
+    # Flatten all dates and separate into year, month, and day lists
+    years, months, days = [], [], []
+    
+    for date_list in df[column_name]:
+        for year, month, day in date_list:
+            years.append(year)
+            months.append(month)
+            days.append(day)
+    
+    # Normalize years, months, and days
+    years_min, years_max = min(years), max(years)
+    months_min, months_max = min(months), max(months)
+    days_min, days_max = min(days), max(days)
+    
+    # Handle the case where there's only one unique year
+    if years_min == years_max:
+        normalized_years = {year: 0.0 for year in set(years)}
+    else:
+        normalized_years = {year: (year - years_min) / (years_max - years_min) for year in set(years)}
+    
+    normalized_months = {month: (month - months_min) / (months_max - months_min) for month in set(months)}
+    normalized_days = {day: (day - days_min) / (days_max - days_min) for day in set(days)}
+    
+    # Apply the normalization back to the original structure
+    normalized_dates = []
+    
+    for date_list in df[column_name]:
+        normalized_date_list = [[
+            normalized_years[year],
+            normalized_months[month],
+            normalized_days[day]
+        ] for year, month, day in date_list]
+        normalized_dates.append(normalized_date_list)
+    
+    return normalized_dates
+
+# Apply the function to normalize dates
 
 def get_data(model, 
              data_source:dict, 
@@ -354,27 +454,43 @@ def get_data(model,
              negatives_creation:tuple=("naive", 31), 
              batch_size:int=16, 
              num_workers:int=6, 
-             loaders:bool=True):
+             loaders:bool=True,
+             subset_data:bool=False):
     
     text_df, ts_df = wrangle_data(data_source) #returns df with id, ticker, Date, text, close
+
+    #filter data to subset for faster training
+    if subset_data:
+        unique_values = df['ticker'].unique()
+        random_tickers = random.sample(list(unique_values), 2)
+        text_df = text_df[text_df['ticker'].isin(random_tickers)]
+        ts_df = ts_df[ts_df['ticker'].isin(random_tickers)]
+
     text_date_col = data_source['text_date_col']
     ts_date_col = data_source["ts_date_col"]
     text_col = data_source["text_col"]
     #make sure date columns are datetimes
     text_df[text_date_col] = pd.to_datetime(text_df[text_date_col], utc=True).dt.date
     ts_df[ts_date_col] = pd.to_datetime(ts_df[ts_date_col], utc=True).dt.date
+
+
     
     #normlaize ts_df
     ts_df = normalize_ts(ts_df)
+    #normalize the past_time_features
 
     #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
     text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
     #padd text_series to have empty strings for collate_fn
 
-    
+
     df = create_pairs(text_df=text_df, ts_df=ts_df, negatives_creation=negatives_creation)
     max_length = df['text_series'].apply(len).max()
     df['text_series'] = df['text_series'].apply(lambda x: x + [''] * (max_length - len(x)))
+
+    # Apply normalization to each row
+    df['original_ts_past_features'] = df['ts_past_features']
+    df['ts_past_features'] = normalize_ts_features(df, 'ts_past_features')
 
     if loaders:
         dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
@@ -386,9 +502,9 @@ def get_data(model,
         train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
         val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
 
-        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)#, num_workers=num_workers)
+        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
+        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
         return train_dataloader, val_dataloader, test_dataloader
     else:
         return df

@@ -1,3 +1,5 @@
+
+#TODO inefficiency code run
 import model_helper as mh
 import data_helper_v3 as dh3
 import torch
@@ -8,6 +10,7 @@ import os
 import torch.nn as nn
 import json
 from torch.utils.data import Dataset, DataLoader, random_split
+import pandas as pd
 import torch.optim as optim
 import pdb
 import random
@@ -175,9 +178,9 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             ts_encoder                  = model_params["ts_encoder"]
             ts_encoder['ts_window']     = ts_window
             ts_encoder['context_length']= 2
-            ts_encoder['prediction_length']=0
+            ts_encoder['prediction_length']=0#always 0 as we aren't predicting anything
             ts_encoder['lags_sequence'] = [1, 2, 3]
-            ts_encoder['num_features']  = 3
+            ts_encoder['num_features']  = 3#always 3 as we pass the whole time feature set year, month, day
 
             text_encoder                = model_params["text_encoder"]
             text_encoder_pretrained     = model_params['text_encoder_pretrained']
@@ -202,6 +205,18 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
             df = dh3.correct_negative_labels(df, negative_label=negative_label)
+            print(len(df))
+            df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
+            print(len(df))
+            df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
+
+            # Date to compare
+            comparison_date = pd.to_datetime('2020-02-01')
+
+            # Filter DataFrame where 'date' column is less than comparison_date
+            df = df[df['target_date_ts_df'] < comparison_date]
+            print(len(df))
+            
             
             train_loader, valid_loader, test_loader = dh3.get_data_loaders(df=df, model=model, batch_size=batch_size, num_workers=num_workers)
 
@@ -210,6 +225,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
             start_loop = datetime.datetime.now()
             for epoch in range(num_epochs):
+                print("eppch!")
                 train_loss, train_accuracy, train_f1, train_conf_matrix = mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion)
                 val_loss, val_accuracy, val_f1, val_conf_matrix = mh.validate(model=model, val_loader=valid_loader, optimizer=optimizer, device=device, criterion=criterion)
             
@@ -249,12 +265,12 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
-            "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],                                         #MODELhelper
-            "text_encoder_pretrained": [True, False],                                                                       #MODELhelper
-            "text_aggregation_method": ["mean", "max"],                                                    #MODELhelper
-            "projection_dim": [400, 500, 600, 700],                                                                         #MODELhelper
-            "learning_rate": [0.00001, 0.0001, 0.001],                                                                             #GRIDSEARCH     #DONE
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],# {"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
+            "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],                                         #MODELhelper
+            "text_encoder_pretrained": [True],                                                                       #MODELhelper
+            "text_aggregation_method": ["mean"],                                                    #MODELhelper
+            "projection_dim": [500],                                                                         #MODELhelper
+            "learning_rate": [0.0001],                                                                             #GRIDSEARCH     #DONE
             "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
             "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
             "num_epochs": [5],                                                                                             #GRIDSEARCH     #DONE
@@ -264,19 +280,19 @@ def run(df=None):
 
     dataset_param_grid = {                                                                            #DATAhelper
         "ts_window": [5],                                                                         #DATAhelper
-        "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
-        "text_window": [1, 2, 3],                                                                 #DATAhelper
+        "ts_overlap": ['start'],                                                                    #DATAhelper
+        "text_window": [1],                                                                 #DATAhelper
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
-            "name": "stock_net",
-            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
-            "ts_path": "./data/stocknet/price/raw/",
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
             "ts_date_col": 'Date',
-            'text_date_col': 'created_at',
+            'text_date_col': 'date',
             'text_col': 'text'
         }],                                                            #DATAhelper
-        "negatives_creation": [("naive", 31), ("naive", 60)],                          #DATAhelper
-        "random_state": [42, 43, 44],
+        "negatives_creation": [("naive", 60)],                          #DATAhelper
+        "random_state": [42],
     }
 
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_temp.json', checkpoint_dir='checkpoint_temp/', df=df)
@@ -293,3 +309,11 @@ run()
 #            'text_date_col': 'date',
 #            'text_col': 'text'
 #        },  
+#{
+#            "name": "stock_net",
+#            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+#            "ts_path": "./data/stocknet/price/raw/",
+#            "ts_date_col": 'Date',
+#            'text_date_col': 'created_at',
+#            'text_col': 'text'
+#        },

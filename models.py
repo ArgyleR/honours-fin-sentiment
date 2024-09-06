@@ -151,7 +151,7 @@ class ContrastiveLearningModel(nn.Module):
     def get_text_encoder(self):
         return self.text_encoder
 
-    def forward(self, ts_data, text_data):
+    def forward(self, ts_data, text_data, return_base_embeddings=False):
         ts_embeddings = self.ts_encoder(ts_data)
     
         input_ids = text_data['input_ids']
@@ -180,6 +180,8 @@ class ContrastiveLearningModel(nn.Module):
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
         projected_text_embeddings = self.text_projection_head(final_text_embeddings)
 
+        if return_base_embeddings:
+            return {"ts_base_embeddings": ts_embeddings, f"text_base_embeddings_{self.text_aggregation}": final_text_embeddings}
         return projected_ts_embeddings, projected_text_embeddings
 
     def predict(self, ts_data, text_data):

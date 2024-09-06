@@ -51,7 +51,7 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
         i += 1
     
     all_preds = np.array(all_preds) #convert to numpy array
-    all_preds = (all_preds >= 0.5).astype(int).tolist()
+    all_preds = (all_preds >= 0.0).astype(int).tolist()
     all_labels = [0 if x == -1 else x for x in all_labels]
     train_loss /= len(train_loader)
     
@@ -97,7 +97,7 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
             all_labels.extend(labels.cpu().numpy())
 
     all_preds = np.array(all_preds) #convert to numpy array
-    all_preds = (all_preds >= 0.5).astype(int).tolist()
+    all_preds = (all_preds >= 0.0).astype(int).tolist()
     all_labels = [0 if x == -1 else x for x in all_labels]
 
     val_loss /= len(val_loader.dataset)
