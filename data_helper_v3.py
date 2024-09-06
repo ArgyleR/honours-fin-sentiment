@@ -440,10 +440,10 @@ def get_data(model,
 
     #filter data to subset for faster training
     if subset_data:
-        unique_values = df['ticker'].unique()
-        random_tickers = random.sample(list(unique_values), 2)
-        text_df = text_df[text_df['ticker'].isin(random_tickers)]
-        ts_df = ts_df[ts_df['ticker'].isin(random_tickers)]
+        unique_values = text_df['ticker'].unique()
+        random_tickers = random.sample(list(unique_values), len(unique_values) //5)
+        text_df = text_df[text_df['ticker'].isin(random_tickers)].reset_index(drop=True)
+        ts_df = ts_df[ts_df['ticker'].isin(random_tickers)].reset_index(drop=True)
 
     text_date_col = data_source['text_date_col']
     ts_date_col = data_source["ts_date_col"]
@@ -470,6 +470,7 @@ def get_data(model,
     # Apply normalization to each row
     df['original_ts_past_features'] = df['ts_past_features']
     df['ts_past_features'] = normalize_ts_features(df, 'ts_past_features')
+
 
     if loaders:
         dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
