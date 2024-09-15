@@ -8,6 +8,7 @@ import torch
 from sklearn.model_selection import train_test_split
 import model_helper as mh
 from torch.nn.utils.rnn import pad_sequence
+import pdb
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 def read_stock_net(path):
@@ -139,7 +140,7 @@ def create_time_series_df(df, k, mode='start'):
         if len(ticker_df) < k:
             continue  # Skip if there are not enough data points
         
-        for i in range(len(ticker_df) - k + 1):
+        for i in range(len(ticker_df) - k):
             #change target_date instead of the actual sequence 
             start_idx = i
             end_idx = start_idx + k
@@ -153,8 +154,16 @@ def create_time_series_df(df, k, mode='start'):
             else:
                 raise ValueError("Invalid mode. Choose 'start', 'middle', or 'end'.")
             
-            time_series = ticker_df.iloc[i:end_idx]['Close'].tolist()
-            ts_past_features = ticker_df.iloc[i:end_idx]['Date'].apply(lambda x: [x.year, x.month, x.day]).tolist()
+            #time_series = ticker_df.iloc[i:end_idx]['Close'].tolist()
+            #ts_past_features = ticker_df.iloc[i:end_idx]['Date'].apply(lambda x: [x.year, x.month, x.day]).tolist()
+            if len(ticker_df.iloc[start_idx:end_idx]['Close'].tolist()) != k:
+                #print("updating length!!" * 100)
+                
+                end_idx += 1 #add additional day to meet the k requirement
+
+            
+            time_series = ticker_df.iloc[start_idx:end_idx]['Close'].tolist()
+            ts_past_features = ticker_df.iloc[start_idx:end_idx]['Date'].apply(lambda x: [x.year, x.month, x.day]).tolist()
             target_date = ticker_df.iloc[target_date_idx]['Date']
             
             new_df.append({
@@ -163,8 +172,9 @@ def create_time_series_df(df, k, mode='start'):
                 'time_series': time_series,
                 'ts_past_features': ts_past_features
             })
-    
-    return pd.DataFrame(new_df)
+    result_df = pd.DataFrame(new_df)
+    return result_df
+
 
 def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time_col='created_at'):
     df[time_col] = pd.to_datetime(df[time_col], utc=True).dt.date
@@ -227,6 +237,8 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
 def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int, text_selection_method:tuple, text_col, text_time_col, ts_time_col:str):
     text_df = create_text_series_df(df=text_df, k=text_window, mode=text_selection_method[0], top_n=text_selection_method[1], text_col=text_col, time_col=text_time_col)
     ts_df = create_time_series_df(ts_df, k=ts_window, mode=ts_mode)
+    #pdb.set_trace()
+    ts_df = ts_df[ts_df['time_series'].apply(len)==ts_window].reset_index(drop=True)
 
     #we now have the windowed text and ts (including multiple days); not yet implemented for multiple tickers
     return text_df, ts_df
@@ -374,9 +386,9 @@ def get_data_loaders(df, model, batch_size, num_workers):
     train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
     val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)#, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
     return train_dataloader, val_dataloader, test_dataloader
 
 def correct_negative_labels(df:pd.DataFrame, negative_label:int, label_column:str='label'):
@@ -456,7 +468,9 @@ def get_data(model,
     
     #normlaize ts_df
     ts_df = normalize_ts(ts_df)
-    #normalize the past_time_features
+    
+    #normalize the past_time_features   
+
 
     #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
     text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
@@ -482,9 +496,9 @@ def get_data(model,
         train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
         val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
 
-        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)#, num_workers=num_workers)
-        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
-        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False)#, num_workers=num_workers)
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
         return train_dataloader, val_dataloader, test_dataloader
     else:
         return df
