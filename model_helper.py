@@ -14,15 +14,15 @@ import torch
 import torch.nn as nn
 import models as m
 
-def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion):
+def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion, epoch:int):
     model.train()
     train_loss = 0.0
     all_preds = []
     all_labels = []
     i = 0
 
-    for ts_data, text_data, labels in tqdm(train_loader, leave=True, position=1):
-        if labels.shape[0] == 1:
+    for ts_data, text_data, labels in tqdm(train_loader, leave=False, position=2, desc=f'Train Loop {epoch}'):
+        if labels.shape[0] == 1: #if there's a single element in the batch, skip it as it will cause errors for the base encoders that cannot be fixed
             continue
 
         ts_data = {
@@ -62,15 +62,15 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
 
     return train_loss, accuracy, f1, conf_matrix
 
-def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimizer, device: str, criterion):
+def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimizer, device: str, criterion, epoch:int):
     model.eval()
     val_loss = 0.0
     all_preds = []
     all_labels = []
 
     with torch.no_grad():
-        for ts_data, text_data, labels in tqdm(val_loader, leave=True, position=1):
-            if labels.shape[0] == 1:
+        for ts_data, text_data, labels in tqdm(val_loader, leave=False, position=2, desc=f'Validation Loop {epoch}'):
+            if labels.shape[0] == 1: #if there's a single element in the batch, skip it as it will cause errors for the base encoders that cannot be fixed
                 continue
 
             ts_data = {

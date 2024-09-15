@@ -72,21 +72,7 @@ class TSTransformerBaseEncoder(nn.Module):
         past_observed_mask = ts_data["past_observed_mask"].squeeze()
         past_time_features = ts_data["past_time_features"].squeeze()
 
-        #if past_time_values.dim() == 1:
-        #    past_time_values = past_time_values.unsqueeze(0).unsqueeze(0)
-        #elif past_time_values.dim() == 2:
-        #    past_time_values = past_time_values.unsqueeze(0)
-        #
-        #if past_observed_mask.dim() == 1:
-        #    past_observed_mask = past_observed_mask.unsqueeze(0).unsqueeze(0)
-        #elif past_observed_mask.dim() == 2:
-        #    past_observed_mask = past_observed_mask.unsqueeze(0)
-        #
-        #if past_time_features.dim() == 2:
-        #    past_time_features = past_time_features.unsqueeze(0).unsqueeze(0)
-        #elif past_time_features.dim() == 3:
-        #    past_time_features = past_time_features.unsqueeze(0)
-
+        #pdb.set_trace()
         model_output = self.model(past_values=past_time_values, past_observed_mask=past_observed_mask,past_time_features=past_time_features)
         encoder_last_hidden_state = model_output.encoder_last_hidden_state
         #We want to pool to get the mean of the hidden states
@@ -158,28 +144,23 @@ class ContrastiveLearningModel(nn.Module):
         attention_mask = text_data['attention_mask']
         batch_size, number_of_texts, embedding_dim = input_ids.size()
         
-        # Initialize a list to store the aggregated embeddings for each sample in the batch
-        final_text_embeddings = []
-
-        for i in range(batch_size):
-            text_embeddings = self.text_encoder(input_ids[i], attention_mask=attention_mask[i])
-            
-            # Aggregate embeddings 
-            if self.text_aggregation == 'mean':
-                aggregated_embeddings = torch.mean(text_embeddings, dim=0)  # Shape: [embedding_dim]
-            elif self.text_aggregation == 'max':
-                aggregated_embeddings, _ = torch.max(text_embeddings, dim=0)  # Shape: [embedding_dim]
-            else:
-                raise NotImplementedError("Text embedding aggregation is only 'max' or 'mean' currently.")
-
-            final_text_embeddings.append(aggregated_embeddings)
-
-        # Stack the list of aggregated embeddings into a tensor
-        final_text_embeddings = torch.stack(final_text_embeddings)
+        # Reshape input_ids and attention_mask to pass them all at once through the text encoder and then reshape for aggregation
+        input_ids = input_ids.view(batch_size * number_of_texts, embedding_dim)  # Shape: [batch_size * number_of_texts, embedding_dim]
+        attention_mask = attention_mask.view(batch_size * number_of_texts, embedding_dim)  # Shape: [batch_size * number_of_texts, embedding_dim]
+        # Pass all texts through the text encoder in one forward pass
+        text_embeddings = self.text_encoder(input_ids, attention_mask=attention_mask)
         
+        # Reshape the embeddings back to [batch_size, number_of_texts, embedding_dim]
+        text_embeddings = text_embeddings.view(batch_size, number_of_texts, -1)  # Shape: [batch_size, number_of_texts, embedding_dim]
+        # Aggregate the embeddings for each example
+        if self.text_aggregation == 'mean':
+            final_text_embeddings = torch.mean(text_embeddings, dim=1)  # Mean over the number of texts (dim=1)
+        elif self.text_aggregation == 'max':
+            final_text_embeddings, _ = torch.max(text_embeddings, dim=1)  # Max over the number of texts (dim=1)
+        else:
+            raise NotImplementedError("Text embedding aggregation is only 'max' or 'mean' currently.")
         projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
         projected_text_embeddings = self.text_projection_head(final_text_embeddings)
-
         if return_base_embeddings:
             return {"ts_base_embeddings": ts_embeddings, f"text_base_embeddings_{self.text_aggregation}": final_text_embeddings}
         return projected_ts_embeddings, projected_text_embeddings

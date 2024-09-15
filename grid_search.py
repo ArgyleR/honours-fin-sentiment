@@ -124,7 +124,31 @@ def update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_tim
     data['timing']['test_time'] = test_time
 
     return data
-            
+
+def compare_dicts(dict1, dict2):
+    for key in dict1.keys():
+        if key == 'num_workers': #num workers doesn't matter
+            continue
+        else:
+            if key != 'text_selection_method' and key != 'negatives_creation':
+                #These have particular serialise/deseerialise issues where it's originally a tuple and saved as a list 
+                if dict1[key] != dict2[key]:
+                    return False
+            else:
+                if dict1[key][0] != dict2[key][0] or dict1[key][1] != dict2[key][1]:
+                    return False
+    return True
+    
+def check_args_not_used(data_parameters, model_parameters, output_file):
+    with open(output_file, 'r') as file:
+        data = json.load(file)
+    for i in data:
+        seen_dataset_params = i['dataset_params']
+        seen_model_params = i['model_params']
+        if compare_dicts(seen_dataset_params, data_parameters) and compare_dicts(seen_model_params, model_parameters):
+            return False
+    return True
+       
 def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str, checkpoint_dir: str, df=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -137,7 +161,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
     best_val_loss = float('inf')
 
     i = 1000
-    for dataset_params in dataset_combinations:        
+    for dataset_params in tqdm(dataset_combinations, desc='Dataset Params', position=0):        
         #====================================================
         #dataset params
         #====================================================
@@ -172,17 +196,19 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
         model_permutations = list(itertools.product(*model_param_grid.values()))
         model_combinations = [dict(zip(model_param_grid.keys(), perm)) for perm in model_permutations]
 
-        for model_params in model_combinations:
+        for model_params in tqdm(model_combinations, desc='Model Params', leave=True, position=1):
+            
             #====================================================
             #model params
             #====================================================
             ts_encoder                  = model_params["ts_encoder"]
             ts_encoder['ts_window']     = ts_window
+            
             ts_encoder['context_length'] = 1
             ts_encoder['prediction_length']=0#always 0 as we aren't predicting anything
             ts_encoder['lags_sequence'] = [i + 1 for i in range(ts_window - 1)]
             ts_encoder['num_features']  = 3#always 3 as we pass the whole time feature set year, month, day
-
+            
             text_encoder                = model_params["text_encoder"]
             text_encoder_pretrained     = model_params['text_encoder_pretrained']
             text_aggregation_method     = model_params['text_aggregation_method']
@@ -198,68 +224,73 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             optimizer_name              = model_params["optimizer"]
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
-            
-            model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
-            model.to(device)
 
-            optimizer                   = get_optimizer(optimizer_name=optimizer_name, model=model, lr=learning_rate)
-            criterion, negative_label   = get_criterion(criterion_name=criterion_name)
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./output_sofiane_plotting.json'):
+                
+                #pdb.set_trace()
+                model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
+                model.to(device)
 
-            df = dh3.correct_negative_labels(df, negative_label=negative_label)
-            #print(len(df))
-            #df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
-            #print(len(df))
-            #df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
+                
+                optimizer                   = get_optimizer(optimizer_name=optimizer_name, model=model, lr=learning_rate)
+                criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
-            # Date to compare
-            #comparison_date = pd.to_datetime('2020-02-01')
+                df = dh3.correct_negative_labels(df, negative_label=negative_label)
+                #print(len(df))
+                #df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
+                #print(len(df))
+                #df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
 
-            # Filter DataFrame where 'date' column is less than comparison_date
-            #df = df[df['target_date_ts_df'] < comparison_date]
-            #print(len(df))
-            
-            
-            train_loader, valid_loader, test_loader = dh3.get_data_loaders(df=df, model=model, batch_size=batch_size, num_workers=num_workers)
+                # Date to compare
+                #comparison_date = pd.to_datetime('2020-02-01')
 
-            data = get_data_base(search_index=i, epochs=num_epochs, dataset_params=dataset_params, model_params=model_params, df_len=df_len, pair_count=pair_count)
+                # Filter DataFrame where 'date' column is less than comparison_date
+                #df = df[df['target_date_ts_df'] < comparison_date]
+                #print(len(df))
+                #pdb.set_trace()
+                
+                
+                train_loader, valid_loader, test_loader = dh3.get_data_loaders(df=df, model=model, batch_size=batch_size, num_workers=num_workers)
+
+                data = get_data_base(search_index=i, epochs=num_epochs, dataset_params=dataset_params, model_params=model_params, df_len=df_len, pair_count=pair_count)
 
 
-            test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
-            start_loop = datetime.datetime.now()
-            for epoch in range(num_epochs):
-                print("eppch!")
-                train_loss, train_accuracy, train_f1, train_conf_matrix = mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion)
-                val_loss, val_accuracy, val_f1, val_conf_matrix = mh.validate(model=model, val_loader=valid_loader, optimizer=optimizer, device=device, criterion=criterion)
-            
-                data = update_data_train_metrics(data, train_loss, train_accuracy, train_f1, train_conf_matrix,
-                                    val_loss, val_accuracy, val_f1, val_conf_matrix)
-            
-            end_loop = datetime.datetime.now()
-            
-            test_loss, test_accuracy, test_f1, test_conf_matrix = mh.validate(model=model, val_loader=test_loader, optimizer=optimizer, device=device, criterion=criterion)  
-            data = update_data_test_metrics(data, test_loss, test_accuracy, test_f1, test_conf_matrix)
+                test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
+                start_loop = datetime.datetime.now()
+                for epoch in range(num_epochs):
+                    train_loss, train_accuracy, train_f1, train_conf_matrix = mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion, epoch=epoch)
+                    
+                    val_loss, val_accuracy, val_f1, val_conf_matrix = mh.validate(model=model, val_loader=valid_loader, optimizer=optimizer, device=device, criterion=criterion, epoch=epoch)
+                
+                    data = update_data_train_metrics(data, train_loss, train_accuracy, train_f1, train_conf_matrix,
+                                        val_loss, val_accuracy, val_f1, val_conf_matrix)
+                
+                end_loop = datetime.datetime.now()
+                
+                test_loss, test_accuracy, test_f1, test_conf_matrix = mh.validate(model=model, val_loader=test_loader, optimizer=optimizer, device=device, criterion=criterion, epoch=-1)  
+                data = update_data_test_metrics(data, test_loss, test_accuracy, test_f1, test_conf_matrix)
 
-            end_test = datetime.datetime.now()
-            loop_time = (start_loop - end_loop).total_seconds()
-            test_time= (end_loop - end_test).total_seconds()
-            data = update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_time)
-            
-            # Write to JSON file
-            with open(out_file, 'a') as file:
-                json.dump(data, file)
-                file.write('\n')
+                end_test = datetime.datetime.now()
+                loop_time = (start_loop - end_loop).total_seconds()
+                test_time= (end_loop - end_test).total_seconds()
+                data = update_data_timing(data, start_loop, end_loop, end_test, loop_time, test_time)
+                
+                # Write to JSON file
+                with open(out_file, 'a') as file:
+                    json.dump(data, file)
+                    file.write('\n')
 
-            if val_loss < best_val_loss:
-                print(json.dumps(data, indent=4))
-                best_val_loss = val_loss
-                best_dataset_params = dataset_params
-                best_model_params = model_params
-                checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
-                torch.save(model.state_dict(), checkpoint_path)
-        
+                if val_loss < best_val_loss:
+                    print(json.dumps(data, indent=4))
+                    best_val_loss = val_loss
+                    best_dataset_params = dataset_params
+                    best_model_params = model_params
+                    checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
+                    torch.save(model.state_dict(), checkpoint_path)
 
             i += 1
             print(f"Just finihsed search: {i}")
+            
 
     print(f"Best Model Params: \n{best_model_params}")
     print(f"Best Dataset Params: \n{best_dataset_params}")
@@ -267,39 +298,38 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],# {"name": 'AutoFormerModel'}, {"name": "InformerModel"}],        #MODELhelper
-            "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],                                         #MODELhelper
-            "text_encoder_pretrained": [True],                                                                       #MODELhelper
-            "text_aggregation_method": ["mean", 'max'],                                                    #MODELhelper
-            "projection_dim": [500, 600],                                                                         #MODELhelper
-            "learning_rate": [0.0001, 0.00001],                                                                             #GRIDSEARCH     #DONE
-            "optimizer": ['adam'],                                                                                          #GRIDSEARCH     #DONE
-            "criterion": ['CosineEmbeddingLoss'],                                                                           #GRIDSEARCH     #DONEISH                                                   
-            "num_epochs": [5],                                                                                             #GRIDSEARCH     #DONE
-            "batch_size": [6],                                                                                             #DATAhelper     #DONE
-            "num_workers": [6],  
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}],#{"name": 'AutoFormerModel'}],#, ],
+            "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],
+            "text_encoder_pretrained": [True],                                                                       
+            "text_aggregation_method": ["mean", 'max'],                                                    
+            "projection_dim": [500],                                                                        
+            "learning_rate": [0.00001],                                                                             
+            "optimizer": ['adam'],                                                                                          
+            "criterion": ['CosineEmbeddingLoss'],
+            "num_epochs": [10],                                                                                             
+            "batch_size": [6],                                                                                             
+            "num_workers": [2],  
         }
 
-    dataset_param_grid = {                                                                            #DATAhelper
-        "ts_window": [10, 7, 6, 5],                                                                         #DATAhelper
-        "ts_overlap": ['start', 'middle', 'end'],                                                                    #DATAhelper
-        "text_window": [1, 2, 3, 4],                                                                 #DATAhelper
+    dataset_param_grid = {                                                                            
+        "ts_window": [7, 5],#4, 6 & 7 had a random error out                                                                         
+        "ts_overlap": ['start', 'middle'],                                                                    
+        "text_window": [1, 2, 3], #4                                                                
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
-            "name": "stock_emotion",
-            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
-            "ts_path": "./data/stock_emotions/price/",
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
             "ts_date_col": 'Date',
-            'text_date_col': 'date',
+            'text_date_col': 'created_at',
             'text_col': 'text'
-        }],                                                            #DATAhelper
-        "negatives_creation": [("naive", 60)],                          #DATAhelper
+        },],                                                            
+        "negatives_creation": [("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-
-    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_temp.json', checkpoint_dir='checkpoint_temp/', df=df)
-
-run()
+    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_sofiane.json', checkpoint_dir='checkpoint_sofiane/', df=df)
+if __name__ == '__main__':
+    run()
 #{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, 
 #, ("diff_distribution", )
 
