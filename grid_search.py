@@ -312,7 +312,7 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [7, 5],#4, 6 & 7 had a random error out                                                                         
+        "ts_window": [6],#4, 6 & 7 had a random error out                                                                         
         "ts_overlap": ['start', 'middle'],                                                                    
         "text_window": [1, 2, 3], #4                                                                
         'text_selection_method': [('TFIDF', 5)],

@@ -10,6 +10,7 @@ import model_helper as mh
 from torch.nn.utils.rnn import pad_sequence
 import pdb
 from sklearn.feature_extraction.text import TfidfVectorizer
+import ijson
 
 def read_stock_net(path):
     pass
@@ -104,6 +105,56 @@ def read_stocknet_text(text_dir):
     combined_df = pd.concat(dfs, ignore_index=True)
     return combined_df
 
+def process_EDT_json_to_dataframes(json_file):
+    # Helper method used to read the Event Driven Trading data file 
+    ts_data = []
+    text_data = []
+
+    # ijson used to parse incrementally
+    with open(json_file, 'r') as file:
+        
+        objects = ijson.items(file, 'item')
+        
+        for row in objects:
+            # Extract text data: ticker, pub_time (date), title and text
+            #This is specific to EDT
+            print(row)
+            pdb.set_trace()
+            if 'labels' in row and row['labels']:
+                ticker = row['labels']['ticker']
+                pub_time = row['pub_time']
+                title = row['title']
+                text = row['text']
+
+                # Append text-related data
+                text_data.append({
+                    'ticker': ticker,
+                    'date': pub_time,
+                    'title': title,
+                    'text': text
+                })
+
+                #We want a new row for each day to be consistent with other datasets
+                for day in ['1day', '2day', '3day']:
+                    end_price = row['labels'].get(f'end_price_{day}')
+                    end_time = row['labels'].get(f'end_time_{day}')
+
+                    if end_price and end_time:
+                        ts_data.append({
+                            'ticker': ticker,
+                            'Date': end_time,
+                            'Close': end_price
+                        })
+
+    # Create DataFrames
+    text_df = pd.DataFrame(text_data)
+    text_df['id'] = pd.Series(range(1, len(text_df) + 1))
+    ts_df = pd.DataFrame(ts_data)
+    ts_df['Close'] = pd.to_numeric(ts_df['Close'], errors='coerce')  
+    ts_df['id'] = pd.Series(range(1, len(ts_df) + 1))
+
+
+    return text_df, ts_df
 
 def wrangle_data(data_source:dict):
     data_set = data_source["name"]
@@ -120,7 +171,9 @@ def wrangle_data(data_source:dict):
         text_df = pd.read_csv(text_path)
 
         ts_df = read_ts_dir(ts_path)
-
+    elif data_set == 'EDT':
+        #We treat the text path the same as the TS path as it is one file for EDT
+        text_df, ts_df = process_EDT_json_to_dataframes(text_path)
     else:
         raise ValueError("The dataset target is not known or incorrectly spelled")
     
@@ -156,8 +209,9 @@ def create_time_series_df(df, k, mode='start'):
             
             #time_series = ticker_df.iloc[i:end_idx]['Close'].tolist()
             #ts_past_features = ticker_df.iloc[i:end_idx]['Date'].apply(lambda x: [x.year, x.month, x.day]).tolist()
+            
             if len(ticker_df.iloc[start_idx:end_idx]['Close'].tolist()) != k:
-                #print("updating length!!" * 100)
+                print("updating length!!" * 100)
                 
                 end_idx += 1 #add additional day to meet the k requirement
 
