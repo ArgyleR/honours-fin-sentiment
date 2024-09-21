@@ -118,8 +118,8 @@ def process_EDT_json_to_dataframes(json_file):
         for row in objects:
             # Extract text data: ticker, pub_time (date), title and text
             #This is specific to EDT
-            print(row)
-            pdb.set_trace()
+            #print(row)
+            #pdb.set_trace()
             if 'labels' in row and row['labels']:
                 ticker = row['labels']['ticker']
                 pub_time = row['pub_time']
@@ -490,6 +490,22 @@ def normalize_ts_features(df, column_name):
 
 # Apply the function to normalize dates
 
+def subset_data_helper(data_source, text_df, ts_df):
+    #filter EDT data as it is too large to work with
+    if data_source['name'] == 'EDT':
+        with open('./data/tickers_selected/edt.txt', 'r') as file:
+            edt_keep_tickers = [line.strip() for line in file]
+        text_df = text_df[text_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
+        ts_df = ts_df[ts_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
+
+    top_tickers = text_df['ticker'].value_counts().nlargest(3).index #get top 3 tickers by text example count
+    text_df = text_df[text_df['ticker'].isin(top_tickers)].reset_index(drop=True)
+    ts_df = ts_df[ts_df['ticker'].isin(top_tickers)].reset_index(drop=True)
+
+    return text_df, ts_df
+
+
+
 def get_data(model, 
              data_source:dict, 
              ts_window:int=5, 
@@ -506,10 +522,8 @@ def get_data(model,
 
     #filter data to subset for faster training
     if subset_data:
-        unique_values = text_df['ticker'].unique()
-        random_tickers = random.sample(list(unique_values), len(unique_values) //5)
-        text_df = text_df[text_df['ticker'].isin(random_tickers)].reset_index(drop=True)
-        ts_df = ts_df[ts_df['ticker'].isin(random_tickers)].reset_index(drop=True)
+        text_df, ts_df = subset_data_helper(data_source=data_source, text_df=text_df, ts_df=ts_df)
+        
 
     text_date_col = data_source['text_date_col']
     ts_date_col = data_source["ts_date_col"]
