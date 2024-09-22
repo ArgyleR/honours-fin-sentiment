@@ -173,7 +173,9 @@ def wrangle_data(data_source:dict):
         ts_df = read_ts_dir(ts_path)
     elif data_set == 'EDT':
         #We treat the text path the same as the TS path as it is one file for EDT
+        #TODO change this so it uses the text_df from the EDT dataset but the ts from stock emotions (better for future TSF tasks)
         text_df, ts_df = process_EDT_json_to_dataframes(text_path)
+        ts_df = read_ts_dir(ts_path)
     else:
         raise ValueError("The dataset target is not known or incorrectly spelled")
     
@@ -430,20 +432,15 @@ def normalize_ts(df):
         df.loc[df[t_col] == ticker, c_col] = (df.loc[df[t_col] == ticker, c_col] - df.loc[df[t_col] == ticker, c_col].min()) / (df.loc[df[t_col] == ticker, c_col].max() - df.loc[df[t_col] == ticker, c_col].min())
     return df
 
-def get_data_loaders(df, model, batch_size, num_workers):
-    dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
+def get_data_loaders(dfs, model, batch_size, num_workers):
+    final_dataloaders = []
 
-    train_size = int(0.8 * len(dataset))
-    val_size = int(0.1 * len(dataset))
-    test_size = len(dataset) - train_size - val_size
+    for df in dfs:
+        dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
+        dataloader  = DataLoader(dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        final_dataloaders.append(dataloader)
 
-    train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
-    val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
-
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-    val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    return train_dataloader, val_dataloader, test_dataloader
+    return final_dataloaders
 
 def correct_negative_labels(df:pd.DataFrame, negative_label:int, label_column:str='label'):
     #helper method use to correct negative pairs (default is -1) as some criterion will expect different negative labels -1 or 0
@@ -504,7 +501,47 @@ def subset_data_helper(data_source, text_df, ts_df):
 
     return text_df, ts_df
 
+def split_data(train_dates, test_dates, text_df, ts_df, text_date_col, ts_date_col, random_state):
+    train_start, train_end = pd.to_datetime(train_dates.split(' - '), format='%d/%m/%Y')
+    test_start, test_end = pd.to_datetime(test_dates.split(' - '), format='%d/%m/%Y')
+    
+    text_train = text_df[(pd.to_datetime(text_df[text_date_col]) >= train_start) & 
+                         (pd.to_datetime(text_df[text_date_col]) <= train_end)]
+    
+    text_test_val = text_df[(pd.to_datetime(text_df[text_date_col]) >= test_start) & 
+                            (pd.to_datetime(text_df[text_date_col]) <= test_end)]
+    
+    text_val = text_test_val.sample(frac=0.5, random_state=random_state)
+    text_test = text_test_val.drop(text_val.index)
+    
+    # Splitting ts_df
+    ts_train = ts_df[(pd.to_datetime(ts_df[ts_date_col]) >= train_start) & 
+                     (pd.to_datetime(ts_df[ts_date_col]) <= train_end)]
+    
+    ts_val_test = ts_df[(pd.to_datetime(ts_df[ts_date_col]) >= test_start) & 
+                        (pd.to_datetime(ts_df[ts_date_col]) <= test_end)]
+    
+    text_train = text_train.reset_index(drop=True)
+    ts_train = ts_train.reset_index(drop=True)
+    text_val = text_val.reset_index(drop=True)
+    ts_val_test = ts_val_test.reset_index(drop=True)
+    text_test = text_test.reset_index(drop=True)
 
+    text_train['split'] = 'train'
+    ts_train['split'] = 'train'
+    text_val['split'] = 'val'
+    ts_val_test['split'] = 'val_test'
+    text_test['split'] = 'val_test'
+
+    
+    # Creating the result dictionary
+    result = {
+        'train': (text_train, ts_train),
+        'validation': (text_val, ts_val_test),
+        'test': (text_test, ts_val_test)
+    }
+    
+    return result
 
 def get_data(model, 
              data_source:dict, 
@@ -516,7 +553,8 @@ def get_data(model,
              batch_size:int=16, 
              num_workers:int=6, 
              loaders:bool=True,
-             subset_data:bool=False):
+             subset_data:bool=False, 
+             random_state:int=42):
     
     text_df, ts_df = wrangle_data(data_source) #returns df with id, ticker, Date, text, close
 
@@ -537,36 +575,46 @@ def get_data(model,
     #normlaize ts_df
     ts_df = normalize_ts(ts_df)
     
-    #normalize the past_time_features   
+    #TODO test train split here
+    train_dates = data_source['train_dates']
+    test_dates = data_source['test_dates']
+    split_data_dict = split_data(train_dates=train_dates, 
+                                 test_dates=test_dates, 
+                                 text_df=text_df, 
+                                 ts_df=ts_df, 
+                                 text_date_col=text_date_col, 
+                                 ts_date_col=ts_date_col, 
+                                 random_state=random_state)
+    
+    final_dfs = []
+    final_dataloaders = []
+    for key in split_data_dict.keys():
+        text_df, ts_df = split_data_dict[key]
+        
+        #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
+        text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
+        #padd text_series to have empty strings for collate_fn
 
 
-    #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
-    text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
-    #padd text_series to have empty strings for collate_fn
+        df = create_pairs(text_df=text_df, ts_df=ts_df, negatives_creation=negatives_creation)
+        max_length = df['text_series'].apply(len).max()
+        df['text_series'] = df['text_series'].apply(lambda x: x + [''] * (max_length - len(x)))
+
+        # Apply normalization to each row
+        df['original_ts_past_features'] = df['ts_past_features']
+        df['ts_past_features'] = normalize_ts_features(df, 'ts_past_features')
+
+        
 
 
-    df = create_pairs(text_df=text_df, ts_df=ts_df, negatives_creation=negatives_creation)
-    max_length = df['text_series'].apply(len).max()
-    df['text_series'] = df['text_series'].apply(lambda x: x + [''] * (max_length - len(x)))
-
-    # Apply normalization to each row
-    df['original_ts_past_features'] = df['ts_past_features']
-    df['ts_past_features'] = normalize_ts_features(df, 'ts_past_features')
-
-
+        if loaders:
+            dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
+            dataloader  = DataLoader(dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
+            final_dataloaders.append(dataloader)
+        else:
+            final_dfs.append(df)
+    
     if loaders:
-        dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
-
-        train_size = int(0.8 * len(dataset))
-        val_size = int(0.1 * len(dataset))
-        test_size = len(dataset) - train_size - val_size
-
-        train_dataset, val_test_dataset = random_split(dataset, [train_size, val_size + test_size])
-        val_dataset, test_dataset = random_split(val_test_dataset, [val_size, test_size])
-
-        train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-        val_dataloader   = DataLoader(val_dataset,   batch_size=batch_size, shuffle=False, num_workers=num_workers)
-        test_dataloader  = DataLoader(test_dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
-        return train_dataloader, val_dataloader, test_dataloader
+        return final_dataloaders
     else:
-        return df
+        return final_dfs

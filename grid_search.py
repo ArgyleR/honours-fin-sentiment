@@ -161,7 +161,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
     best_val_loss = float('inf')
 
     i = 1000
-    for dataset_params in tqdm(dataset_combinations, desc='Dataset Params', position=0):        
+    for dataset_params in tqdm(dataset_combinations, desc='Dataset Params', position=0):  
+        print(dataset_params)      
         #====================================================
         #dataset params
         #====================================================
@@ -177,7 +178,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 
         if df is None:
             #get the df before anything else: 
-            df = dh3.get_data(model=None, 
+            df_list = dh3.get_data(model=None, 
                 data_source=data_source, 
                 ts_window=ts_window, 
                 ts_mode=ts_overlap, 
@@ -189,15 +190,15 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 loaders=False,
                 subset_data=True)
         
-        df_len = len(df)
+        df_len = len(df_list[0])#length of train df
         
-        pair_count = list(df['label'].value_counts().items())
+        pair_count = list(df_list[0]['label'].value_counts().items())
         
         model_permutations = list(itertools.product(*model_param_grid.values()))
         model_combinations = [dict(zip(model_param_grid.keys(), perm)) for perm in model_permutations]
 
         for model_params in tqdm(model_combinations, desc='Model Params', leave=True, position=1):
-            
+            print(model_params)
             #====================================================
             #model params
             #====================================================
@@ -213,7 +214,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             text_encoder_pretrained     = model_params['text_encoder_pretrained']
             text_aggregation_method     = model_params['text_aggregation_method']
             projection_dim              = model_params["projection_dim"]
-            ts_window                   = ts_window
+            #ts_window already defined in dataset loop
             batch_size                  = model_params["batch_size"]
             num_workers                 = model_params["num_workers"]
             
@@ -227,7 +228,6 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 
             if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./output_sofiane_plotting.json'):
                 
-                #pdb.set_trace()
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
 
@@ -235,22 +235,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 optimizer                   = get_optimizer(optimizer_name=optimizer_name, model=model, lr=learning_rate)
                 criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
-                df = dh3.correct_negative_labels(df, negative_label=negative_label)
-                #print(len(df))
-                #df = df[df['ticker'].isin(['AAPL', 'AMZN'])]
-                #print(len(df))
-                #df['target_date_ts_df'] = pd.to_datetime(df['target_date_ts_df'])
-
-                # Date to compare
-                #comparison_date = pd.to_datetime('2020-02-01')
-
-                # Filter DataFrame where 'date' column is less than comparison_date
-                #df = df[df['target_date_ts_df'] < comparison_date]
-                #print(len(df))
-                #pdb.set_trace()
-                
-                
-                train_loader, valid_loader, test_loader = dh3.get_data_loaders(df=df, model=model, batch_size=batch_size, num_workers=num_workers)
+                df_list = [dh3.correct_negative_labels(single_df, negative_label=negative_label) for single_df in df_list]     
+                train_loader, valid_loader, test_loader = dh3.get_data_loaders(dfs=df_list, model=model, batch_size=batch_size, num_workers=num_workers)
 
                 data = get_data_base(search_index=i, epochs=num_epochs, dataset_params=dataset_params, model_params=model_params, df_len=df_len, pair_count=pair_count)
 
@@ -299,35 +285,55 @@ def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}],#{"name": 'AutoFormerModel'}],#, ],
-            "text_encoder": [{"name": 'bert-base-uncased'}, {"name": 'bert-base-cased'}],
+            "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
-            "text_aggregation_method": ["mean", 'max'],                                                    
-            "projection_dim": [500],                                                                        
+            "text_aggregation_method": ["mean"],#, 'max'],                                                    
+            "projection_dim": [400, 500, 600],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
             "num_epochs": [10],                                                                                             
-            "batch_size": [6],                                                                                             
-            "num_workers": [2],  
+            "batch_size": [8],                                                                                             
+            "num_workers": [4],  
         }
 
     dataset_param_grid = {                                                                            
         "ts_window": [6],#4, 6 & 7 had a random error out                                                                         
-        "ts_overlap": ['start', 'middle'],                                                                    
-        "text_window": [1, 2, 3], #4                                                                
+        "ts_overlap": ['start'],                                                                    
+        "text_window": [3], #4                                                                
         'text_selection_method': [('TFIDF', 5)],
         "data_source": [{
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": 'Date',
+            'text_date_col': 'date',
+            'text_col': 'text',
+            'train_dates': '01/01/2020 - 03/09/2020',
+            'test_dates': '04/09/2020 - 31/12/2020'
+        },{
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": 'Date',
+            'text_date_col': 'date',
+            'text_col': 'text',
+            'train_dates': '01/01/2020 - 03/09/2020',
+            'test_dates': '04/09/2020 - 31/12/2020'
+        },  {
             "name": "stock_net",
             "text_path": "./data/stocknet/tweet/organised_tweet.csv",
             "ts_path": "./data/stocknet/price/raw/",
             "ts_date_col": 'Date',
             'text_date_col': 'created_at',
-            'text_col': 'text'
+            'text_col': 'text',
+            'train_dates': '01/01/2014 - 01/08/2015',
+            'test_dates': '01/08/2015 - 01/01/2016'
         },],                                                            
         "negatives_creation": [("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_sofiane.json', checkpoint_dir='checkpoint_sofiane/', df=df)
+    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_final.json', checkpoint_dir='checkpoint_final/', df=df)
 if __name__ == '__main__':
     run()
 #{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, 
@@ -348,4 +354,14 @@ if __name__ == '__main__':
 #            "ts_date_col": 'Date',
 #            'text_date_col': 'created_at',
 #            'text_col': 'text'
+#        },
+#{
+#            "name": "EDT",
+#            "text_path": "./data/EDT/evaluate_news.json",
+#            "ts_path": "./data/stock_emotions/price/",
+#            "ts_date_col": 'Date',
+#            'text_date_col': 'date',
+#            'text_col': 'text',
+#            'train_dates': '01/01/2020 - 03/09/2020',
+#            'test_dates': '04/09/2020 - 31/12/2020'
 #        },
