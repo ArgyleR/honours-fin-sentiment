@@ -226,7 +226,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
 
-            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./output_sofiane_plotting.json'):
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./output_final_plotting.json'):
                 
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
@@ -243,6 +243,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 
                 test_loss, test_accuracy, test_f1, test_conf_matrix = None, None, None, None
                 start_loop = datetime.datetime.now()
+
                 for epoch in range(num_epochs):
                     train_loss, train_accuracy, train_f1, train_conf_matrix = mh.train(model=model, train_loader=train_loader, optimizer=optimizer, device=device, criterion=criterion, epoch=epoch)
                     
@@ -284,11 +285,11 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 def run(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
-            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}],#{"name": 'AutoFormerModel'}],#, ],
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
             "text_aggregation_method": ["mean"],#, 'max'],                                                    
-            "projection_dim": [400, 500, 600],                                                                        
+            "projection_dim": [500],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
@@ -301,7 +302,7 @@ def run(df=None):
         "ts_window": [6],#4, 6 & 7 had a random error out                                                                         
         "ts_overlap": ['start'],                                                                    
         "text_window": [3], #4                                                                
-        'text_selection_method': [('TFIDF', 5)],
+        'text_selection_method': [('TFIDF', 5), ('TFIDF', 10)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -330,7 +331,7 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         },],                                                            
-        "negatives_creation": [("naive", 60)],                          
+        "negatives_creation": [("naive", 60), ("naive", 30)],                          
         "random_state": [42, 43, 44],
     }
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_final.json', checkpoint_dir='checkpoint_final/', df=df)
@@ -365,3 +366,6 @@ if __name__ == '__main__':
 #            'train_dates': '01/01/2020 - 03/09/2020',
 #            'test_dates': '04/09/2020 - 31/12/2020'
 #        },
+
+
+#text selection: Diversity based ranking; Engagement for Stocknet??; Topic modelling???; embedded similrity; 
