@@ -1,16 +1,19 @@
 import pandas as pd
 import numpy as np
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import BertTokenizer, BertModel
 import torch
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
-def apply_vader_ranking(text_series, ids, text_dates, top_n=None, analyzer):
+def apply_vader_ranking(text_series, ids, text_dates, top_n=None):
     """
     Rank texts by VADER sentiment score.
     """
+    analyzer = SentimentIntensityAnalyzer()
     scores = [analyzer.polarity_scores(text)['compound'] for text in text_series]
     ranked_indices = np.argsort(scores)[::-1][:top_n] if top_n is not None else np.argsort(scores)[::-1]
     
@@ -45,26 +48,28 @@ def apply_clustering_ranking(text_series, ids, text_dates, top_n=None):
 
     return representative_texts[:top_n], representative_ids[:top_n], representative_dates[:top_n]
 
-def apply_embedding_diversity_ranking(text_series, ids, text_dates, top_n=None):
+def apply_embedding_diversity_ranking(text_series, ids, text_dates, model, top_n=None, batch_size=8):
     """
-    Rank texts based on embedding diversity (BERT embeddings).
+    Rank texts based on embedding diversity using SentenceTransformer for faster embeddings.
+    - Uses SentenceTransformer for efficient embedding generation.
+    - Supports GPU acceleration.
     """
-    def embed_text(text, tokenizer, model):
-        inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True, max_length=512)
-        outputs = model(**inputs)
-        cls_embedding = outputs.last_hidden_state[:, 0, :].detach().numpy()
-        return cls_embedding.flatten()
-
-    embeddings = np.array([embed_text(text) for text in text_series])
+    
+    # Generate embeddings for all texts using SentenceTransformer (it handles batching internally)
+    embeddings = model.encode(text_series, batch_size=batch_size, convert_to_numpy=True, show_progress_bar=True)
+    
+    # Compute cosine similarity between the embeddings
     similarity_matrix = cosine_similarity(embeddings)
 
     selected_indices = []
     current_idx = 0
 
+    # Select least similar texts iteratively
     while len(selected_indices) < len(text_series):
         selected_indices.append(current_idx)
         similarities = similarity_matrix[current_idx]
-        current_idx = np.argmin(similarities)  # Select the least similar
+        similarities[selected_indices] = 1.0  # Mark selected indices as highly similar to avoid reselecting them
+        current_idx = np.argmin(similarities)  # Select the least similar remaining text
 
     selected_indices = selected_indices[:top_n] if top_n is not None else selected_indices
 

@@ -11,6 +11,10 @@ from torch.nn.utils.rnn import pad_sequence
 import pdb
 from sklearn.feature_extraction.text import TfidfVectorizer
 import ijson
+from transformers import BertTokenizer, BertModel
+from sentence_transformers import SentenceTransformer
+import utils.text_selection_methods as txtsm
+from tqdm import tqdm
 
 def read_stock_net(path):
     pass
@@ -240,9 +244,11 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
     df = df.sort_values(['ticker', time_col]).reset_index(drop=True)
 
     # Group by ticker
-    for ticker, group in df.groupby('ticker'):
+    if mode == 'embedding_diversity':
+        embedding_diversity_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
+    for ticker, group in tqdm(df.groupby('ticker')):
         # Iterate through each date in the group
-        for i, target_date in enumerate(group[time_col].unique()):
+        for i, target_date in tqdm(enumerate(group[time_col].unique())):
             end_date = target_date + pd.Timedelta(days=k-1)
             # Filter rows within the k-day window
             window = (group[time_col] >= target_date) & (group[time_col] <= end_date)
@@ -253,30 +259,19 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
             ids = window_df['id'].tolist()
             text_dates = window_df[time_col].tolist()
 
-            if mode == 'TFIDF' and top_n is not None:
-                vectorizer = TfidfVectorizer()
-                
-                try:
-                    tfidf_matrix = vectorizer.fit_transform(text_series)
-                    
-                    if tfidf_matrix.shape[1] == 0:  # Check if TF-IDF matrix is empty
-                        raise ValueError("Empty TF-IDF matrix.")
-                    
-                    # Sum the TF-IDF scores for each document and flatten it to 1D
-                    tfidf_scores = np.array(tfidf_matrix.sum(axis=1)).flatten()
-                    
-                    # Get the indices of the top_n texts
-                    top_indices = np.argsort(tfidf_scores)[-top_n:]
+            if mode == 'vader':
+                text_series, ids, text_dates = txtsm.apply_vader_ranking(text_series, ids, text_dates, top_n)
 
-                    # Select the top_n texts, ids, and dates
-                    text_series = [text_series[i] for i in top_indices]
-                    ids = [ids[i] for i in top_indices]
-                    text_dates = [text_dates[i] for i in top_indices]
+            elif mode == 'clustering':
+                text_series, ids, text_dates = txtsm.apply_clustering_ranking(text_series, ids, text_dates, top_n)
+
+            elif mode == 'embedding_diversity':
                 
-                except ValueError as e:
-                    # Handle cases where the TF-IDF matrix is empty
-                    print(f"Skipping window for ticker {ticker} on {target_date}: {e}")
-                    continue  # Skip this window if TF-IDF processing fails
+                text_series, ids, text_dates = txtsm.apply_embedding_diversity_ranking(text_series, ids, text_dates, embedding_diversity_model, top_n)
+
+            if mode == 'TFIDF' and top_n is not None:
+                text_series, ids, text_dates = txtsm.apply_tfidf_ranking(text_series, ids, text_dates, top_n)
+
 
             # Append to new dataframe
             new_df.append({
@@ -592,7 +587,15 @@ def get_data(model,
         text_df, ts_df = split_data_dict[key]
         
         #convert df to id, tickers:[list], start_date, texts:list, time_series:list, past_time_features:[list]
-        text_df, ts_df = process_windows(text_df=text_df, ts_df=ts_df, ts_window=ts_window, ts_mode=ts_mode, text_window=text_window, text_selection_method=text_selection_method, text_col=text_col, text_time_col=text_date_col, ts_time_col=ts_date_col)
+        text_df, ts_df = process_windows(text_df=text_df, 
+                                         ts_df=ts_df, 
+                                         ts_window=ts_window,
+                                         ts_mode=ts_mode, 
+                                         text_window=text_window, 
+                                         text_selection_method=text_selection_method, 
+                                         text_col=text_col, 
+                                         text_time_col=text_date_col, 
+                                         ts_time_col=ts_date_col)
         #padd text_series to have empty strings for collate_fn
 
 

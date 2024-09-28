@@ -14,6 +14,7 @@ import pandas as pd
 import torch.optim as optim
 import pdb
 import random
+import gc
 import numpy as np
 
 def set_seed(seed, device):
@@ -275,6 +276,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                     checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
                     torch.save(model.state_dict(), checkpoint_path)
 
+                torch.cuda.empty_cache()
+                gc.collect()
             i += 1
             print(f"Just finihsed search: {i}")
             
@@ -288,7 +291,7 @@ def run(df=None):
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
-            "text_aggregation_method": ["mean"],#, 'max'],                                                    
+            "text_aggregation_method": ['max'], #"mean",                                                    
             "projection_dim": [500],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
@@ -299,10 +302,10 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [6],#4, 6 & 7 had a random error out                                                                         
+        "ts_window": [3, 4, 5, 6, 7, 10],#4, 6 & 7 had a random error out                                                                         
         "ts_overlap": ['start'],                                                                    
-        "text_window": [3], #4                                                                
-        'text_selection_method': [('TFIDF', 5), ('TFIDF', 10)],
+        "text_window": [1, 3, 5, 7, 10],                                                                
+        'text_selection_method': [('TFIDF', 5)],#('embedding_diversity', 5), ('embedding_diversity', 2), ('vader', 5), ('vader', 2), ('TFIDF', 2)
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -331,7 +334,7 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         },],                                                            
-        "negatives_creation": [("naive", 60), ("naive", 30)],                          
+        "negatives_creation": [("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_final.json', checkpoint_dir='checkpoint_final/', df=df)
