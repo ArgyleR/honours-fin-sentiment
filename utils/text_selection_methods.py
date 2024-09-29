@@ -9,13 +9,25 @@ import torch
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-def apply_vader_ranking(text_series, ids, text_dates, top_n=None):
+def apply_vader_ranking(text_series, ids, text_dates, top_n=None, mode='polarized'):
     """
     Rank texts by VADER sentiment score.
+
+    @param mode:
+        - 'polarized': Get top_n scores furthest away from 0 (most polarized views)
+        - 'neutral': Get top_n scores closest to 0 (most neutral views)
     """
     analyzer = SentimentIntensityAnalyzer()
     scores = [analyzer.polarity_scores(text)['compound'] for text in text_series]
-    ranked_indices = np.argsort(scores)[::-1][:top_n] if top_n is not None else np.argsort(scores)[::-1]
+
+    if mode == 'polarized':
+        # Sort by the absolute distance from 0 for most polarized views
+        ranked_indices = np.argsort(np.abs(scores))[::-1][:top_n] if top_n is not None else np.argsort(np.abs(scores))[::-1]
+    elif mode == 'neutral':
+        # Sort by proximity to 0 for the most neutral views
+        ranked_indices = np.argsort(np.abs(scores))[:top_n] if top_n is not None else np.argsort(np.abs(scores))
+    else:
+        raise ValueError("Mode must be 'polarized' or 'neutral'")
     
     text_series = [text_series[i] for i in ranked_indices]
     ids = [ids[i] for i in ranked_indices]

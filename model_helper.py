@@ -53,7 +53,7 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
     all_preds = np.array(all_preds) #convert to numpy array
     all_preds = (all_preds >= 0.0).astype(int).tolist()
     all_labels = [0 if x == -1 else x for x in all_labels]
-    train_loss /= len(train_loader)
+    train_loss /= len(train_loader.dataset)
     
 
     accuracy = accuracy_score(all_labels, all_preds)
