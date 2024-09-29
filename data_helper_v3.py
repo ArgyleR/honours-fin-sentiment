@@ -16,9 +16,14 @@ from sentence_transformers import SentenceTransformer
 import utils.text_selection_methods as txtsm
 from tqdm import tqdm
 
-def read_stock_net(path):
-    pass
 def read_ts_dir(path):
+    """
+    Helper function for reading a directory of time series csv files
+    Joins all csv files into a single name. Adds the ticker column to denote which file it came from
+    @param path str: the path to the directory being read
+    
+    @return pd.DataFrame: The combined dataframe with all stock price information from the give directory
+    """
     all_files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.csv')]
 
     # List to hold dataframes
@@ -31,9 +36,7 @@ def read_ts_dir(path):
         df_list.append(df)
 
     # Concatenate all dataframes in the list
-    combined_df = pd.concat(df_list, ignore_index=True)
-
-    return combined_df
+    return pd.concat(df_list, ignore_index=True)
 
 class CustomDataset(Dataset):
     def __init__(self, df: pd.DataFrame, text_tokenizer, ts_col: str="time_series", text_col: str="text_series", label_col: str="label"):
@@ -72,43 +75,6 @@ class CustomDataset(Dataset):
         label = torch.tensor(self.labels[idx], dtype=torch.long)
         return ts_data, text_data, label
 
-def collate_fn(batch):
-    ts_data, text_data, labels = zip(*batch)
-    
-    # Pad sequences to the same length
-    #ts_data = pad_sequence(ts_data, batch_first=True, padding_value=0)
-    i = 0
-    while i < len(text_data):      #loop over all text datas 
-        j = 0
-        while j < len(text_data[j]):  
-
-            text_data[i][j]["input_ids"] = pad_sequence(text_data[i][j]["input_ids"], batch_first=True, padding_value=0)
-            text_data[i][j]["attention_mask"] = pad_sequence(text_data[i][j]["attention_mask"], batch_first=True, padding_value=0)
-            j += 1
-        i += 1
-    
-    labels = torch.stack(labels)
-    
-    return ts_data, text_data, labels
-
-def read_stocknet_text(text_dir):
-    dfs = []
-
-    # Walk through the directory and its subdirectories
-    for subdir, dirs, files in os.walk(text_dir):
-        ticker = os.path.basename(subdir)
-        for file in files:
-            if file.endswith('.json'):
-                file_path = os.path.join(subdir, file)
-                # Read the JSON file into a DataFrame
-                df = pd.read_json(file_path)
-                dfs.append(df)
-                df['ticker'] = ticker
-
-    # Concatenate all the DataFrames into one
-    combined_df = pd.concat(dfs, ignore_index=True)
-    return combined_df
-
 def process_EDT_json_to_dataframes(json_file):
     # Helper method used to read the Event Driven Trading data file 
     ts_data = []
@@ -122,8 +88,6 @@ def process_EDT_json_to_dataframes(json_file):
         for row in objects:
             # Extract text data: ticker, pub_time (date), title and text
             #This is specific to EDT
-            #print(row)
-            #pdb.set_trace()
             if 'labels' in row and row['labels']:
                 ticker = row['labels']['ticker']
                 pub_time = row['pub_time']
@@ -161,29 +125,34 @@ def process_EDT_json_to_dataframes(json_file):
     return text_df, ts_df
 
 def wrangle_data(data_source:dict):
+    """
+    helper function used to take raw data files and convert them into the text and time series dfs
+    @param data_source dict: the dictionary containing the data name, text path and time series path
+
+    @return (pd.DataFrame, pd.DataFrame): a tuple of the text and time series dfs
+    """
     data_set = data_source["name"]
     text_path = data_source["text_path"]
     ts_path = data_source["ts_path"]
+    text_date_col = data_source['text_date_col']
+    ts_date_col = data_source['ts_date_col']
 
     if data_set == "stock_emotion":
         text_df = pd.read_csv(text_path)
         text_df.rename(columns={"processed": "text"}, inplace=True)
-
         ts_df = read_ts_dir(ts_path)
     elif data_set == 'stock_net':
-
         text_df = pd.read_csv(text_path)
-
         ts_df = read_ts_dir(ts_path)
     elif data_set == 'EDT':
         #We treat the text path the same as the TS path as it is one file for EDT
-        #TODO change this so it uses the text_df from the EDT dataset but the ts from stock emotions (better for future TSF tasks)
         text_df, ts_df = process_EDT_json_to_dataframes(text_path)
         ts_df = read_ts_dir(ts_path)
     else:
-        raise ValueError("The dataset target is not known or incorrectly spelled")
+        raise ValueError("The dataset name is not known or incorrectly spelled")
     
-    ts_df['Date'] = pd.to_datetime(ts_df['Date'])
+    text_df['date'] = pd.to_datetime(text_df[text_date_col], utc=True).dt.tz_localize(None) #remove time zone information
+    ts_df['date'] = pd.to_datetime(ts_df[ts_date_col], utc=True).dt.tz_localize(None)
 
     return text_df, ts_df
 
@@ -235,7 +204,6 @@ def create_time_series_df(df, k, mode='start'):
     result_df = pd.DataFrame(new_df)
     return result_df
 
-
 def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time_col='created_at'):
     df[time_col] = pd.to_datetime(df[time_col], utc=True).dt.date
     new_df = []
@@ -246,9 +214,9 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
     # Group by ticker
     if mode == 'embedding_diversity':
         embedding_diversity_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
-    for ticker, group in tqdm(df.groupby('ticker')):
+    for ticker, group in df.groupby('ticker'):
         # Iterate through each date in the group
-        for i, target_date in tqdm(enumerate(group[time_col].unique())):
+        for i, target_date in enumerate(group[time_col].unique()):
             end_date = target_date + pd.Timedelta(days=k-1)
             # Filter rows within the k-day window
             window = (group[time_col] >= target_date) & (group[time_col] <= end_date)
@@ -288,80 +256,12 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
 def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int, text_selection_method:tuple, text_col, text_time_col, ts_time_col:str):
     text_df = create_text_series_df(df=text_df, k=text_window, mode=text_selection_method[0], top_n=text_selection_method[1], text_col=text_col, time_col=text_time_col)
     ts_df = create_time_series_df(ts_df, k=ts_window, mode=ts_mode)
-    #pdb.set_trace()
     ts_df = ts_df[ts_df['time_series'].apply(len)==ts_window].reset_index(drop=True)
 
     #we now have the windowed text and ts (including multiple days); not yet implemented for multiple tickers
     return text_df, ts_df
     
-def naive_negative_creation():
-    pass
-
-def create_pairs_ts_old(text_df, ts_df, negatives_creation:str, negative_label:int=-1):
-    #Create positive pairs where ticker matches and target_date of ts_df == end_date of text_df 
-    merged_df = pd.merge(
-        text_df,
-        ts_df,
-        left_on=['ticker', 'end_date'],
-        right_on=['ticker', 'target_date'],
-        suffixes=('_text_df', '_ts_df')
-    )
-    merged_df["label"] = 1 #all so far are positive pairs
-
-    #create negative pairs
-    #naive method where ticker isn't the same and date isn't the same
-    if negatives_creation[0] == 'naive':
-        days_away = negatives_creation[1]
-        ts_df['target_date'] = pd.to_datetime(ts_df['target_date'], utc=True).dt.date
-        merged_df['target_date_text_df'] = pd.to_datetime(merged_df['target_date_text_df'], utc=True).dt.date
-
-        #create pairs where tickers aren't the same and x days away
-        negative_pairs = []
-        for idx, row in merged_df.iterrows():
-            #loop over all rows in merged_df
-            ticker = row['ticker']
-            start_date = row['target_date_text_df']
-            
-
-            ## Get potential negative samples that are at least k days apart            
-            potential_negatives = ts_df[
-                (ts_df['ticker'] != ticker) & 
-                ((ts_df["target_date"] < start_date - pd.Timedelta(days=days_away)) |
-                (ts_df["target_date"] > start_date + pd.Timedelta(days=days_away)))
-            ]
-
-            if not potential_negatives.empty:
-                # Randomly select a negative sample
-                negative_sample = potential_negatives.sample(n=1).iloc[0]
-                negative_pairs.append({
-                    'ids': row['ids'],
-                    'ticker': row['ticker'],  # Keeping the same ticker for consistency
-                    'target_date_text_df': row['target_date_text_df'],  # Keeping the same start date for consistency
-                    'target_date_ts_df': negative_sample['target_date'],  # Keeping the same start date for consistency
-                    'end_date': row["end_date"],
-                    'text_dates': row["text_dates"],
-                    'text_series': row['text_series'],
-                    'time_series': negative_sample['time_series'],
-                    'label': negative_label,  # Label for negative pair
-                    "ts_past_features": negative_sample["ts_past_features"]
-                })
-            
-    
-    #where base mean embeddings of text are significantly far from positive pair?
-
-    #where base mean embeddings of ts are signficiantly far form positive pair
-
-    #simple distance (euclid) from positive
-
-
-    negative_df = pd.DataFrame(negative_pairs)
-
-    # Append the negative pairs to the original DataFrame
-    return pd.concat([merged_df, negative_df], ignore_index=True)
-
-import pandas as pd
-
-def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = -1):
+def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = -1, random_state:int=42):
     # Create positive pairs where ticker matches and target_date of ts_df == end_date of text_df 
     # Add a unique identifier column
     text_df['text_id'] = 'text' + (text_df.index + 1).astype(str)
@@ -397,7 +297,7 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
 
             if not potential_negatives.empty:
                 # Randomly select a negative sample
-                negative_sample = potential_negatives.sample(n=1).iloc[0]
+                negative_sample = potential_negatives.sample(n=1, random_state=random_state + idx).iloc[0]
                 negative_pairs.append({
                     'text_id': negative_sample['text_id'],
                     'ids': negative_sample['ids'],
@@ -419,7 +319,6 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
     # Append the negative pairs to the original DataFrame
     return pd.concat([merged_df, negative_df], ignore_index=True)
 
-
 def normalize_ts(df):
     c_col='Close'
     t_col='ticker'
@@ -427,11 +326,11 @@ def normalize_ts(df):
         df.loc[df[t_col] == ticker, c_col] = (df.loc[df[t_col] == ticker, c_col] - df.loc[df[t_col] == ticker, c_col].min()) / (df.loc[df[t_col] == ticker, c_col].max() - df.loc[df[t_col] == ticker, c_col].min())
     return df
 
-def get_data_loaders(dfs, model, batch_size, num_workers):
+def get_data_loaders(dfs, text_tokenizer, batch_size, num_workers):
     final_dataloaders = []
 
     for df in dfs:
-        dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
+        dataset = CustomDataset(df=df, text_tokenizer=text_tokenizer)
         dataloader  = DataLoader(dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
         final_dataloaders.append(dataloader)
 
@@ -480,8 +379,6 @@ def normalize_ts_features(df, column_name):
     
     return normalized_dates
 
-# Apply the function to normalize dates
-
 def subset_data_helper(data_source, text_df, ts_df):
     #filter EDT data as it is too large to work with
     if data_source['name'] == 'EDT':
@@ -490,7 +387,10 @@ def subset_data_helper(data_source, text_df, ts_df):
         text_df = text_df[text_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
         ts_df = ts_df[ts_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
 
-    top_tickers = text_df['ticker'].value_counts().nlargest(3).index #get top 3 tickers by text example count
+    sorted_tickers = text_df['ticker'].value_counts().index
+    #check that the tickers we are selecting actual have a ts pair
+    filtered_tickers = [ticker for ticker in sorted_tickers if ticker in ts_df['ticker'].unique()]
+    top_tickers = filtered_tickers[:3]
     text_df = text_df[text_df['ticker'].isin(top_tickers)].reset_index(drop=True)
     ts_df = ts_df[ts_df['ticker'].isin(top_tickers)].reset_index(drop=True)
 
@@ -538,7 +438,7 @@ def split_data(train_dates, test_dates, text_df, ts_df, text_date_col, ts_date_c
     
     return result
 
-def get_data(model, 
+def get_data(text_tokenizer, 
              data_source:dict, 
              ts_window:int=5, 
              ts_mode:str="middle", 
@@ -599,7 +499,7 @@ def get_data(model,
         #padd text_series to have empty strings for collate_fn
 
 
-        df = create_pairs(text_df=text_df, ts_df=ts_df, negatives_creation=negatives_creation)
+        df = create_pairs(text_df=text_df, ts_df=ts_df, negatives_creation=negatives_creation, random_state=random_state)
         max_length = df['text_series'].apply(len).max()
         df['text_series'] = df['text_series'].apply(lambda x: x + [''] * (max_length - len(x)))
 
@@ -611,7 +511,7 @@ def get_data(model,
 
 
         if loaders:
-            dataset = CustomDataset(df=df, text_tokenizer=model.get_text_tokenizer())
+            dataset = CustomDataset(df=df, text_tokenizer=text_tokenizer)
             dataloader  = DataLoader(dataset,  batch_size=batch_size, shuffle=False, num_workers=num_workers)
             final_dataloaders.append(dataloader)
         else:

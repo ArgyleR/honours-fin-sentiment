@@ -106,7 +106,6 @@ def validate(model: m.ContrastiveLearningModel, val_loader: DataLoader, optimize
     conf_matrix = confusion_matrix(all_labels, all_preds)
     return val_loss, accuracy, f1, conf_matrix
 
-
 def get_ts_encoder(ts_encoder_config: dict={"name": "LSTM"}, ts_window: int=5, projection_dim: int=128):
     if ts_encoder_config["name"] == "LSTM":
         input_dim = 1#ts_window
@@ -125,7 +124,10 @@ def get_text_encoder(text_encoder_config: dict={"name": 'bert-base-uncased',
 
 def get_model(ts_encoder_config: dict, text_encoder_config: dict, projection_dim: int, ts_window: int, text_aggregation: str):
     """
-    
+    helper method used to construct the Contrastive Learning model
+    first initialises the base encoders, then the full model
+
+    @param ts_encoder_config dict: 
     """
 
     ts_encoder_model = get_ts_encoder(ts_encoder_config, ts_window=ts_window, projection_dim=projection_dim)

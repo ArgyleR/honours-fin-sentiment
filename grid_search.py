@@ -1,5 +1,3 @@
-
-#TODO inefficiency code run
 import model_helper as mh
 import data_helper_v3 as dh3
 import torch
@@ -179,7 +177,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
 
         if df is None:
             #get the df before anything else: 
-            df_list = dh3.get_data(model=None, 
+            df_list = dh3.get_data(text_tokenizer=None, 
                 data_source=data_source, 
                 ts_window=ts_window, 
                 ts_mode=ts_overlap, 
@@ -237,7 +235,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 criterion, negative_label   = get_criterion(criterion_name=criterion_name)
 
                 df_list = [dh3.correct_negative_labels(single_df, negative_label=negative_label) for single_df in df_list]     
-                train_loader, valid_loader, test_loader = dh3.get_data_loaders(dfs=df_list, model=model, batch_size=batch_size, num_workers=num_workers)
+                train_loader, valid_loader, test_loader = dh3.get_data_loaders(dfs=df_list, text_tokenizer=model.get_text_tokenizer(), batch_size=batch_size, num_workers=num_workers)
 
                 data = get_data_base(search_index=i, epochs=num_epochs, dataset_params=dataset_params, model_params=model_params, df_len=df_len, pair_count=pair_count)
 
@@ -291,7 +289,7 @@ def run(df=None):
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
-            "text_aggregation_method": ['max'], #"mean",                                                    
+            "text_aggregation_method": ['mean'], #"max",                                                    
             "projection_dim": [500],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
@@ -302,10 +300,10 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [3, 4, 5, 6, 7, 10],#4, 6 & 7 had a random error out                                                                         
+        "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
-        "text_window": [1, 3, 5, 7, 10],                                                                
-        'text_selection_method': [('TFIDF', 5)],#('embedding_diversity', 5), ('embedding_diversity', 2), ('vader', 5), ('vader', 2), ('TFIDF', 2)
+        "text_window": [3],        #1, 3, 5, 7, 10                                                        
+        'text_selection_method': [('TFIDF', 5)],#('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader', 5), ('vader', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -333,42 +331,10 @@ def run(df=None):
             'text_col': 'text',
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
-        },],                                                            
+        }],                                                            
         "negatives_creation": [("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_final.json', checkpoint_dir='checkpoint_final/', df=df)
 if __name__ == '__main__':
     run()
-#{"name": 'TimeSeriesTransformerModel'}, {"name": 'AutoFormerModel'}, 
-#, ("diff_distribution", )
-
-#{
-#            "name": "stock_emotion",
-#            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
-#            "ts_path": "./data/stock_emotions/price/",
-#            "ts_date_col": 'Date',
-#            'text_date_col': 'date',
-#            'text_col': 'text'
-#        },  
-#{
-#            "name": "stock_net",
-#            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
-#            "ts_path": "./data/stocknet/price/raw/",
-#            "ts_date_col": 'Date',
-#            'text_date_col': 'created_at',
-#            'text_col': 'text'
-#        },
-#{
-#            "name": "EDT",
-#            "text_path": "./data/EDT/evaluate_news.json",
-#            "ts_path": "./data/stock_emotions/price/",
-#            "ts_date_col": 'Date',
-#            'text_date_col': 'date',
-#            'text_col': 'text',
-#            'train_dates': '01/01/2020 - 03/09/2020',
-#            'test_dates': '04/09/2020 - 31/12/2020'
-#        },
-
-
-#text selection: Diversity based ranking; Engagement for Stocknet??; Topic modelling???; embedded similrity; 
