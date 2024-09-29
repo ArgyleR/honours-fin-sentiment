@@ -225,7 +225,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
 
-            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./output_final_plotting.json'):
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/output_frand_plotting.json'):
                 
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
@@ -271,8 +271,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                     best_val_loss = val_loss
                     best_dataset_params = dataset_params
                     best_model_params = model_params
-                    checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
-                    torch.save(model.state_dict(), checkpoint_path)
+                    #checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
+                    #torch.save(model.state_dict(), checkpoint_path)
 
                 torch.cuda.empty_cache()
                 gc.collect()
@@ -303,7 +303,7 @@ def run(df=None):
         "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
         "text_window": [3],        #1, 3, 5, 7, 10                                                        
-        'text_selection_method': [('TFIDF', 5)],#('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader', 5), ('vader', 2)],
+        'text_selection_method': [('TFIDF', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_polarized', 5), ('vader_polarized', 2), ('vader_neutral', 5), ('vader_neural', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -335,6 +335,6 @@ def run(df=None):
         "negatives_creation": [("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='output_final.json', checkpoint_dir='checkpoint_final/', df=df)
+    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/output_frand.json', checkpoint_dir='checkpoint_final/', df=df)
 if __name__ == '__main__':
     run()

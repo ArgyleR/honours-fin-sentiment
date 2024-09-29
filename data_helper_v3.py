@@ -227,8 +227,10 @@ def create_text_series_df(df, k=1, mode='ALL', top_n=None, text_col='text', time
             ids = window_df['id'].tolist()
             text_dates = window_df[time_col].tolist()
 
-            if mode == 'vader':
-                text_series, ids, text_dates = txtsm.apply_vader_ranking(text_series, ids, text_dates, top_n)
+            if mode == 'vader_polarized':
+                text_series, ids, text_dates = txtsm.apply_vader_ranking(text_series, ids, text_dates, top_n, mode='polarized')
+            elif mode == 'vader_neutral':
+                text_series, ids, text_dates = txtsm.apply_vader_ranking(text_series, ids, text_dates, top_n, mode='neutral')
 
             elif mode == 'clustering':
                 text_series, ids, text_dates = txtsm.apply_clustering_ranking(text_series, ids, text_dates, top_n)
