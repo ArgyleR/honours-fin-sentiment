@@ -295,7 +295,7 @@ def run(df=None):
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
             "num_epochs": [10],                                                                                             
-            "batch_size": [8],                                                                                             
+            "batch_size": [6],                                                                                             
             "num_workers": [4],  
         }
 
