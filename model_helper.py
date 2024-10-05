@@ -14,13 +14,64 @@ import torch
 import torch.nn as nn
 import models as m
 
+def train_val_loop(model: m.ContrastiveLearningModel, loader: DataLoader, optimizer, device: str, criterion, epoch:int, training:bool=False):
+    if training: model.train()
+    else: model.eval()
+    running_loss = 0.0
+    all_preds = []
+    all_labels = []
+    i = 0
+    if training: description = "Training"
+    else: description = "Validation"
+
+    for ts_data, text_data, labels in tqdm(loader, leave=False, position=2, desc=f'{description} Loop {epoch}'):
+        if labels.shape[0] == 1: #if there's a single element in the batch, skip it as it will cause errors for the base encoders that cannot be fixed
+            continue
+        ts_data = {
+            "past_time_values": torch.stack([d['past_time_values'].squeeze(1) for d in ts_data], dim=0).to(device),
+            "past_observed_mask": torch.stack([d['past_observed_mask'].squeeze(0) for d in ts_data], dim=0).to(device),
+            "past_time_features": torch.stack([d['past_time_features'].squeeze(0) for d in ts_data], dim=0).to(device)
+        }
+        text_data['input_ids'] = text_data['input_ids'].to(device)
+        text_data['attention_mask'] = text_data['attention_mask'].to(device)
+        
+        labels = labels.to(device)
+
+        if training: optimizer.zero_grad()
+
+        ts_embeddings, text_embeddings = model(ts_data, text_data)
+
+        loss = criterion(ts_embeddings, text_embeddings, labels)
+        if training:
+            loss.backward()
+            optimizer.step()
+        
+        running_loss += loss.item()
+
+        with torch.no_grad():
+            #get the model to predict based on the data it has just seen
+            preds = model.predict(ts_data=ts_data, text_data=text_data)
+        all_preds.extend(preds)
+        all_labels.extend(labels.cpu().numpy())
+        i += 1
+
+    all_preds = np.array(all_preds) #convert to numpy array
+    all_preds = (all_preds >= 0.0).astype(int).tolist()
+    all_labels = [0 if x == -1 else x for x in all_labels]
+
+    running_loss /= len(loader.dataset)
+    accuracy = accuracy_score(all_labels, all_preds)
+    f1 = f1_score(all_labels, all_preds, average='weighted')
+    conf_matrix = confusion_matrix(all_labels, all_preds)
+    return running_loss, accuracy, f1, conf_matrix
+
+
 def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer, device: str, criterion, epoch:int):
     model.train()
     train_loss = 0.0
     all_preds = []
     all_labels = []
     i = 0
-
     for ts_data, text_data, labels in tqdm(train_loader, leave=False, position=2, desc=f'Train Loop {epoch}'):
         if labels.shape[0] == 1: #if there's a single element in the batch, skip it as it will cause errors for the base encoders that cannot be fixed
             continue
@@ -45,17 +96,15 @@ def train(model: m.ContrastiveLearningModel, train_loader: DataLoader, optimizer
         train_loss += loss.item()
 
         #get the model to predict based on the data it has just seen
-        preds = model.predict(ts_data=ts_data, text_data=text_data)
+        with torch.no_grad():
+            preds = model.predict(ts_data=ts_data, text_data=text_data)
         all_preds.extend(preds)
         all_labels.extend(labels.cpu().numpy())
         i += 1
-    
     all_preds = np.array(all_preds) #convert to numpy array
     all_preds = (all_preds >= 0.0).astype(int).tolist()
     all_labels = [0 if x == -1 else x for x in all_labels]
     train_loss /= len(train_loader.dataset)
-    
-
     accuracy = accuracy_score(all_labels, all_preds)
     f1 = f1_score(all_labels, all_preds, average='weighted')
     conf_matrix = confusion_matrix(all_labels, all_preds)
