@@ -15,6 +15,8 @@ from transformers import BertTokenizer, BertModel
 from sentence_transformers import SentenceTransformer
 import utils.text_selection_methods as txtsm
 from tqdm import tqdm
+from sentence_transformers import SentenceTransformer, util
+import torch
 
 def read_ts_dir(path):
     """
@@ -263,7 +265,7 @@ def process_windows(text_df, ts_df, ts_window:int, ts_mode:str, text_window:int,
     #we now have the windowed text and ts (including multiple days); not yet implemented for multiple tickers
     return text_df, ts_df
     
-def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = -1, random_state:int=42):
+def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = -1, random_state:int=42, model_name: str = 'paraphrase-MiniLM-L6-v2'):
     # Create positive pairs where ticker matches and target_date of ts_df == end_date of text_df 
     # Add a unique identifier column
     text_df['text_id'] = 'text' + (text_df.index + 1).astype(str)
@@ -314,6 +316,44 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
                     'label': negative_label,  # Label for negative pair
                     "ts_past_features": row["ts_past_features"]  # Keeping the same ts_past_features for consistency
                 })
+    elif negatives_creation[0] == 'sentence_transformer_dissimilarity':
+        model = SentenceTransformer(model_name)
+        # Use sentence transformer model to compute dissimilarity
+        negative_pairs = []
+
+        # Embed text_series in both merged_df and text_df
+        merged_df['text_embeddings'] = merged_df['text_series'].apply(lambda x: model.encode(x, convert_to_tensor=True))
+        text_df['text_embeddings'] = text_df['text_series'].apply(lambda x: model.encode(x, convert_to_tensor=True))
+
+        for idx, row in merged_df.iterrows():
+            pos_embedding = row['text_embeddings']
+
+            # Calculate similarity scores with all text_series in text_df
+            if negatives_creation[1] == 'mean':
+                similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).mean().item())
+            elif negatives_creation[1] == 'min':
+                similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).min().item())
+            elif negatives_creation[1] == 'max':
+                similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).max().item())
+
+            # Find the least similar (lowest cosine similarity)
+            most_dissimilar_idx = similarity_scores.idxmin()
+            negative_sample = text_df.loc[most_dissimilar_idx]
+
+            negative_pairs.append({
+                'text_id': negative_sample['text_id'],
+                'ids': negative_sample['ids'],
+                'ticker': negative_sample['ticker'],  # Use different ticker
+                'target_date_text_df': negative_sample['target_date'],  # Use different target_date
+                'target_date_ts_df': row['target_date_ts_df'],  # Keep the same target_date for consistency
+                'end_date': negative_sample["end_date"],
+                'text_dates': negative_sample["text_dates"],
+                'text_series': negative_sample['text_series'],  # Use dissimilar text_series
+                'ts_id': row['ts_id'],
+                'time_series': row['time_series'],  # Keep the same time_series for consistency
+                'label': negative_label,  # Label for negative pair
+                "ts_past_features": row["ts_past_features"]
+            })
 
     # Convert negative pairs to DataFrame
     negative_df = pd.DataFrame(negative_pairs)
