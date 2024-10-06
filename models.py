@@ -159,8 +159,11 @@ class ContrastiveLearningModel(nn.Module):
             final_text_embeddings, _ = torch.max(text_embeddings, dim=1)  # Max over the number of texts (dim=1)
         else:
             raise NotImplementedError("Text embedding aggregation is only 'max' or 'mean' currently.")
-        projected_ts_embeddings = self.ts_projection_head(ts_embeddings)
-        projected_text_embeddings = self.text_projection_head(final_text_embeddings)
+        normalized_ts_embeddings = torch.nn.functional.normalize(ts_embeddings, p=2, dim=-1)
+        normalized_text_embeddings = torch.nn.functional.normalize(final_text_embeddings, p=2, dim=-1)
+        projected_ts_embeddings = self.ts_projection_head(normalized_ts_embeddings)
+        projected_text_embeddings = self.text_projection_head(normalized_text_embeddings)
+        
         if return_base_embeddings:
             return {"ts_base_embeddings": ts_embeddings, f"text_base_embeddings_{self.text_aggregation}": final_text_embeddings}
         return projected_ts_embeddings, projected_text_embeddings

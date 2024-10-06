@@ -139,6 +139,7 @@ def compare_dicts(dict1, dict2):
     return True
     
 def check_args_not_used(data_parameters, model_parameters, output_file):
+    return True
     with open(output_file, 'r') as file:
         data = json.load(file)
     for i in data:
@@ -303,7 +304,7 @@ def run(df=None):
         "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
         "text_window": [3],                                                        
-        'text_selection_method': [('TFIDF', 5)],#('vader_polarized', 2)], #('vader_polarized', 5), ('vader_neutral', 5), , ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2)],
+        'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -335,6 +336,6 @@ def run(df=None):
         "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"),  ("sentence_transformer_dissimilarity", "mean"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/output_frand.json', checkpoint_dir='checkpoint_final/', df=df)
+    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/output_frand_normalization.json', checkpoint_dir='checkpoint_final/', df=df)
 if __name__ == '__main__':
     run()
