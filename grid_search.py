@@ -290,7 +290,7 @@ def run(df=None):
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
-            "text_aggregation_method": ['mean'], #"max",                                                    
+            "text_aggregation_method": ['mean', "max"],                                                    
             "projection_dim": [500],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
@@ -333,7 +333,7 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"),  ("sentence_transformer_dissimilarity", "mean"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],# ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
     grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/output_frand_normalization.json', checkpoint_dir='checkpoint_final/', df=df)
