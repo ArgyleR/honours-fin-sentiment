@@ -226,7 +226,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
 
-            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/output_frand_plotting.json'):
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/output_frand_normalized_plotting.json'):
                 
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
