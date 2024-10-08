@@ -290,7 +290,7 @@ def run(df=None):
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
             "text_aggregation_method": ['mean'], #"max",                                                    
-            "projection_dim": [400, 500, 600],                                                                        
+            "projection_dim": [500],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
@@ -303,7 +303,7 @@ def run(df=None):
         "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
         "text_window": [3],          #3, 4, 5, 6, 7                                              
-        'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
+        'text_selection_method': [('TFIDF', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_polarized', 5), ('vader_neutral', 5), ('vader_polarized', 2), ('vader_neural', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
