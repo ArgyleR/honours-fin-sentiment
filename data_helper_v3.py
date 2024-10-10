@@ -319,6 +319,7 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
     elif negatives_creation[0] == 'sentence_transformer_dissimilarity':
         model = SentenceTransformer(model_name)
         # Use sentence transformer model to compute dissimilarity
+        epsilon = 0.35 #threshold for selection 
         negative_pairs = []
 
         # Embed text_series in both merged_df and text_df
@@ -336,9 +337,16 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
             elif negatives_creation[1] == 'max':
                 similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).max().item())
 
-            # Find the least similar (lowest cosine similarity)
-            most_dissimilar_idx = similarity_scores.idxmin()
-            negative_sample = text_df.loc[most_dissimilar_idx]
+            # Filter to find candidates with similarity below epsilon
+            candidate_negatives = text_df[similarity_scores < epsilon]
+
+            if not candidate_negatives.empty:
+                # Randomly select a negative sample from the candidates
+                negative_sample = candidate_negatives.sample(n=1, random_state=random_state + idx).iloc[0]
+            else:
+                # Fallback: select the most dissimilar if no candidates are below epsilon
+                most_dissimilar_idx = similarity_scores.idxmin()
+                negative_sample = text_df.loc[most_dissimilar_idx]
 
             negative_pairs.append({
                 'text_id': negative_sample['text_id'],

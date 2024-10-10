@@ -14,6 +14,7 @@ import pdb
 import random
 import gc
 import numpy as np
+import matplotlib.pyplot as plt
 
 def set_seed(seed, device):
     random.seed(seed)
@@ -190,7 +191,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 subset_data=True)
         
         df_len = len(df_list[0])#length of train df
-        
+
         pair_count = list(df_list[0]['label'].value_counts().items())
         
         model_permutations = list(itertools.product(*model_param_grid.values()))
@@ -225,7 +226,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
 
-            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/output_frand_normalized_plotting.json'):
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/epsilon_transdis/output_plotting.json'):
                 
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
@@ -332,9 +333,36 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],# ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],#, ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min")],# ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-    grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/output_frand_normalization.json', checkpoint_dir='checkpoint_final/', df=df)
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output.json', checkpoint_dir='checkpoint_final/', df=df)
+
 if __name__ == '__main__':
+    
     run()
+    
+    #print(df)
+#
+    #new_df = df[['text_series', 'label']]
+    #
+    #row_tuples = df['text_series'].apply(tuple)
+    #
+    ## Count occurrences of each unique row
+    #row_counts = row_tuples.value_counts()
+    #
+    ## Get the number of unique rows
+    #num_unique_rows = len(row_counts)
+    #print(f"Number of unique rows: {num_unique_rows}")
+    #
+    ## Plot histogram
+    #plt.figure(figsize=(10, 6))
+    #plt.hist(row_counts, bins=range(1, row_counts.max() + 2), align='left', edgecolor='black')
+    #plt.title('Histogram of Row Frequencies')
+    #plt.xlabel('Number of Times a Row is Seen')
+    #plt.ylabel('Frequency')
+    #plt.savefig("./data/hist_unique_textseries.png")
+    #plt.show()
+#
+    #new_df.to_csv("./data/neg_assessment_text_only.csv")
+    #pdb.set_trace()
