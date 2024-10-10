@@ -300,10 +300,10 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_window": [10],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
-        "text_window": [3],          #3, 4, 5, 6, 7                                              
-        'text_selection_method': [('TFIDF', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_polarized', 5), ('vader_neutral', 5), ('vader_polarized', 2), ('vader_neural', 2)],
+        "text_window": [3, 4, 5, 6, 7],          #3, 4, 5, 6, 7                                              
+        'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
