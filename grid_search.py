@@ -292,7 +292,7 @@ def run(df=None):
             "text_encoder_pretrained": [True],                                                                       
             "text_aggregation_method": ['mean'], #"max",                                                    
             "projection_dim": [500],                                                                        
-            "learning_rate": [0.001, 0.0001, 0.00001, 0.000001, 0.0000001],                                                                             
+            "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
             "num_epochs": [10],                                                                                             
@@ -333,7 +333,7 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],#, ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min")],# ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        "negatives_creation": [("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
     return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output.json', checkpoint_dir='checkpoint_final/', df=df)
