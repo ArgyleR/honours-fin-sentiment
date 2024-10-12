@@ -301,9 +301,9 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_window": [3, 4, 5, 6, 7, 10],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
-        "text_window": [3],          #3, 4, 5, 6, 7                                              
+        "text_window": [3, 4, 5, 6, 7],          #3, 4, 5, 6, 7                                              
         'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
@@ -333,7 +333,7 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],# ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
     return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output.json', checkpoint_dir='checkpoint_final/', df=df)
