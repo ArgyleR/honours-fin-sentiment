@@ -144,6 +144,8 @@ class ContrastiveLearningModel(nn.Module):
         attention_mask = text_data['attention_mask']
         batch_size, number_of_texts, embedding_dim = input_ids.size()
         
+        empty_texts = (input_ids == 0).all(dim=-1)#check for empty texts (all padding tokens)
+
         # Reshape input_ids and attention_mask to pass them all at once through the text encoder and then reshape for aggregation
         input_ids = input_ids.view(batch_size * number_of_texts, embedding_dim)  # Shape: [batch_size * number_of_texts, embedding_dim]
         attention_mask = attention_mask.view(batch_size * number_of_texts, embedding_dim)  # Shape: [batch_size * number_of_texts, embedding_dim]
@@ -152,13 +154,22 @@ class ContrastiveLearningModel(nn.Module):
         
         # Reshape the embeddings back to [batch_size, number_of_texts, embedding_dim]
         text_embeddings = text_embeddings.view(batch_size, number_of_texts, -1)  # Shape: [batch_size, number_of_texts, embedding_dim]
+
+        non_empty_mask = ~empty_texts  # Shape: [batch_size, number_of_texts]
+        non_empty_mask = non_empty_mask.unsqueeze(-1).expand_as(text_embeddings).float()
+        
         # Aggregate the embeddings for each example
         if self.text_aggregation == 'mean':
-            final_text_embeddings = torch.mean(text_embeddings, dim=1)  # Mean over the number of texts (dim=1)
+            summed_embeddings = torch.sum(text_embeddings * non_empty_mask, dim=1)
+            valid_counts = torch.sum(non_empty_mask, dim=1)  # Number of non-empty texts per batch
+            final_text_embeddings = summed_embeddings / valid_counts.clamp(min=1)  # Avoid division by zero
         elif self.text_aggregation == 'max':
-            final_text_embeddings, _ = torch.max(text_embeddings, dim=1)  # Max over the number of texts (dim=1)
+            # Set all-padding embeddings to a large negative value so they don't affect max
+            masked_embeddings = text_embeddings.masked_fill(non_empty_mask == 0, float('-inf'))
+            final_text_embeddings, _ = torch.max(masked_embeddings, dim=1)
         else:
             raise NotImplementedError("Text embedding aggregation is only 'max' or 'mean' currently.")
+        
         normalized_ts_embeddings = torch.nn.functional.normalize(ts_embeddings, p=2, dim=-1)
         normalized_text_embeddings = torch.nn.functional.normalize(final_text_embeddings, p=2, dim=-1)
         projected_ts_embeddings = self.ts_projection_head(normalized_ts_embeddings)

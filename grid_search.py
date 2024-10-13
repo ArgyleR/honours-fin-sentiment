@@ -188,7 +188,8 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 batch_size=None, 
                 num_workers=None, 
                 loaders=False,
-                subset_data=True)
+                subset_data=True, 
+                random_state=random_state)
         
         df_len = len(df_list[0])#length of train df
 
@@ -226,7 +227,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
             criterion_name              = model_params["criterion"]
             num_epochs                  = model_params["num_epochs"]
 
-            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/epsilon_transdis/output_plotting.json'):
+            if check_args_not_used(data_parameters=dataset_params, model_parameters=model_params, output_file='./results/epsilon_transdis/output_noempty_plotting.json'):
                 
                 model = mh.get_model(ts_encoder_config=ts_encoder, text_encoder_config=text_encoder, projection_dim=projection_dim, ts_window=ts_window, text_aggregation=text_aggregation_method)
                 model.to(device)
@@ -301,9 +302,9 @@ def run(df=None):
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [3, 4, 5, 6, 7, 10],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
         "ts_overlap": ['start'],                                                                    
-        "text_window": [3, 4, 5, 6, 7],          #3, 4, 5, 6, 7                                              
+        "text_window": [3],          #3, 4, 5, 6, 7                                              
         'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
@@ -333,10 +334,10 @@ def run(df=None):
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
         }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "mean")],# ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        "negatives_creation": [("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
         "random_state": [42, 43, 44],
     }
-    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output.json', checkpoint_dir='checkpoint_final/', df=df)
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output_noempty.json', checkpoint_dir='checkpoint_final/', df=df)
 
 if __name__ == '__main__':
     
