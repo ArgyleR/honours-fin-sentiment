@@ -7,14 +7,11 @@ import datetime
 import os
 import torch.nn as nn
 import json
-from torch.utils.data import Dataset, DataLoader, random_split
 import pandas as pd
 import torch.optim as optim
-import pdb
 import random
 import gc
 import numpy as np
-import matplotlib.pyplot as plt
 import re
 
 def set_seed(seed, device):
@@ -45,7 +42,6 @@ def get_criterion(criterion_name:str):#TODO
     return torch.nn.CosineEmbeddingLoss(margin=0.0, size_average=None, reduce=None, reduction='mean'), -1
 
 def get_data_base(search_index, epochs, dataset_params, model_params, df_len, pair_count):
-    #doc is shorted/longer?
     data = {
         "end_time": None,
         "search_index": search_index,
@@ -302,7 +298,7 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
     print(f"Best Model Params: \n{best_model_params}")
     print(f"Best Dataset Params: \n{best_dataset_params}")
 
-def run(df=None):
+def run_EDT_best(df=None):
     #IDEAL PARAM GRID:
     model_param_grid = {
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
@@ -332,27 +328,8 @@ def run(df=None):
             'text_col': 'text',
             'train_dates': '01/01/2020 - 03/09/2020',
             'test_dates': '04/09/2020 - 31/12/2020'
-        }#,
-        #{
-        #    "name": "stock_emotion",
-        #    "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
-        #    "ts_path": "./data/stock_emotions/price/",
-        #    "ts_date_col": 'Date',
-        #    'text_date_col': 'date',
-        #    'text_col': 'text',
-        #    'train_dates': '01/01/2020 - 03/09/2020',
-        #    'test_dates': '04/09/2020 - 31/12/2020'
-        #}#,  
-        #{
-        #    "name": "stock_net",
-        #    "text_path": "./data/stocknet/tweet/organised_tweet.csv",
-        #    "ts_path": "./data/stocknet/price/raw/",
-        #    "ts_date_col": 'Date',
-        #    'text_date_col': 'created_at',
-        #    'text_col': 'text',
-        #    'train_dates': '01/01/2014 - 01/08/2015',
-        #    'test_dates': '01/08/2015 - 01/01/2016'
-        ],#},],                                                            
+        }
+        ],                                                            
         "negatives_creation": [("sentence_transformer_dissimilarity", "max")],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
         "random_state": [42, 43, 44],
     }
@@ -432,7 +409,6 @@ def run_stock_net_best(df=None):
     return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output_noempty.json', checkpoint_dir='checkpoint_final/', df=df)
 
 if __name__ == '__main__':
-    
-    run()
-    #run_stock_emotion_best()
-    #run_stock_net_best()
+    run_EDT_best()
+    run_stock_emotion_best()
+    run_stock_net_best()
