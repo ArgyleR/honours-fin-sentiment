@@ -1,0 +1,6769 @@
+[{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5424528301886793,
+            "f1_score": 0.48465027692153473
+        },
+        "test": {
+            "accuracy": 0.5405405405405406,
+            "f1_score": 0.48981614996395106
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6792452830188679,
+            "f1_score": 0.6791310541310542
+        },
+        "test": {
+            "accuracy": 0.6081081081081081,
+            "f1_score": 0.6045697438732265
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5377358490566038,
+            "f1_score": 0.47746478873239434
+        },
+        "test": {
+            "accuracy": 0.536036036036036,
+            "f1_score": 0.4953988745448526
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6745283018867925,
+            "f1_score": 0.674347158218126
+        },
+        "test": {
+            "accuracy": 0.6081081081081081,
+            "f1_score": 0.607718086726922
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5471698113207547,
+            "f1_score": 0.48434174521131046
+        },
+        "test": {
+            "accuracy": 0.545045045045045,
+            "f1_score": 0.5078901740447292
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6509433962264151,
+            "f1_score": 0.6484087852980727
+        },
+        "test": {
+            "accuracy": 0.6081081081081081,
+            "f1_score": 0.6071435835892846
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5707547169811321,
+            "f1_score": 0.5262162626783565
+        },
+        "test": {
+            "accuracy": 0.545045045045045,
+            "f1_score": 0.5129358097100033
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6839622641509434,
+            "f1_score": 0.6839552321829874
+        },
+        "test": {
+            "accuracy": 0.6036036036036037,
+            "f1_score": 0.6034748721279531
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5087719298245614,
+            "f1_score": 0.4132352941176471
+        },
+        "test": {
+            "accuracy": 0.5048543689320388,
+            "f1_score": 0.4268412438625205
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6052631578947368,
+            "f1_score": 0.597331240188383
+        },
+        "test": {
+            "accuracy": 0.6262135922330098,
+            "f1_score": 0.6186560884721721
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6228070175438597,
+            "f1_score": 0.6228070175438597
+        },
+        "test": {
+            "accuracy": 0.5922330097087378,
+            "f1_score": 0.589095744680851
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5964912280701754,
+            "f1_score": 0.5883830455259027
+        },
+        "test": {
+            "accuracy": 0.6456310679611651,
+            "f1_score": 0.6384661617982931
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5350877192982456,
+            "f1_score": 0.50524074680642
+        },
+        "test": {
+            "accuracy": 0.5,
+            "f1_score": 0.45854492561308596
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6096491228070176,
+            "f1_score": 0.6069193963930807
+        },
+        "test": {
+            "accuracy": 0.6504854368932039,
+            "f1_score": 0.650188679245283
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5394736842105263,
+            "f1_score": 0.5131672597864768
+        },
+        "test": {
+            "accuracy": 0.5339805825242718,
+            "f1_score": 0.4938574938574939
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6228070175438597,
+            "f1_score": 0.6192621359223301
+        },
+        "test": {
+            "accuracy": 0.6553398058252428,
+            "f1_score": 0.6539617195447986
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5796460176991151,
+            "f1_score": 0.5786478265135904
+        },
+        "test": {
+            "accuracy": 0.6285714285714286,
+            "f1_score": 0.6277272727272727
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6106194690265486,
+            "f1_score": 0.6068943706514864
+        },
+        "test": {
+            "accuracy": 0.680952380952381,
+            "f1_score": 0.6808872559025652
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5176991150442478,
+            "f1_score": 0.47706285690024836
+        },
+        "test": {
+            "accuracy": 0.580952380952381,
+            "f1_score": 0.5535800560440622
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6238938053097345,
+            "f1_score": 0.6237096237096238
+        },
+        "test": {
+            "accuracy": 0.680952380952381,
+            "f1_score": 0.6808872559025652
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5486725663716814,
+            "f1_score": 0.523443314314066
+        },
+        "test": {
+            "accuracy": 0.6,
+            "f1_score": 0.5779500430663221
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6106194690265486,
+            "f1_score": 0.6101309495804909
+        },
+        "test": {
+            "accuracy": 0.6523809523809524,
+            "f1_score": 0.6514245435321403
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.4778761061946903,
+            "f1_score": 0.39418446160835985
+        },
+        "test": {
+            "accuracy": 0.5523809523809524,
+            "f1_score": 0.49642857142857144
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "EDT",
+            "text_path": "./data/EDT/evaluate_news.json",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6415929203539823,
+            "f1_score": 0.6410236297676242
+        },
+        "test": {
+            "accuracy": 0.6714285714285714,
+            "f1_score": 0.6713615023474179
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.753125,
+            "f1_score": 0.750471320981927
+        },
+        "test": {
+            "accuracy": 0.715625,
+            "f1_score": 0.7143950019125335
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.746875,
+            "f1_score": 0.7391698113207547
+        },
+        "test": {
+            "accuracy": 0.7625,
+            "f1_score": 0.7574887320011168
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7625,
+            "f1_score": 0.7621655452980753
+        },
+        "test": {
+            "accuracy": 0.7625,
+            "f1_score": 0.7622678396871946
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.75,
+            "f1_score": 0.746031746031746
+        },
+        "test": {
+            "accuracy": 0.775,
+            "f1_score": 0.7706641184902054
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.76875,
+            "f1_score": 0.7674418604651162
+        },
+        "test": {
+            "accuracy": 0.715625,
+            "f1_score": 0.7103957195850862
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.721875,
+            "f1_score": 0.7162640099626401
+        },
+        "test": {
+            "accuracy": 0.759375,
+            "f1_score": 0.753103738514414
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.75,
+            "f1_score": 0.7496479424190268
+        },
+        "test": {
+            "accuracy": 0.753125,
+            "f1_score": 0.7524262812037881
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.734375,
+            "f1_score": 0.7279972799727997
+        },
+        "test": {
+            "accuracy": 0.771875,
+            "f1_score": 0.7668453254284315
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7795031055900621,
+            "f1_score": 0.7788867933652498
+        },
+        "test": {
+            "accuracy": 0.7639751552795031,
+            "f1_score": 0.7626566318811343
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6801242236024845,
+            "f1_score": 0.6549341934141394
+        },
+        "test": {
+            "accuracy": 0.7732919254658385,
+            "f1_score": 0.7669789343246592
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7857142857142857,
+            "f1_score": 0.7855467505767209
+        },
+        "test": {
+            "accuracy": 0.7888198757763976,
+            "f1_score": 0.7885261734595326
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6645962732919255,
+            "f1_score": 0.6361734181452963
+        },
+        "test": {
+            "accuracy": 0.7670807453416149,
+            "f1_score": 0.7600810657765327
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7763975155279503,
+            "f1_score": 0.7758440654368256
+        },
+        "test": {
+            "accuracy": 0.7701863354037267,
+            "f1_score": 0.7681740348692403
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7701863354037267,
+            "f1_score": 0.7701065143562829
+        },
+        "test": {
+            "accuracy": 0.7950310559006211,
+            "f1_score": 0.7947459918871934
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7888198757763976,
+            "f1_score": 0.7885261734595326
+        },
+        "test": {
+            "accuracy": 0.7763975155279503,
+            "f1_score": 0.7763198518061131
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7515527950310559,
+            "f1_score": 0.7459064904320379
+        },
+        "test": {
+            "accuracy": 0.7919254658385093,
+            "f1_score": 0.7911984746861782
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7116564417177914,
+            "f1_score": 0.7057987711213517
+        },
+        "test": {
+            "accuracy": 0.7662337662337663,
+            "f1_score": 0.7633499807913945
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6993865030674846,
+            "f1_score": 0.6915382535820492
+        },
+        "test": {
+            "accuracy": 0.737012987012987,
+            "f1_score": 0.7312767263757688
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7392638036809815,
+            "f1_score": 0.739241721324588
+        },
+        "test": {
+            "accuracy": 0.814935064935065,
+            "f1_score": 0.814495081308974
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6901840490797546,
+            "f1_score": 0.68804418884478
+        },
+        "test": {
+            "accuracy": 0.8084415584415584,
+            "f1_score": 0.8077098081542384
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6901840490797546,
+            "f1_score": 0.686571284423756
+        },
+        "test": {
+            "accuracy": 0.7727272727272727,
+            "f1_score": 0.769579343365253
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7269938650306749,
+            "f1_score": 0.723431229565234
+        },
+        "test": {
+            "accuracy": 0.814935064935065,
+            "f1_score": 0.8143695479777954
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7177914110429447,
+            "f1_score": 0.7172699849170437
+        },
+        "test": {
+            "accuracy": 0.8051948051948052,
+            "f1_score": 0.8043699186991871
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7239263803680982,
+            "f1_score": 0.7172756706753006
+        },
+        "test": {
+            "accuracy": 0.8116883116883117,
+            "f1_score": 0.8112984324164448
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5625,
+            "f1_score": 0.5622263914946842
+        },
+        "test": {
+            "accuracy": 0.559375,
+            "f1_score": 0.5581279196168876
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.53125,
+            "f1_score": 0.5230335068961406
+        },
+        "test": {
+            "accuracy": 0.546875,
+            "f1_score": 0.537733499377335
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.525,
+            "f1_score": 0.5064734770079955
+        },
+        "test": {
+            "accuracy": 0.5375,
+            "f1_score": 0.5014946739084671
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.525,
+            "f1_score": 0.5249257696515081
+        },
+        "test": {
+            "accuracy": 0.53125,
+            "f1_score": 0.5285983658076681
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.525,
+            "f1_score": 0.5247029393370857
+        },
+        "test": {
+            "accuracy": 0.521875,
+            "f1_score": 0.5173453996983408
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5,
+            "f1_score": 0.4830162769094066
+        },
+        "test": {
+            "accuracy": 0.528125,
+            "f1_score": 0.5158268118919027
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.525,
+            "f1_score": 0.5218434194487044
+        },
+        "test": {
+            "accuracy": 0.515625,
+            "f1_score": 0.5155824242365051
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.503125,
+            "f1_score": 0.49639219645455357
+        },
+        "test": {
+            "accuracy": 0.521875,
+            "f1_score": 0.5094139219831861
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5062111801242236,
+            "f1_score": 0.47945706878145494
+        },
+        "test": {
+            "accuracy": 0.531055900621118,
+            "f1_score": 0.522541365935091
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5186335403726708,
+            "f1_score": 0.5007152646479197
+        },
+        "test": {
+            "accuracy": 0.5372670807453416,
+            "f1_score": 0.5176102715691893
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5124223602484472,
+            "f1_score": 0.475901678433324
+        },
+        "test": {
+            "accuracy": 0.5217391304347826,
+            "f1_score": 0.4980158730158729
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5496894409937888,
+            "f1_score": 0.5496503496503496
+        },
+        "test": {
+            "accuracy": 0.5093167701863354,
+            "f1_score": 0.5044223650886421
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5186335403726708,
+            "f1_score": 0.5141302337353855
+        },
+        "test": {
+            "accuracy": 0.5124223602484472,
+            "f1_score": 0.5051633174436929
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5559006211180124,
+            "f1_score": 0.555896337876026
+        },
+        "test": {
+            "accuracy": 0.546583850931677,
+            "f1_score": 0.5436082634358497
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5217391304347826,
+            "f1_score": 0.49941449626489
+        },
+        "test": {
+            "accuracy": 0.531055900621118,
+            "f1_score": 0.522541365935091
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5341614906832298,
+            "f1_score": 0.5341435185185186
+        },
+        "test": {
+            "accuracy": 0.5341614906832298,
+            "f1_score": 0.5323573835250377
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5613496932515337,
+            "f1_score": 0.5583199901465697
+        },
+        "test": {
+            "accuracy": 0.551948051948052,
+            "f1_score": 0.5487323225888647
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5184049079754601,
+            "f1_score": 0.5072731648616126
+        },
+        "test": {
+            "accuracy": 0.5454545454545454,
+            "f1_score": 0.5376565448618974
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5460122699386503,
+            "f1_score": 0.5457387112567318
+        },
+        "test": {
+            "accuracy": 0.538961038961039,
+            "f1_score": 0.536144578313253
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5306748466257669,
+            "f1_score": 0.5179332540810113
+        },
+        "test": {
+            "accuracy": 0.5324675324675324,
+            "f1_score": 0.5208297320656872
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5674846625766872,
+            "f1_score": 0.5671547624652762
+        },
+        "test": {
+            "accuracy": 0.5616883116883117,
+            "f1_score": 0.5615727706955999
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5398773006134969,
+            "f1_score": 0.5392530056910262
+        },
+        "test": {
+            "accuracy": 0.5681818181818182,
+            "f1_score": 0.567630326251016
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5552147239263804,
+            "f1_score": 0.5368002273373117
+        },
+        "test": {
+            "accuracy": 0.5292207792207793,
+            "f1_score": 0.5086638428956488
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_polarized",
+            5
+        ],
+        "data_source": {
+            "name": "stock_emotion",
+            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "./data/stock_emotions/price/",
+            "ts_date_col": "Date",
+            "text_date_col": "date",
+            "text_col": "text",
+            "train_dates": "01/01/2020 - 03/09/2020",
+            "test_dates": "04/09/2020 - 31/12/2020"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5337423312883436,
+            "f1_score": 0.5297600971758275
+        },
+        "test": {
+            "accuracy": 0.5616883116883117,
+            "f1_score": 0.5600139678105457
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7067137809187279,
+            "f1_score": 0.7058875087649004
+        },
+        "test": {
+            "accuracy": 0.5821678321678322,
+            "f1_score": 0.5517520648691894
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6943462897526502,
+            "f1_score": 0.6741226391546717
+        },
+        "test": {
+            "accuracy": 0.6328671328671329,
+            "f1_score": 0.5894568471707657
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5618374558303887,
+            "f1_score": 0.5412150766776922
+        },
+        "test": {
+            "accuracy": 0.548951048951049,
+            "f1_score": 0.5184305330757584
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.696113074204947,
+            "f1_score": 0.6757008847670823
+        },
+        "test": {
+            "accuracy": 0.6293706293706294,
+            "f1_score": 0.5855469123819159
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.715547703180212,
+            "f1_score": 0.7132193041808941
+        },
+        "test": {
+            "accuracy": 0.6206293706293706,
+            "f1_score": 0.5953379953379953
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7102473498233216,
+            "f1_score": 0.70012276280933
+        },
+        "test": {
+            "accuracy": 0.6486013986013986,
+            "f1_score": 0.6230216110406154
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.676678445229682,
+            "f1_score": 0.6766289840684093
+        },
+        "test": {
+            "accuracy": 0.6486013986013986,
+            "f1_score": 0.6466042694453409
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7049469964664311,
+            "f1_score": 0.6913012949264358
+        },
+        "test": {
+            "accuracy": 0.5874125874125874,
+            "f1_score": 0.5299459579920888
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5487804878048781,
+            "f1_score": 0.5486147166431359
+        },
+        "test": {
+            "accuracy": 0.6284246575342466,
+            "f1_score": 0.6225266362252664
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.4965156794425087,
+            "f1_score": 0.3548178830484414
+        },
+        "test": {
+            "accuracy": 0.7328767123287672,
+            "f1_score": 0.7175595238095238
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5627177700348432,
+            "f1_score": 0.5016033901236704
+        },
+        "test": {
+            "accuracy": 0.7328767123287672,
+            "f1_score": 0.7269555835281424
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5679442508710801,
+            "f1_score": 0.4919483782549109
+        },
+        "test": {
+            "accuracy": 0.7363013698630136,
+            "f1_score": 0.7250773388112444
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5400696864111498,
+            "f1_score": 0.5400641025641024
+        },
+        "test": {
+            "accuracy": 0.6506849315068494,
+            "f1_score": 0.6455931174811694
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.7195121951219512,
+            "f1_score": 0.7188902104049619
+        },
+        "test": {
+            "accuracy": 0.7003424657534246,
+            "f1_score": 0.6980396212199554
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5975609756097561,
+            "f1_score": 0.5542084825255938
+        },
+        "test": {
+            "accuracy": 0.6952054794520548,
+            "f1_score": 0.6896695843234659
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5940766550522648,
+            "f1_score": 0.5751997077834421
+        },
+        "test": {
+            "accuracy": 0.7071917808219178,
+            "f1_score": 0.7022815422545917
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6764705882352942,
+            "f1_score": 0.6559994653138259
+        },
+        "test": {
+            "accuracy": 0.5769230769230769,
+            "f1_score": 0.5456801144792638
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6782006920415224,
+            "f1_score": 0.6631954887218044
+        },
+        "test": {
+            "accuracy": 0.6363636363636364,
+            "f1_score": 0.6171943371943371
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6868512110726643,
+            "f1_score": 0.6847668549905838
+        },
+        "test": {
+            "accuracy": 0.6206293706293706,
+            "f1_score": 0.6188575306374995
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6539792387543253,
+            "f1_score": 0.6539129393449494
+        },
+        "test": {
+            "accuracy": 0.6486013986013986,
+            "f1_score": 0.6484197972570065
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6366782006920415,
+            "f1_score": 0.6013793103448276
+        },
+        "test": {
+            "accuracy": 0.6520979020979021,
+            "f1_score": 0.6282062588393613
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6955017301038062,
+            "f1_score": 0.692404450895017
+        },
+        "test": {
+            "accuracy": 0.6870629370629371,
+            "f1_score": 0.685886875343218
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.657439446366782,
+            "f1_score": 0.6440753871991043
+        },
+        "test": {
+            "accuracy": 0.6136363636363636,
+            "f1_score": 0.6017051953003153
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "max"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.6833910034602076,
+            "f1_score": 0.6770486347523685
+        },
+        "test": {
+            "accuracy": 0.6853146853146853,
+            "f1_score": 0.6826923076923077
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.49823321554770317,
+            "f1_score": 0.4936239919354839
+        },
+        "test": {
+            "accuracy": 0.5472027972027972,
+            "f1_score": 0.5470352806645815
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5159010600706714,
+            "f1_score": 0.5107636785786392
+        },
+        "test": {
+            "accuracy": 0.5314685314685315,
+            "f1_score": 0.530343137254902
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5565371024734982,
+            "f1_score": 0.5463049011436109
+        },
+        "test": {
+            "accuracy": 0.5524475524475524,
+            "f1_score": 0.5500215106631431
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5388692579505301,
+            "f1_score": 0.5224338976694868
+        },
+        "test": {
+            "accuracy": 0.5262237762237763,
+            "f1_score": 0.5188099694856011
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5265017667844523,
+            "f1_score": 0.5247869674185464
+        },
+        "test": {
+            "accuracy": 0.5541958041958042,
+            "f1_score": 0.5534738485558157
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5424028268551236,
+            "f1_score": 0.48898269929967547
+        },
+        "test": {
+            "accuracy": 0.513986013986014,
+            "f1_score": 0.48394885441682356
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5247349823321554,
+            "f1_score": 0.5003658964791898
+        },
+        "test": {
+            "accuracy": 0.5332167832167832,
+            "f1_score": 0.521095756389874
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5600706713780919,
+            "f1_score": 0.5600692981223955
+        },
+        "test": {
+            "accuracy": 0.5262237762237763,
+            "f1_score": 0.5261875724036325
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.519163763066202,
+            "f1_score": 0.4839205670801626
+        },
+        "test": {
+            "accuracy": 0.5376712328767124,
+            "f1_score": 0.514340626848019
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5069686411149826,
+            "f1_score": 0.48989954498494276
+        },
+        "test": {
+            "accuracy": 0.5428082191780822,
+            "f1_score": 0.528130078348419
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5696864111498258,
+            "f1_score": 0.558085821953888
+        },
+        "test": {
+            "accuracy": 0.553082191780822,
+            "f1_score": 0.5343941203603294
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.519163763066202,
+            "f1_score": 0.5041129850129586
+        },
+        "test": {
+            "accuracy": 0.4965753424657534,
+            "f1_score": 0.4874317853432526
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5017421602787456,
+            "f1_score": 0.4374862938596491
+        },
+        "test": {
+            "accuracy": 0.5136986301369864,
+            "f1_score": 0.4533781556917804
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5592334494773519,
+            "f1_score": 0.5541987076176881
+        },
+        "test": {
+            "accuracy": 0.535958904109589,
+            "f1_score": 0.5301382592457345
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5418118466898955,
+            "f1_score": 0.5205043911890355
+        },
+        "test": {
+            "accuracy": 0.5393835616438356,
+            "f1_score": 0.5257550829421443
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5278745644599303,
+            "f1_score": 0.48189251752793644
+        },
+        "test": {
+            "accuracy": 0.5325342465753424,
+            "f1_score": 0.49510885915604463
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5519031141868512,
+            "f1_score": 0.5399941616605466
+        },
+        "test": {
+            "accuracy": 0.5699300699300699,
+            "f1_score": 0.5617813765182186
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.513840830449827,
+            "f1_score": 0.452834066063638
+        },
+        "test": {
+            "accuracy": 0.5297202797202797,
+            "f1_score": 0.466430862592111
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5501730103806228,
+            "f1_score": 0.5306096951524237
+        },
+        "test": {
+            "accuracy": 0.5506993006993007,
+            "f1_score": 0.5356424228066019
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5467128027681661,
+            "f1_score": 0.5139801786998048
+        },
+        "test": {
+            "accuracy": 0.5367132867132867,
+            "f1_score": 0.49124496967540776
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5467128027681661,
+            "f1_score": 0.5193118334179787
+        },
+        "test": {
+            "accuracy": 0.5629370629370629,
+            "f1_score": 0.5398970398970399
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5363321799307958,
+            "f1_score": 0.5195583400533466
+        },
+        "test": {
+            "accuracy": 0.5384615384615384,
+            "f1_score": 0.5186658506731946
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5415224913494809,
+            "f1_score": 0.5190275671279506
+        },
+        "test": {
+            "accuracy": 0.5681818181818182,
+            "f1_score": 0.5493261455525607
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "naive",
+            30
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5640138408304498,
+            "f1_score": 0.5619157613599451
+        },
+        "test": {
+            "accuracy": 0.5716783216783217,
+            "f1_score": 0.5653535882986016
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5265017667844523,
+            "f1_score": 0.4732250760532859
+        },
+        "test": {
+            "accuracy": 0.5227272727272727,
+            "f1_score": 0.4838415389954882
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.49646643109540634,
+            "f1_score": 0.49266405623437287
+        },
+        "test": {
+            "accuracy": 0.493006993006993,
+            "f1_score": 0.47635583054485764
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5141342756183745,
+            "f1_score": 0.5039755254226486
+        },
+        "test": {
+            "accuracy": 0.5174825174825175,
+            "f1_score": 0.5088112305854241
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.4752650176678445,
+            "f1_score": 0.4682520853696727
+        },
+        "test": {
+            "accuracy": 0.4825174825174825,
+            "f1_score": 0.4603223174214607
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5053003533568905,
+            "f1_score": 0.4886950237456123
+        },
+        "test": {
+            "accuracy": 0.4825174825174825,
+            "f1_score": 0.4603223174214607
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.49646643109540634,
+            "f1_score": 0.49563357690251286
+        },
+        "test": {
+            "accuracy": 0.5157342657342657,
+            "f1_score": 0.5058245977362821
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.4911660777385159,
+            "f1_score": 0.4902495465632623
+        },
+        "test": {
+            "accuracy": 0.5052447552447552,
+            "f1_score": 0.504139927401939
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 42
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.49823321554770317,
+            "f1_score": 0.48950711382113826
+        },
+        "test": {
+            "accuracy": 0.5157342657342657,
+            "f1_score": 0.5150806597233911
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.47560975609756095,
+            "f1_score": 0.4495031081627906
+        },
+        "test": {
+            "accuracy": 0.4914383561643836,
+            "f1_score": 0.46182129592568116
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5226480836236934,
+            "f1_score": 0.5226422882672882
+        },
+        "test": {
+            "accuracy": 0.4914383561643836,
+            "f1_score": 0.4914010749755887
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5296167247386759,
+            "f1_score": 0.5295253360533314
+        },
+        "test": {
+            "accuracy": 0.523972602739726,
+            "f1_score": 0.5230272048886538
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5087108013937283,
+            "f1_score": 0.49333283251324045
+        },
+        "test": {
+            "accuracy": 0.511986301369863,
+            "f1_score": 0.5038025704243198
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5470383275261324,
+            "f1_score": 0.5241071428571428
+        },
+        "test": {
+            "accuracy": 0.5068493150684932,
+            "f1_score": 0.4819633353045535
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5209059233449478,
+            "f1_score": 0.5079902876004825
+        },
+        "test": {
+            "accuracy": 0.5171232876712328,
+            "f1_score": 0.5096703506097562
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5209059233449478,
+            "f1_score": 0.506822009141836
+        },
+        "test": {
+            "accuracy": 0.5136986301369864,
+            "f1_score": 0.4996077863461376
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 43
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5226480836236934,
+            "f1_score": 0.492455046534743
+        },
+        "test": {
+            "accuracy": 0.5102739726027398,
+            "f1_score": 0.4660904255319149
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.527681660899654,
+            "f1_score": 0.5276802471242176
+        },
+        "test": {
+            "accuracy": 0.5367132867132867,
+            "f1_score": 0.5366438931939413
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5121107266435986,
+            "f1_score": 0.38834601702165983
+        },
+        "test": {
+            "accuracy": 0.5104895104895105,
+            "f1_score": 0.38301282051282054
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5173010380622838,
+            "f1_score": 0.48856857428286005
+        },
+        "test": {
+            "accuracy": 0.527972027972028,
+            "f1_score": 0.4969708813758062
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 64,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5397923875432526,
+            "f1_score": 0.5102319062181447
+        },
+        "test": {
+            "accuracy": 0.5262237762237763,
+            "f1_score": 0.4927202814366359
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5190311418685121,
+            "f1_score": 0.5035714285714286
+        },
+        "test": {
+            "accuracy": 0.527972027972028,
+            "f1_score": 0.5180677775697435
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5190311418685121,
+            "f1_score": 0.49503469428801294
+        },
+        "test": {
+            "accuracy": 0.5122377622377622,
+            "f1_score": 0.48938866012036736
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 100
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5155709342560554,
+            "f1_score": 0.4369372503722671
+        },
+        "test": {
+            "accuracy": 0.5244755244755245,
+            "f1_score": 0.45974025974025967
+        }
+    }
+},
+{
+    "dataset_params": {
+        "ts_window": 4,
+        "ts_overlap": "start",
+        "text_window": 3,
+        "text_selection_method": [
+            "vader_neutral",
+            5
+        ],
+        "data_source": {
+            "name": "stock_net",
+            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "./data/stocknet/price/raw/",
+            "ts_date_col": "Date",
+            "text_date_col": "created_at",
+            "text_col": "text",
+            "train_dates": "01/01/2014 - 01/08/2015",
+            "test_dates": "01/08/2015 - 01/01/2016"
+        },
+        "negatives_creation": [
+            "sentence_transformer_dissimilarity",
+            "min"
+        ],
+        "random_state": 44
+    },
+    "model_params": {
+        "model": "lstm",
+        "lstm_hidden_dim": 128,
+        "lstm_input_dim": 1,
+        "dropout_rate": 0.2,
+        "dense_units": 128,
+        "epochs": 10,
+        "batch_size": 16,
+        "learning_rate": 0.0001,
+        "max_features": 500
+    },
+    "results": {
+        "validation": {
+            "accuracy": 0.5069204152249135,
+            "f1_score": 0.47380525715599936
+        },
+        "test": {
+            "accuracy": 0.5034965034965035,
+            "f1_score": 0.46787211740041923
+        }
+    }
+}
+]
