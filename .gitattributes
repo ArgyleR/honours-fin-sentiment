@@ -4,3 +4,4 @@ data/ filter=lfs diff=lfs merge=lfs -text
 checkpoint_sofiane/ filter=lfs diff=lfs merge=lfs -text
 data/EDT/evaluate_news.json filter=lfs diff=lfs merge=lfs -text
 data/stocknet/tweet/organised_tweet.csv filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
