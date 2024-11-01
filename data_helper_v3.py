@@ -336,7 +336,7 @@ def create_pairs(text_df, ts_df, negatives_creation: str, negative_label: int = 
                 similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).min().item())
             elif negatives_creation[1] == 'max':
                 similarity_scores = text_df['text_embeddings'].apply(lambda x: util.pytorch_cos_sim(pos_embedding, x).max().item())
-
+            
             # Filter to find candidates with similarity below epsilon
             candidate_negatives = text_df[similarity_scores < epsilon]
 
@@ -429,14 +429,15 @@ def normalize_ts_features(df, column_name):
     
     return normalized_dates
 
-def subset_data_helper(data_source, text_df, ts_df):
+def subset_data_helper(data_source, text_df, ts_df, long_run=False):
     #filter EDT data as it is too large to work with
     if data_source['name'] == 'EDT':
         with open('./data/tickers_selected/edt.txt', 'r') as file:
             edt_keep_tickers = [line.strip() for line in file]
         text_df = text_df[text_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
         ts_df = ts_df[ts_df['ticker'].isin(edt_keep_tickers)].reset_index(drop=True)
-
+    if long_run:
+        return text_df, ts_df
     sorted_tickers = text_df['ticker'].value_counts().index
     #check that the tickers we are selecting actual have a ts pair
     filtered_tickers = [ticker for ticker in sorted_tickers if ticker in ts_df['ticker'].unique()]
@@ -498,14 +499,16 @@ def get_data(text_tokenizer,
              batch_size:int=16, 
              num_workers:int=6, 
              loaders:bool=True,
-             subset_data:bool=False, 
-             random_state:int=42):
+             subset_data:bool=False,
+             random_state:int=42,
+             return_splits:bool=False,
+             long_run:bool=False):
     
     text_df, ts_df = wrangle_data(data_source) #returns df with id, ticker, Date, text, close
 
     #filter data to subset for faster training
     if subset_data:
-        text_df, ts_df = subset_data_helper(data_source=data_source, text_df=text_df, ts_df=ts_df)
+        text_df, ts_df = subset_data_helper(data_source=data_source, text_df=text_df, ts_df=ts_df, long_run=long_run)
         
 
     text_date_col = data_source['text_date_col']
@@ -530,7 +533,8 @@ def get_data(text_tokenizer,
                                  text_date_col=text_date_col, 
                                  ts_date_col=ts_date_col, 
                                  random_state=random_state)
-    
+    if return_splits: return split_data_dict
+
     final_dfs = []
     final_dataloaders = []
     for key in split_data_dict.keys():

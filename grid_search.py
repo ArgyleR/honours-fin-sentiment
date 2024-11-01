@@ -15,6 +15,7 @@ import random
 import gc
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
 def set_seed(seed, device):
     random.seed(seed)
@@ -148,6 +149,17 @@ def check_args_not_used(data_parameters, model_parameters, output_file):
         if compare_dicts(seen_dataset_params, data_parameters) and compare_dicts(seen_model_params, model_parameters):
             return False
     return True
+
+def save_df_list(df_list, save_name):
+    labels = ["train", "val", "test"]
+    for df, label in zip(df_list, labels):
+        df.to_csv(f"./data/constructed_datasets/overlap/{save_name}_{label}.csv", index = False)
+
+
+def make_non_primitive_a_safe_string(non_primitive):
+    non_primitive = str(non_primitive)
+    return re.sub(r'[^a-zA-Z0-9]', '', non_primitive)
+
        
 def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str, checkpoint_dir: str, df=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -189,8 +201,13 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                 num_workers=None, 
                 loaders=False,
                 subset_data=True, 
-                random_state=random_state)
-        
+                random_state=random_state,
+                long_run=False)
+            
+            #save_name = f"name_{data_source['name']}_tswin_{ts_window}_textwin_{text_window}_overlap_{ts_overlap}_textselection_{make_non_primitive_a_safe_string(text_selection_method)}_negativecreation_{make_non_primitive_a_safe_string(negatives_creation)}_randomstate_{random_state}"
+            #save_df_list(df_list=df_list, save_name=save_name)
+            
+
         df_len = len(df_list[0])#length of train df
 
         pair_count = list(df_list[0]['label'].value_counts().items())
@@ -268,13 +285,13 @@ def grid_search(model_param_grid: dict, dataset_param_grid: dict, out_file: str,
                     json.dump(data, file)
                     file.write('\n')
 
-                if val_loss < best_val_loss:
+                if val_loss < best_val_loss and val_accuracy > 0.49:
                     print(json.dumps(data, indent=4))
                     best_val_loss = val_loss
                     best_dataset_params = dataset_params
                     best_model_params = model_params
-                    #checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_search_id_{i}.pth")
-                    #torch.save(model.state_dict(), checkpoint_path)
+                    checkpoint_path = os.path.join(checkpoint_dir, f"dataset_{data_source['name']}_checkpoint_search_id_{i}.pth")
+                    torch.save(model.state_dict(), checkpoint_path)
 
                 torch.cuda.empty_cache()
                 gc.collect()
@@ -291,21 +308,21 @@ def run(df=None):
             "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
             "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
             "text_encoder_pretrained": [True],                                                                       
-            "text_aggregation_method": ['mean'], #"max",                                                    
-            "projection_dim": [500],                                                                        
+            "text_aggregation_method": ['max'], #"mean",                                                    
+            "projection_dim": [600],                                                                        
             "learning_rate": [0.00001],                                                                             
             "optimizer": ['adam'],                                                                                          
             "criterion": ['CosineEmbeddingLoss'],
-            "num_epochs": [10],                                                                                             
+            "num_epochs": [15],                                                                                             
             "batch_size": [6],                                                                                             
             "num_workers": [4],  
         }
 
     dataset_param_grid = {                                                                            
-        "ts_window": [6],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
-        "ts_overlap": ['start'],                                                                    
+        "ts_window": [4],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_overlap": ['start'], #'middle'                                                                   
         "text_window": [3],          #3, 4, 5, 6, 7                                              
-        'text_selection_method': [('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
+        'text_selection_method': [('vader_polarized', 5), ('embedding_diversity', 5)],#('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
             "text_path": "./data/EDT/evaluate_news.json",
@@ -315,7 +332,54 @@ def run(df=None):
             'text_col': 'text',
             'train_dates': '01/01/2020 - 03/09/2020',
             'test_dates': '04/09/2020 - 31/12/2020'
-        },{
+        }#,
+        #{
+        #    "name": "stock_emotion",
+        #    "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
+        #    "ts_path": "./data/stock_emotions/price/",
+        #    "ts_date_col": 'Date',
+        #    'text_date_col': 'date',
+        #    'text_col': 'text',
+        #    'train_dates': '01/01/2020 - 03/09/2020',
+        #    'test_dates': '04/09/2020 - 31/12/2020'
+        #}#,  
+        #{
+        #    "name": "stock_net",
+        #    "text_path": "./data/stocknet/tweet/organised_tweet.csv",
+        #    "ts_path": "./data/stocknet/price/raw/",
+        #    "ts_date_col": 'Date',
+        #    'text_date_col': 'created_at',
+        #    'text_col': 'text',
+        #    'train_dates': '01/01/2014 - 01/08/2015',
+        #    'test_dates': '01/08/2015 - 01/01/2016'
+        ],#},],                                                            
+        "negatives_creation": [("sentence_transformer_dissimilarity", "max")],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
+        "random_state": [42, 43, 44],
+    }
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output_noempty.json', checkpoint_dir='checkpoint_final/', df=df)
+
+def run_stock_emotion_best(df=None):
+    model_param_grid = {
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
+            "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
+            "text_encoder_pretrained": [True],                                                                       
+            "text_aggregation_method": ['max'], #"mean",                                                    
+            "projection_dim": [700],                                                                        
+            "learning_rate": [0.00001],                                                                             
+            "optimizer": ['adam'],                                                                                          
+            "criterion": ['CosineEmbeddingLoss'],
+            "num_epochs": [15],                                                                                             
+            "batch_size": [6],                                                                                             
+            "num_workers": [4],  
+        }
+
+    dataset_param_grid = {                                                                            
+        "ts_window": [4],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_overlap": ['start'], #'middle'                                                                   
+        "text_window": [3],          #3, 4, 5, 6, 7                                              
+        'text_selection_method': [('vader_polarized', 5)],#('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
+        "data_source": [
+        {
             "name": "stock_emotion",
             "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
             "ts_path": "./data/stock_emotions/price/",
@@ -324,7 +388,34 @@ def run(df=None):
             'text_col': 'text',
             'train_dates': '01/01/2020 - 03/09/2020',
             'test_dates': '04/09/2020 - 31/12/2020'
-        },  {
+        }
+        ],                                                        
+        "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("naive", 30)],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
+        "random_state": [42, 43, 44],
+    }
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output_noempty.json', checkpoint_dir='checkpoint_final/', df=df)
+
+def run_stock_net_best(df=None):
+    model_param_grid = {
+            "ts_encoder": [{"name": 'TimeSeriesTransformerModel'}],#{"name": "InformerModel"}, {"name": 'AutoFormerModel'}],
+            "text_encoder": [{"name": 'bert-base-uncased'}],#, {"name": 'bert-base-cased'}],
+            "text_encoder_pretrained": [True],                                                                       
+            "text_aggregation_method": ['max'], #"mean",                                                    
+            "projection_dim": [700],                                                                        
+            "learning_rate": [0.00001],                                                                             
+            "optimizer": ['adam'],                                                                                          
+            "criterion": ['CosineEmbeddingLoss'],
+            "num_epochs": [15],                                                                                             
+            "batch_size": [6],                                                                                             
+            "num_workers": [4],  
+        }
+
+    dataset_param_grid = {                                                                            
+        "ts_window": [4],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
+        "ts_overlap": ['start'], #'middle'                                                                   
+        "text_window": [3],          #3, 4, 5, 6, 7                                              
+        'text_selection_method': [('vader_neutral', 5)],#('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neutral', 2), ('vader_polarized', 2)],
+        "data_source": [{
             "name": "stock_net",
             "text_path": "./data/stocknet/tweet/organised_tweet.csv",
             "ts_path": "./data/stocknet/price/raw/",
@@ -333,8 +424,9 @@ def run(df=None):
             'text_col': 'text',
             'train_dates': '01/01/2014 - 01/08/2015',
             'test_dates': '01/08/2015 - 01/01/2016'
-        }],                                                            
-        "negatives_creation": [("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "max"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                          
+        }
+        ],                                                      
+        "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("naive", 30), ("sentence_transformer_dissimilarity", "min")],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
         "random_state": [42, 43, 44],
     }
     return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/epsilon_transdis/output_noempty.json', checkpoint_dir='checkpoint_final/', df=df)
@@ -342,28 +434,5 @@ def run(df=None):
 if __name__ == '__main__':
     
     run()
-    
-    #print(df)
-#
-    #new_df = df[['text_series', 'label']]
-    #
-    #row_tuples = df['text_series'].apply(tuple)
-    #
-    ## Count occurrences of each unique row
-    #row_counts = row_tuples.value_counts()
-    #
-    ## Get the number of unique rows
-    #num_unique_rows = len(row_counts)
-    #print(f"Number of unique rows: {num_unique_rows}")
-    #
-    ## Plot histogram
-    #plt.figure(figsize=(10, 6))
-    #plt.hist(row_counts, bins=range(1, row_counts.max() + 2), align='left', edgecolor='black')
-    #plt.title('Histogram of Row Frequencies')
-    #plt.xlabel('Number of Times a Row is Seen')
-    #plt.ylabel('Frequency')
-    #plt.savefig("./data/hist_unique_textseries.png")
-    #plt.show()
-#
-    #new_df.to_csv("./data/neg_assessment_text_only.csv")
-    #pdb.set_trace()
+    #run_stock_emotion_best()
+    #run_stock_net_best()
