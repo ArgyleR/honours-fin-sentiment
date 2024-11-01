@@ -159,7 +159,7 @@ def check_args_not_used(data_parameters, model_parameters, output_file):
 def save_df_list(df_list, save_name):
     labels = ["train", "val", "test"]
     for df, label in zip(df_list, labels):
-        df.to_csv(f"./data/constructed_datasets/overlap/{save_name}_{label}.csv", index = False)
+        df.to_csv(f"../data/constructed_datasets/overlap/{save_name}_{label}.csv", index = False)
 
 
 def make_non_primitive_a_safe_string(non_primitive):
@@ -456,18 +456,6 @@ def run(df=None):
             'max_features': [10, 100, 500], 
             'C': [0.01, 0.1, 1, 10, 100]
         }
-    
-    model_param_grid = {
-        'model': ["lstm"],
-        'lstm_hidden_dim': [64, 128],         # Number of hidden units in the LSTM layer
-        'lstm_input_dim': [1],                    # Dimension of each time series step (e.g., univariate)
-        'dropout_rate': [0.2],               # Dropout rates to prevent overfitting
-        'dense_units': [128],             # Number of units in the dense layer after LSTM
-        'epochs': [10],                   # Number of training epochs
-        'batch_size': [16],               # Batch size for training
-        'learning_rate': [0.001, 0.0001],         # Learning rate for optimizer
-        'max_features': [100, 500],           # Max number of TF-IDF features
-    }
 
     dataset_param_grid = {                                                                            
         "ts_window": [4],                                                                  
@@ -476,8 +464,8 @@ def run(df=None):
         'text_selection_method': [('vader_polarized', 5)],#('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neural', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "EDT",
-            "text_path": "./data/EDT/evaluate_news.json",
-            "ts_path": "./data/stock_emotions/price/",
+            "text_path": "../data/EDT/evaluate_news.json",
+            "ts_path": "../data/stock_emotions/price/",
             "ts_date_col": 'Date',
             'text_date_col': 'date',
             'text_col': 'text',
@@ -488,7 +476,7 @@ def run(df=None):
         "negatives_creation": [("sentence_transformer_dissimilarity", "max")],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
         "random_state": [42, 43, 44],
     }
-    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/baselines/lstm.json', checkpoint_dir='checkpoint_final/', df=df)
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='../results/baselines/svm.json', checkpoint_dir='../checkpoint_final/', df=df)
 
 def run_stock_emotion_best(df=None):
     model_param_grid = {
@@ -498,17 +486,6 @@ def run_stock_emotion_best(df=None):
             'C': [0.01, 0.1, 1, 10, 100]
         }
 
-    model_param_grid = {
-        'model': ["lstm"],
-        'lstm_hidden_dim': [64, 128],         # Number of hidden units in the LSTM layer
-        'lstm_input_dim': [1],                    # Dimension of each time series step (e.g., univariate)
-        'dropout_rate': [0.2],               # Dropout rates to prevent overfitting
-        'dense_units': [128],             # Number of units in the dense layer after LSTM
-        'epochs': [10],                   # Number of training epochs
-        'batch_size': [16],               # Batch size for training
-        'learning_rate': [0.001, 0.0001],         # Learning rate for optimizer
-        'max_features': [100, 500],           # Max number of TF-IDF features
-    }
 
     dataset_param_grid = {                                                                            
         "ts_window": [4],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
@@ -518,8 +495,8 @@ def run_stock_emotion_best(df=None):
         "data_source": [
         {
             "name": "stock_emotion",
-            "text_path": "./data/stock_emotions/tweet/processed_stockemo.csv",
-            "ts_path": "./data/stock_emotions/price/",
+            "text_path": "../data/stock_emotions/tweet/processed_stockemo.csv",
+            "ts_path": "../data/stock_emotions/price/",
             "ts_date_col": 'Date',
             'text_date_col': 'date',
             'text_col': 'text',
@@ -530,7 +507,7 @@ def run_stock_emotion_best(df=None):
         "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("naive", 30)],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
         "random_state": [42, 43, 44],
     }
-    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/baselines/lstm.json', checkpoint_dir='checkpoint_final/', df=df)
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='../results/baselines/svm.json', checkpoint_dir='../checkpoint_final/', df=df)
 
 def run_stock_net_best(df=None):
     model_param_grid = {
@@ -540,18 +517,6 @@ def run_stock_net_best(df=None):
             'C': [0.01, 0.1, 1, 10, 100]
         }
     
-    model_param_grid = {
-        'model': ["lstm"],
-        'lstm_hidden_dim': [64, 128],         # Number of hidden units in the LSTM layer
-        'lstm_input_dim': [1],                    # Dimension of each time series step (e.g., univariate)
-        'dropout_rate': [0.2],               # Dropout rates to prevent overfitting
-        'dense_units': [128],             # Number of units in the dense layer after LSTM
-        'epochs': [10],                   # Number of training epochs
-        'batch_size': [16],               # Batch size for training
-        'learning_rate': [0.001, 0.0001],         # Learning rate for optimizer
-        'max_features': [100, 500],           # Max number of TF-IDF features
-    }
-    
     
     dataset_param_grid = {                                                                            
         "ts_window": [4],#4, 6 & 7 had a random error out     3, 4, 5, 6, 7, 10                                                                    
@@ -560,8 +525,8 @@ def run_stock_net_best(df=None):
         'text_selection_method': [('vader_neutral', 5)],#('TFIDF', 5)],# ('vader_polarized', 5), ('vader_neutral', 5), ('TFIDF', 2), ('embedding_diversity', 5), ('embedding_diversity', 2), ('vader_neutral', 2), ('vader_polarized', 2)],
         "data_source": [{
             "name": "stock_net",
-            "text_path": "./data/stocknet/tweet/organised_tweet.csv",
-            "ts_path": "./data/stocknet/price/raw/",
+            "text_path": "../data/stocknet/tweet/organised_tweet.csv",
+            "ts_path": "../data/stocknet/price/raw/",
             "ts_date_col": 'Date',
             'text_date_col': 'created_at',
             'text_col': 'text',
@@ -572,10 +537,10 @@ def run_stock_net_best(df=None):
         "negatives_creation": [("sentence_transformer_dissimilarity", "max"), ("naive", 30), ("sentence_transformer_dissimilarity", "min")],# ("sentence_transformer_dissimilarity", "mean"), ("sentence_transformer_dissimilarity", "min"), ("naive", 30), ("naive", 45), ("naive", 60)],                      
         "random_state": [42, 43, 44],
     }
-    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='./results/baselines/lstm.json', checkpoint_dir='checkpoint_final/', df=df)
+    return grid_search(model_param_grid=model_param_grid, dataset_param_grid=dataset_param_grid, out_file='../results/baselines/svm.json', checkpoint_dir='../checkpoint_final/', df=df)
 
 if __name__ == '__main__':
     
-    #run()
-    #run_stock_emotion_best()
+    run()
+    run_stock_emotion_best()
     run_stock_net_best()
